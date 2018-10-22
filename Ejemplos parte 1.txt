@@ -1,0 +1,120 @@
+__1.
+__Enteros largos sin signo
+0_ul
+4294967295_ul
+
+__Flotantes
+0.
+1.17549436F-38
+3.40282346F38
+
+
+
+__2.
+__Enteros largos sin signo con valores fuera de rango
+-1_ul                                       __esta mal aca solo toma el - y el _ul
+4294967296_ul
+
+__Flotantes con valores fuera de rango
+1.17549435F-38
+3.40282348F38
+
+
+
+__3.
+__Con parte decimal
+2.12
+
+__Sin parte decimal
+2.
+
+__Con exponente
+2.F10
+
+__Sin exponente
+2.
+
+__Con exponente positivo
+2.F10
+
+__Con exponente negativo
+2.F-10
+
+
+
+__4.
+_hola
+_prueba
+_estoesunidentificadordemasde25caracteres
+_estoyprobandosifuncionanlosidentificadoreslargos
+_nodeberian
+_ahorasiporquetomamoslosprimeros25
+
+
+__5.
+_pr0b4nd0_un
+_1d3nt1f1c4d0r_r4r0                            __toma mal el _r4r0
+_func10n4_0_n0                                 __toma mal esto
+
+
+
+
+__6.
+_asi es un identificador mal definido
+_ o asi
+no se la verdad
+_ como _deberia ser
+
+
+
+__7.
+if
+IF
+else
+ELSE
+endif
+ENDIF
+print
+PRINT
+uslinteger
+USLINTEGER
+single
+SINGLE
+while
+WHILE
+
+
+
+
+__8.
+__defini un comentario bien
+__             sigue estando bien
+__ no se como definir un comentario mal
+__ seria algo __ asi?
+__ si pongo _ no es un _identificador
+
+
+
+
+__9.
+'ahora si puedo-
+ arruinar las-
+ cadenas'
+'haciendo
+ esto'
+'o-
+ esto-'
+'pero asi-
+ funciona-
+-
+-
+-
+ o-
+-
+ deberia'
+
+
+ __PRUEBA GONZA
+<while                              __error aca no recfonocel w hile
+
+print('asdasd'),

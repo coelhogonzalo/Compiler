@@ -1,0 +1,39 @@
+
+__SIN ERRORES CONTEMPLADOS
+_asd := 0.2 - 0.3,
+if ( 333 < 0.3333333 ){
+	print ( 'dale que funcionas' ),
+}
+endif
+print ( 'probando los : en esto' ),
+print('primera-
+segunda-
+tercera'),
+uslinteger _varuslinteger,
+single _varsingle,
+
+single _var1;_var2;_var3,
+
+
+
+__Sin error
+if ( 0.2 < 0.3 ) 
+	print ( ' dale que funcionas' ),
+endif
+while ( 0.2+5.2 < 0.3-3.2 )
+	print ( ' dale que funcionas crack' ),,
+	while ( 0.2+5.2 < 0.3-3.2 )
+	if ( 0.2+5.2 < 0.3*0.3-0.3/3.2 )
+		print ( ' dale que funcionas crack' ),
+	endif,
+single _fun ( single _diversion) {
+	print ( 'dale que funcionas' ),
+	return ( 2.0 )
+}
+
+
+__NO ANDA __La doble coma es porque dice en el tp que tiene que tener coma la sentencia ejecutable
+__asdasda:=  0.2+ _fun ( _varsingle ; write ),, 
+__asd := -0.2,
+
+

@@ -1,0 +1,4 @@
+[Error 34 : La variable _asd no esta declarada  en la linea: 2
+, Error SIN NUMERO: Se esperaba un } al final del bloque de sentencias en la linea: 6
+, Error 18: La variable _diversion no esta declarada  en la linea: 28
+]

@@ -1,0 +1,18 @@
+[Se detecto una asignacion en  la linea 2
+, Se detecto un print en la linea 4
+, Se detecto un if en la linea 6
+, Se detecto un print en la linea 7
+, Se detecto un print en la linea 10
+, Se detecto la declaracion de variables en la linea 11
+, Se detecto la declaracion de variables en la linea 12
+, Se detecto la declaracion de variables en la linea 14
+, Se detecto un print en la linea 20
+, Se detecto un if en la linea 21
+, Se detecto un print en la linea 23
+, Se detecto un while en la linea 23
+, Se detecto un print en la linea 26
+, Se detecto un if en la linea 27
+, Se detecto un while en la linea 27
+, Se detecto un print en la linea 29
+, Se detecto la declaracion de una funcion en la linea 31
+]

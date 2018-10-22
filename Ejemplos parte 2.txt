@@ -1,0 +1,196 @@
+__1.Declaracion de una variable de cada tipo
+
+__Sin error
+uslinteger _varuslinteger,
+single _varsingle,
+
+__Con error
+usinteger _varuslinteger,
+uslinteger _,
+uslinteger, _varuslinteger,
+single _id
+
+
+
+__2.Declaracion de una lista de variables
+
+__Sin error
+uslinteger _var1;var2;var3,
+single _var1;var2;var3,
+
+__Con error
+uslinteger _var1._var2;_var3,
+single _var1._var2;_var3,
+single _var1._var2;_var3
+
+
+
+__3.Sentencia de salida de mensajes por pantalla
+
+__Sin error
+print ( 'cadena probando' ),
+print ( _var1 ),
+print ( 'esta cadena es de -
+mas de un ren-
+glon' ),
+
+__Con error
+print ( 'esto esta mal )',
+print ( esto tambi'en' ),
+print ( ' y esto tambien ),
+print ('cadenita')
+
+
+__4.Sentencia IF sin bloque ELSE con una sola sentencia.
+
+__Sin error
+if ( 0.2 < 0.3 ) 
+	print ( ' probando ' ),
+endif
+
+__Con error
+if ( 0.2 < 0.3 )
+endif
+
+if (0.2 < 0.4
+	print ( ' probando ' ),
+endif
+
+if 0.2 < 0.4)
+	print ( ' probando ' ),
+endif
+
+
+
+__5.Sentencia IF sin bloque ELSE con un bloque de sentencias
+
+__Sin error
+if ( 0.2 < 0.3 ){
+	print ( ' probando' ),
+	print ( ' probando parte dos' ),
+}
+endif
+
+__Con error
+if ( 0.2 < 0.3 ){
+	print ( ' dale que funcionas' ),
+	print ( ' dale que funcionas parte dos: la venganza del print' ),
+endif
+
+if ( 0.2 < 0.3 ){
+	print ( ' dale que funcionas' )
+	print ( ' dale que funcionas parte dos la venganza del print' )
+endif
+
+__6.Sentencia IF con bloque ELSE
+
+__Sin error
+if ( 0.2 < 0.3 ) 
+	print ( ' dale que funcionas' ),
+else
+	print ( ' probando ' ),
+endif
+
+__Con error
+if ( 0.2 < 0.3 )
+else
+endif,
+
+if ( 0.2 < 0.3 )
+	print ( ' probando ' ),
+else
+endif
+
+if ( 0.2 < 0.3 )
+else
+	print ( ' probando ' ),
+endif
+
+
+
+__7.Sentencia IF con comparacion entre expresiones aritmeticas como condicion, con bloque ELSE
+
+__Sin error
+if ( 0.2+5.2 < 0.3-3.2 ) 
+	print ( ' dale que funcionas' ),
+else
+	print ( ' probando ' ),
+endif
+
+__Con error
+if ( 0.2+5.2 < 0.3-3.2 )
+else
+endif
+
+if ()
+	print ( ' dale que funcionas' ),
+else
+	print ( ' probando' ),
+endif
+
+
+
+__8.Sentencia de control asignada como tema particular
+
+__Sin error
+while ( 0.2+5.2 < 0.3-3.2 )
+	print ( ' dale que funcionas' ),
+
+__Con error
+while ( 0.2+5.2 < 0.3-3.2 
+	print ( ' dale que funcionas' ),
+	
+while 0.2+5.2 < 0.3-3.2 )
+	print ( ' dale que funcionas' ),
+	
+while()
+	print ( ' dale que funcionas' ),
+
+__9.Sentencia de control asignada con IF anidado
+
+__Sin error
+while ( 0.2+5.2 < 0.3-3.2 )
+	if ( 0.2+5.2 < 0.3-3.2 )
+		print ( ' dale que funcionas ' ),
+	endif
+
+__Con error
+while ( 0.2+5.2 < 0.3-3.2 
+	if ( 0.2+5.2 < 0.3-3.2 
+		print ( ' dale que funcionas ' ),
+	endif
+
+
+
+__14. Declaración de funciones con lista de permisos (si corresponde) con sentencias de control dentro.
+
+__Sin error
+_single diversion,
+single _fun ( single _diversion) {
+	print ( ' dale que funcionas' ),
+	return ( 2.0 )
+}
+
+__Con error
+single _fun ( write; single _diversion; uslinteger _id) {
+	print ( ' dale que funcionas' ),
+	return ( 2.0 
+}
+
+
+__15. Llamado de funciones como sentencia ejecutable.
+
+__Sin error
+_fun (_diversion; write ),
+
+__Con error
+_fun ( write; single _diversion; uslinteger _id)
+
+
+__16.Expresiones con numeros negativos
+
+__Sin error
+_a := -0.2 - 0.6
+
+__Con error
+_a := -0.2 - 0..6

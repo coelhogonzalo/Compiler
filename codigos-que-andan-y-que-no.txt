@@ -1,0 +1,43 @@
+__ANDAN
+_id1 ( _id2 ; write ) ,
+single _id1 ; _id2 ,
+uslinteger _id3 ,
+
+single _idd( single _id )
+{
+	print ( 'cadenita dime tu' ) ,
+	return ( 2_ul )
+}
+
+while(2_ul<3_ul){
+	print ( 'cadenita' ) ,
+	print ( 'cadenita' ) ,	
+}
+while(2_ul<3_ul)
+	print ( 'cadenita' ) ,
+
+while(2_ul<3_ul) {
+	print ( 'cadenita' ) ,
+}
+
+
+__NO ANDAN si no hay un espacio al final
+
+if (0.2 < 0.3 ) _a := 0.2, else _a := 0.3 , endif
+
+if (0.2 < 0.3 ) 
+	_a := 0.2, 
+else 
+	_a := 0.3 ,
+endif 
+
+if (0.2 < 0.3 ) {
+	_a := 0.2, 
+}
+else {
+	_a := 0.3 ,
+}
+endif
+
+
+print ( 'cadenita' ) ,

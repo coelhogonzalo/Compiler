@@ -1,0 +1,34 @@
+[Tipo: WARNING   Lexema:  4294967296: valor fuera de rango  Numero de linea: 16
+, Tipo: WARNING   Lexema:  1.17549435E-38: valor fuera de rango  Numero de linea: 19
+, Tipo: WARNING   Lexema:  3.40282348E38: valor fuera de rango  Numero de linea: 20
+, Tipo: ERROR   Lexema:  _estoesunidentificadordemasde25caracteres (identificador excede el tamaño permitido)  Numero de linea: 48
+, Tipo: ERROR   Lexema:  _estoyprobandosifuncionanlosidentificadoreslargos (identificador excede el tamaño permitido)  Numero de linea: 49
+, Tipo: ERROR   Lexema:  _ahorasiporquetomamoslosprimeros25 (identificador excede el tamaño permitido)  Numero de linea: 51
+, Tipo: ERROR   Lexema:  es (palabra reservada no valida)  Numero de linea: 63
+, Tipo: ERROR   Lexema:  un (palabra reservada no valida)  Numero de linea: 63
+, Tipo: ERROR   Lexema:  identificador (palabra reservada no valida)  Numero de linea: 63
+, Tipo: ERROR   Lexema:  mal (palabra reservada no valida)  Numero de linea: 63
+, Tipo: ERROR   Lexema:  definido (palabra reservada no valida)  Numero de linea: 63
+, Tipo: ERROR   Lexema:  Definicion no valida.  Numero de linea: 64
+, Tipo: ERROR   Lexema:  o (palabra reservada no valida)  Numero de linea: 64
+, Tipo: ERROR   Lexema:  asi (palabra reservada no valida)  Numero de linea: 64
+, Tipo: ERROR   Lexema:  no (palabra reservada no valida)  Numero de linea: 65
+, Tipo: ERROR   Lexema:  se (palabra reservada no valida)  Numero de linea: 65
+, Tipo: ERROR   Lexema:  la (palabra reservada no valida)  Numero de linea: 65
+, Tipo: ERROR   Lexema:  verdad (palabra reservada no valida)  Numero de linea: 65
+, Tipo: ERROR   Lexema:  Definicion no valida.  Numero de linea: 66
+, Tipo: ERROR   Lexema:  como (palabra reservada no valida)  Numero de linea: 66
+, Tipo: ERROR   Lexema:  ser (palabra reservada no valida)  Numero de linea: 66
+, Tipo: ERROR   Lexema:  IF (palabra reservada no valida)  Numero de linea: 72
+, Tipo: ERROR   Lexema:  ELSE (palabra reservada no valida)  Numero de linea: 74
+, Tipo: ERROR   Lexema:  ENDIF (palabra reservada no valida)  Numero de linea: 76
+, Tipo: ERROR   Lexema:  PRINT (palabra reservada no valida)  Numero de linea: 78
+, Tipo: ERROR   Lexema:  USLINTEGER (palabra reservada no valida)  Numero de linea: 80
+, Tipo: ERROR   Lexema:  SINGLE (palabra reservada no valida)  Numero de linea: 82
+, Tipo: ERROR   Lexema:  WHILE (palabra reservada no valida)  Numero de linea: 84
+, Tipo: ERROR   Lexema:  Definicion no valida.  Numero de linea: 103
+, Tipo: ERROR   Lexema:  esto (palabra reservada no valida)  Numero de linea: 104
+, Tipo: ERROR   Lexema:  Definicion no valida.  Numero de linea: 104
+, Tipo: ERROR   Lexema:  Definicion no valida.  Numero de linea: 106
+, Tipo: ERROR   Lexema:  Definicion no valida.  Numero de linea: 106
+]
