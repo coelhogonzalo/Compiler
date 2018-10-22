@@ -1,4 +1,4 @@
-
+_asd := - else,
 __SIN ERRORES CONTEMPLADOS
 _asd := 0.2 - 0.3,
 if ( 333 < 0.3333333 ){
@@ -33,5 +33,5 @@ single _fun ( single _diversion) {
 
 
 __NO ANDA __La doble coma es porque dice en el tp que tiene que tener coma la sentencia ejecutable
-asd := - 0.2 _fun ( _varsingle ; write ),,
+_asd := - 0.2 ,
 __asdasda:=  0.2+ _fun ( _varsingle ; write ),, 

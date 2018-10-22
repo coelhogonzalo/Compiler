@@ -395,7 +395,7 @@ final static String yyrule[] = {
 "lista_permisos : WRITE ';' PASS",
 };
 
-//#line 186 "gramaticaGrupo16.y"
+//#line 185 "gramaticaGrupo16.y"
 
 public Analizador_Lexico al;
 public ArrayList<AnalizadorLexico.Error> erroresGram;
@@ -623,66 +623,62 @@ case 7:
 	Token t=al.tablaSimbolos.get(val_peek(2).sval);
 	t.declarada=true;}
 break;
-case 8:
-//#line 52 "gramaticaGrupo16.y"
-{Token t=al.tablaSimbolos.get(val_peek(1).sval);if(t.declarada==false)this.erroresGram.add(new ErrorG("Error 18: La variable "+val_peek(1).sval+" no esta declarada ", al.cantLN));}
-break;
 case 11:
-//#line 70 "gramaticaGrupo16.y"
+//#line 68 "gramaticaGrupo16.y"
 {Token t=al.tablaSimbolos.get(val_peek(0).sval);
 	if(t!=null)t.declarada=true;}
 break;
 case 12:
-//#line 72 "gramaticaGrupo16.y"
+//#line 70 "gramaticaGrupo16.y"
 {	Token t=al.tablaSimbolos.get(val_peek(0).sval);
 	if(t!=null)t.declarada=true;}
 break;
 case 19:
-//#line 94 "gramaticaGrupo16.y"
+//#line 92 "gramaticaGrupo16.y"
 {System.out.println("--------------------------------------------------------------------------------------------");
 		System.out.println("DEBUGUEANDO: esto es un separador");
 		System.out.println("--------------------------------------------------------------------------------------------");}
 break;
 case 20:
-//#line 101 "gramaticaGrupo16.y"
+//#line 99 "gramaticaGrupo16.y"
 {Parser.estructuras.add("Se detecto un print en la linea "+Analizador_Lexico.cantLN+"\n");}
 break;
 case 21:
-//#line 102 "gramaticaGrupo16.y"
+//#line 100 "gramaticaGrupo16.y"
 {Parser.estructuras.add("Se detecto una asignacion en  la linea "+Analizador_Lexico.cantLN+"\n");}
 break;
 case 22:
-//#line 103 "gramaticaGrupo16.y"
+//#line 101 "gramaticaGrupo16.y"
 {Parser.estructuras.add("Se detecto un if en la linea "+Analizador_Lexico.cantLN+"\n");}
 break;
 case 23:
-//#line 104 "gramaticaGrupo16.y"
+//#line 102 "gramaticaGrupo16.y"
 {Parser.estructuras.add("Se detecto un if en la linea "+Analizador_Lexico.cantLN+"\n");}
 break;
 case 24:
-//#line 105 "gramaticaGrupo16.y"
+//#line 103 "gramaticaGrupo16.y"
 {Parser.estructuras.add("Se detecto un while en la linea "+Analizador_Lexico.cantLN+"\n");}
 break;
 case 33:
-//#line 140 "gramaticaGrupo16.y"
+//#line 138 "gramaticaGrupo16.y"
 {	Token t=al.tablaSimbolos.get(val_peek(2).sval);
 	if(t.declarada==false)this.erroresGram.add(new ErrorG("Error 34 : La variable "+val_peek(2).sval+" no esta declarada ", al.cantLN));}
 break;
 case 43:
-//#line 160 "gramaticaGrupo16.y"
+//#line 158 "gramaticaGrupo16.y"
 {	Token t=al.tablaSimbolos.get(val_peek(0).sval);
 	t.lexema="-"+t.lexema;}
 break;
 case 44:
-//#line 162 "gramaticaGrupo16.y"
+//#line 160 "gramaticaGrupo16.y"
 {Parser.estructuras.add("Se detecto la invocacion de una funcion en la linea "+Analizador_Lexico.cantLN+"\n");}
 break;
 case 45:
-//#line 164 "gramaticaGrupo16.y"
+//#line 163 "gramaticaGrupo16.y"
 {Token t=al.tablaSimbolos.get(val_peek(4).sval);
 	if(t!=null&&t.declarada==false)this.erroresGram.add(new ErrorG("Error 35: La variable "+val_peek(3).sval+" no esta declarada ", al.cantLN));}
 break;
-//#line 609 "Parser.java"
+//#line 605 "Parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

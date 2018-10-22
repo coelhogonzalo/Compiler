@@ -1,4 +1,4 @@
-[Error 34 : La variable _asd no esta declarada  en la linea: 3
-, Error 18: La variable _diversion no esta declarada  en la linea: 29
+[Error 34 : La variable _asd no esta declarada  en la linea: 1
+, Error 34 : La variable _asd no esta declarada  en la linea: 3
 , Error 34 : La variable _asd no esta declarada  en la linea: 36
 ]

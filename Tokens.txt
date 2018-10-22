@@ -1,5 +1,10 @@
 [Lexema: _asd   Numero: 257   Tipo: identificador
 , Lexema: :=   Numero: 272   Tipo: Operador
+, Lexema: -   Numero: 45   Tipo: Caracter
+, Lexema: else   Numero: 262   Tipo: String
+, Lexema: ,   Numero: 44   Tipo: Caracter
+, Lexema: _asd   Numero: 257   Tipo: identificador
+, Lexema: :=   Numero: 272   Tipo: Operador
 , Lexema: 0.2   Numero: 260   Tipo: single
 , Lexema: -   Numero: 45   Tipo: Caracter
 , Lexema: 0.3   Numero: 260   Tipo: single
@@ -121,12 +126,5 @@
 , Lexema: :=   Numero: 272   Tipo: Operador
 , Lexema: -   Numero: 45   Tipo: Caracter
 , Lexema: 0.2   Numero: 260   Tipo: single
-, Lexema: _fun   Numero: 257   Tipo: identificador
-, Lexema: (   Numero: 40   Tipo: Caracter
-, Lexema: _varsingle   Numero: 257   Tipo: identificador
-, Lexema: ;   Numero: 59   Tipo: Caracter
-, Lexema: write   Numero: 266   Tipo: String
-, Lexema: )   Numero: 41   Tipo: Caracter
-, Lexema: ,   Numero: 44   Tipo: Caracter
 , Lexema: ,   Numero: 44   Tipo: Caracter
 ]
