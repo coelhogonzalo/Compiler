@@ -6,7 +6,6 @@ private AccionSemantica5 arreglarNumero;
         Error e = new Error("ERROR", "Definicion no valida.", Analizador_Lexico.cantLN);
         Analizador_Lexico.errores.add(e);
         if (buffer.length() > 0){
-        	System.out.println(buffer);
         	if (isNumero(buffer)){
         		arreglarNumero=new AccionSemantica5();
         		e = new Error("WARNING", buffer.toString() + ": Las constantes de tipo uslinteger deben terminar en _ul", Analizador_Lexico.cantLN);
@@ -16,8 +15,6 @@ private AccionSemantica5 arreglarNumero;
         		return arreglarNumero.ejecutar(buffer, c);
         	}
         	else{
-        		//if (buffer.indexOf('_') != 0)
-        		//	buffer.deleteCharAt(buffer.indexOf('_'));
         		if (buffer.charAt(0) != '_') {
         			if (buffer.length() < 15){
         				e = new Error("WARNING", buffer.toString() + ": Se agrego el caracter _ al principio y se interpreto como un identificador ", Analizador_Lexico.cantLN);
@@ -49,9 +46,8 @@ public boolean isNumero(StringBuilder buffer){
 	String lexema=buffer.toString();
 	char[] arreglo= lexema.toCharArray();
 	for(char i:arreglo)
-		if(i<48 || i>57)//Si no es un digito
+		if(i<48 && i>57)//Si no es un digito
 			return false;
 	return true;
 }
 }
-
