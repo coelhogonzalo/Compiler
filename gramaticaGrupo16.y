@@ -49,8 +49,6 @@ sentenciaDEC :  tipo lista_variables ',' {Parser.estructuras.add("Se detecto la 
 ;
 
 parametrosDef: '(' tipo ID ')'
-{Token t=al.tablaSimbolos.get($3.sval);if(t.declarada==false)this.erroresGram.add(new ErrorG("Error 18: La variable "+$3.sval+" no esta declarada ", al.cantLN));}
-
 	//ESTECOMPILA| '(' tipo ID {this.erroresGram.add(new ErrorG("Error SIN NUMERO : Falta un ) despues del identificador", al.cantLN));}
 	//ESTECOMPILA| tipo ID ')' {this.erroresGram.add(new ErrorG("Error SIN NUMERO : Falta un ( antes del tipo del parametro", al.cantLN));}
 ;
@@ -105,8 +103,8 @@ sentenciaCE : PRINT printeable ',' {Parser.estructuras.add("Se detecto un print 
 	| WHILE condicioncparentesis BCE ','{Parser.estructuras.add("Se detecto un while en la linea "+Analizador_Lexico.cantLN+"\n");}
 	
 	
-	//| IF condicioncparentesis BCE {this.erroresGram.add(new ErrorG("Error 7: Falta un endif", al.cantLN));} LA SAQUE POR LA CORRECCION
-	//| IF condicioncparentesis BCE ELSE BCE  {this.erroresGram.add(new ErrorG("Error 8: Falta un endif", al.cantLN));} LA SAQUE POR LA CORRECCION
+	//| IF condicioncparentesis BCE {this.erroresGram.add(new ErrorG("Error 7: Falta un endif", al.cantLN));}// LA SAQUE POR LA CORRECCION
+	//| IF condicioncparentesis BCE ELSE BCE  {this.erroresGram.add(new ErrorG("Error 8: Falta un endif", al.cantLN));}// LA SAQUE POR LA CORRECCION
 	//ESTECOMPILA| IF condicioncparentesis ELSE BCE ENDIF {this.erroresGram.add(new ErrorG("Error 9: Se esperaba un bloque de sentencias en la rama del if", al.cantLN));}
 	//ESTECOMPILA| IF condicioncparentesis BCE ELSE ENDIF {this.erroresGram.add(new ErrorG("Error 10: Se esperaba un bloque de sentencias en la rama del else", al.cantLN));}
 	//ESTECOMPILA| IF condicioncparentesis ELSE ENDIF{this.erroresGram.add(new ErrorG("Error 11: Se esperaba un bloque de sentencias en la rama del if y del else", al.cantLN));}
@@ -160,6 +158,7 @@ factor : ID
 	| '-' SINGLE {	Token t=al.tablaSimbolos.get($2.sval);
 	t.lexema="-"+t.lexema;}
 	|ID parametros ','  {Parser.estructuras.add("Se detecto la invocacion de una funcion en la linea "+Analizador_Lexico.cantLN+"\n");}
+	//| '-' error PARA PREGUNTARLE A ANTONELA
 ;
 parametros: '(' ID ';' lista_permisos ')' {Token t=al.tablaSimbolos.get($1.sval);
 	if(t!=null&&t.declarada==false)this.erroresGram.add(new ErrorG("Error 35: La variable "+$2.sval+" no esta declarada ", al.cantLN));}
@@ -246,5 +245,3 @@ public static void main(String [] args) throws IOException{
 	File estructurasOut = new File("Estructuras.txt");
 	FileManager.write(Parser.estructuras.toString(), estructurasOut);
 }
-
-
