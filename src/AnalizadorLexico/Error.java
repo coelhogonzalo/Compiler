@@ -11,6 +11,6 @@ public class Error {
 		this.linea = linea;
 	}
 	public String toString(){
-		return "Tipo: "+tipo+"   Lexema:  "+lexema+"  Numero de linea: "+linea +"\n";
+		return "Tipo: "+tipo+"   Lexema:  "+lexema+"  Numero de linea: "+linea +"\r\n";
 	}
 }

@@ -8,6 +8,6 @@ public class ErrorG extends Error{
 		System.out.println(this.toString());
 	}
 	public String toString(){
-		return lexema+" en la linea: "+linea+"\n";
+		return lexema+" en la linea: "+linea+"\r\n";
 	}
 }
