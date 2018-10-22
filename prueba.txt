@@ -33,7 +33,5 @@ single _fun ( single _diversion) {
 
 
 __NO ANDA __La doble coma es porque dice en el tp que tiene que tener coma la sentencia ejecutable
+asd := - 0.2 _fun ( _varsingle ; write ),,
 __asdasda:=  0.2+ _fun ( _varsingle ; write ),, 
-__asd := -0.2,
-
-
