@@ -1,7 +1,9 @@
-package AnalizadorLexico;
+package GeneracionCodigoIntermedio;
 
 import java.util.ArrayList;
 import java.util.Stack;
+
+import AnalizadorLexico.Token;
 
 public class Polaca_Inversa {
     private ArrayList<Token> PI = null;

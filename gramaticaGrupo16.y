@@ -49,6 +49,8 @@ sentenciaDEC :  tipo lista_variables ',' {Parser.estructuras.add("Se detecto la 
 ;
 
 parametrosDef: '(' tipo ID ')'
+{Token t=al.tablaSimbolos.get($3.sval);if(t.declarada==false)this.erroresGram.add(new ErrorG("Error 18: La variable "+$3.sval+" no esta declarada ", al.cantLN));}
+
 	//ESTECOMPILA| '(' tipo ID {this.erroresGram.add(new ErrorG("Error SIN NUMERO : Falta un ) despues del identificador", al.cantLN));}
 	//ESTECOMPILA| tipo ID ')' {this.erroresGram.add(new ErrorG("Error SIN NUMERO : Falta un ( antes del tipo del parametro", al.cantLN));}
 ;
@@ -88,23 +90,23 @@ expresioncparentesis:'(' expresion ')'
 	//ESTECOMPILA|'('  ')' {this.erroresGram.add(new ErrorG("Error 27: Se esperaba una expresion", al.cantLN));}
 ;
 
-printeable : '(' CADENA ')' 
-		| '(' ID ')'{System.out.println("--------------------------------------------------------------------------------------------");
+printeable : '(' CADENA ')' 		{ polacaInversa.put(token cadena) }
+		| '(' ID ')'	{ polacaInversa.put(token id) } {System.out.println("--------------------------------------------------------------------------------------------");
 		System.out.println("DEBUGUEANDO: esto es un separador");
 		System.out.println("--------------------------------------------------------------------------------------------");}
 	//ESTECOMPILA| '(' CADENA  {this.erroresGram.add(new ErrorG("Error 21 : Falta un )", al.cantLN));}
 	//ESTECOMPILA|  CADENA ')' {this.erroresGram.add(new ErrorG("Error 22 : Falta un (", al.cantLN));}
 ;
 
-sentenciaCE : PRINT printeable ',' {Parser.estructuras.add("Se detecto un print en la linea "+Analizador_Lexico.cantLN+"\n");}
+sentenciaCE : PRINT printeable ',' {Parser.estructuras.add("Se detecto un print en la linea "+Analizador_Lexico.cantLN+"\n");} { polacaInversa.put(el token print) }
 	| asignacion ',' {Parser.estructuras.add("Se detecto una asignacion en  la linea "+Analizador_Lexico.cantLN+"\n");}
 	| IF condicioncparentesis BCE ENDIF {Parser.estructuras.add("Se detecto un if en la linea "+Analizador_Lexico.cantLN+"\n");}
 	| IF condicioncparentesis BCE ELSE BCE ENDIF {Parser.estructuras.add("Se detecto un if en la linea "+Analizador_Lexico.cantLN+"\n");}
 	| WHILE condicioncparentesis BCE ','{Parser.estructuras.add("Se detecto un while en la linea "+Analizador_Lexico.cantLN+"\n");}
 	
 	
-	//| IF condicioncparentesis BCE {this.erroresGram.add(new ErrorG("Error 7: Falta un endif", al.cantLN));}// LA SAQUE POR LA CORRECCION
-	//| IF condicioncparentesis BCE ELSE BCE  {this.erroresGram.add(new ErrorG("Error 8: Falta un endif", al.cantLN));}// LA SAQUE POR LA CORRECCION
+	//| IF condicioncparentesis BCE {this.erroresGram.add(new ErrorG("Error 7: Falta un endif", al.cantLN));} LA SAQUE POR LA CORRECCION
+	//| IF condicioncparentesis BCE ELSE BCE  {this.erroresGram.add(new ErrorG("Error 8: Falta un endif", al.cantLN));} LA SAQUE POR LA CORRECCION
 	//ESTECOMPILA| IF condicioncparentesis ELSE BCE ENDIF {this.erroresGram.add(new ErrorG("Error 9: Se esperaba un bloque de sentencias en la rama del if", al.cantLN));}
 	//ESTECOMPILA| IF condicioncparentesis BCE ELSE ENDIF {this.erroresGram.add(new ErrorG("Error 10: Se esperaba un bloque de sentencias en la rama del else", al.cantLN));}
 	//ESTECOMPILA| IF condicioncparentesis ELSE ENDIF{this.erroresGram.add(new ErrorG("Error 11: Se esperaba un bloque de sentencias en la rama del if y del else", al.cantLN));}
@@ -127,12 +129,12 @@ condicion : expresion operador_logico expresion
 
 ;
 
-operador_logico : '<' 
-	| '>'
-	| MENORIGUAL
-	| MAYORIGUAL
-	| IGUALIGUAL
-	| DISTINTO
+operador_logico : '<' 			{ polacaInversa.put(token <) }
+	| '>'				{ polacaInversa.put(token >) }
+	| MENORIGUAL			{ polacaInversa.put(token <= ) }
+	| MAYORIGUAL			{ polacaInversa.put(token >=) }
+	| IGUALIGUAL			{ polacaInversa.put(token ==) }
+	| DISTINTO			{ polacaInversa.put(token !=) }
 ;
 
 asignacion : ID ASIGN expresion {	Token t=al.tablaSimbolos.get($1.sval);
@@ -142,23 +144,22 @@ asignacion : ID ASIGN expresion {	Token t=al.tablaSimbolos.get($1.sval);
 	//ESTECOMPILA| ID ASIGN {this.erroresGram.add(new ErrorG("Error SIN NUMERO: Se esperaba una expresion del lado derecho de la asignacion", al.cantLN));}
 ;
 
-expresion : expresion '+' termino
-	| expresion '-' termino
+expresion : expresion '+' termino	{ polacaInversa.put(token +) }
+	| expresion '-' termino		{ polacaInversa.put(token -) }
 	| termino
 ;
 
-termino : termino '*' factor
-	| termino '/' factor
+termino : termino '*' factor		{ polacaInversa.put(token *) }
+	| termino '/' factor		{ polacaInversa.put(token /) }
 	| factor
 ;
 
-factor : ID 
-	| USLINTEGER 
-	| SINGLE 
+factor : ID 				{ polacaInversa.put(este token) }
+	| USLINTEGER 			{ polacaInversa.put(este token) }
+	| SINGLE 			{ polacaInversa.put(este token) }
 	| '-' SINGLE {	Token t=al.tablaSimbolos.get($2.sval);
-	t.lexema="-"+t.lexema;}
+	t.lexema="-"+t.lexema;}		{ polacaInversa.put(este token) }
 	|ID parametros ','  {Parser.estructuras.add("Se detecto la invocacion de una funcion en la linea "+Analizador_Lexico.cantLN+"\n");}
-	//| '-' error PARA PREGUNTARLE A ANTONELA
 ;
 parametros: '(' ID ';' lista_permisos ')' {Token t=al.tablaSimbolos.get($1.sval);
 	if(t!=null&&t.declarada==false)this.erroresGram.add(new ErrorG("Error 35: La variable "+$2.sval+" no esta declarada ", al.cantLN));}
@@ -245,3 +246,7 @@ public static void main(String [] args) throws IOException{
 	File estructurasOut = new File("Estructuras.txt");
 	FileManager.write(Parser.estructuras.toString(), estructurasOut);
 }
+
+
+
+

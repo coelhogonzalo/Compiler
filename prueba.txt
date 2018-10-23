@@ -14,8 +14,6 @@ single _varsingle,
 
 single _var1;_var2;_var3,
 
-
-
 __Sin error
 if ( 0.2 < 0.3 ) 
 	print ( ' dale que funcionas' ),
