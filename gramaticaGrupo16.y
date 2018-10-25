@@ -11,6 +11,7 @@ import AnalizadorLexico.FileManager;
 import AnalizadorLexico.Main;
 import AnalizadorLexico.TokenValue;
 import java.util.ArrayList;
+import GeneracionCodigoIntermedio.Polaca_Inversa;
 %}
 %token ID CADENA USLINTEGER SINGLE IF ELSE ENDIF WHILE READONLY WRITE PASS MAYORIGUAL MENORIGUAL IGUALIGUAL DISTINTO ASIGN RETURN PRINT SINGLEPR USLINTEGERPR INVALIDO
 
@@ -58,7 +59,7 @@ parametrosDef: '(' tipo ID ')'
 cuerpofuncion: '{' BS retorno '}'
 
 	//ESTECOMPILA| '{'  retorno '}' {this.erroresGram.add(new ErrorG("Error 23: Se esperaba un bloque de sentencias en el cuerpo de la funcion", al.cantLN));}
-	//| '{' BS retorno 
+	//| '{' BS retorno
 	//ESTECOMPILA|  BS retorno '}' {this.erroresGram.add(new ErrorG("Error SIN NUMERO: Se esperaba un { al principio de la funcion", al.cantLN));}
 ;
 
@@ -90,19 +91,19 @@ expresioncparentesis:'(' expresion ')'
 	//ESTECOMPILA|'('  ')' {this.erroresGram.add(new ErrorG("Error 27: Se esperaba una expresion", al.cantLN));}
 ;
 
-printeable : '(' CADENA ')' 		{ polacaInversa.put(token cadena) }
-		| '(' ID ')'	{ polacaInversa.put(token id) } {System.out.println("--------------------------------------------------------------------------------------------");
+printeable : '(' CADENA ')' 		{ PI.put($2.sval); }
+		| '(' ID ')'	{ PI.put($2.sval); } {System.out.println("--------------------------------------------------------------------------------------------");
 		System.out.println("DEBUGUEANDO: esto es un separador");
 		System.out.println("--------------------------------------------------------------------------------------------");}
 	//ESTECOMPILA| '(' CADENA  {this.erroresGram.add(new ErrorG("Error 21 : Falta un )", al.cantLN));}
 	//ESTECOMPILA|  CADENA ')' {this.erroresGram.add(new ErrorG("Error 22 : Falta un (", al.cantLN));}
 ;
 
-sentenciaCE : PRINT printeable ',' {Parser.estructuras.add("Se detecto un print en la linea "+Analizador_Lexico.cantLN+"\n");} { polacaInversa.put(el token print) }
+sentenciaCE : PRINT printeable ',' {Parser.estructuras.add("Se detecto un print en la linea "+Analizador_Lexico.cantLN+"\n"); PI.put("print");}
 	| asignacion ',' {Parser.estructuras.add("Se detecto una asignacion en  la linea "+Analizador_Lexico.cantLN+"\n");}
-	| IF condicioncparentesis BCE ENDIF {Parser.estructuras.add("Se detecto un if en la linea "+Analizador_Lexico.cantLN+"\n");}
-	| IF condicioncparentesis BCE ELSE BCE ENDIF {Parser.estructuras.add("Se detecto un if en la linea "+Analizador_Lexico.cantLN+"\n");}
-	| WHILE condicioncparentesis BCE ','{Parser.estructuras.add("Se detecto un while en la linea "+Analizador_Lexico.cantLN+"\n");}
+	| ifcond BCE ENDIF {Parser.estructuras.add("Se detecto un if en la linea "+Analizador_Lexico.cantLN+"\n"); PI.desapilar(); }
+	| ifcond BCE elsecond BCE ENDIF {Parser.estructuras.add("Se detecto un if en la linea "+Analizador_Lexico.cantLN+"\n"); PI.desapilar();}
+	| whilecond BCE ','{Parser.estructuras.add("Se detecto un while en la linea "+Analizador_Lexico.cantLN+"\n"); PI.desapilar(); PI.salto(); PI.desapilar(); }
 	
 	
 	//| IF condicioncparentesis BCE {this.erroresGram.add(new ErrorG("Error 7: Falta un endif", al.cantLN));} LA SAQUE POR LA CORRECCION
@@ -114,13 +115,34 @@ sentenciaCE : PRINT printeable ',' {Parser.estructuras.add("Se detecto un print 
 	//| asignacion  {this.erroresGram.add(new ErrorG("Error 12: Se esperaba un ,", al.cantLN));} //SHIFT REDUCE
 	//| PRINT printeable {this.erroresGram.add(new ErrorG("Error 13: Se esperaba un ,", al.cantLN));}//SHIFT REDUCE
 
-; 
+;
+
+ifcond : IF condicioncparentesis { PI.bifurcacion(); }
+
+;
+
+elsecond : ELSE   { PI.desapilar(); PI.bifurcacion(); }
+
+;
+
+whilecond : WHILE condicioncparentesiswhile { PI.bifurcacion(); }
+
+;
 
 condicioncparentesis : '(' condicion ')'
 	//ESTECOMPILA| '('  ')' {this.erroresGram.add(new ErrorG("Error14: No se definio una condicion", al.cantLN));}
 	//ESTECOMPILA| '(' condicion  {this.erroresGram.add(new ErrorG("Error4: Se esperaba un ) despues de la condicion", al.cantLN));}
 	//ESTECOMPILA| condicion ')' {this.erroresGram.add(new ErrorG("Error5: Se esperaba un ( antes de la condicion", al.cantLN));}
 ;
+
+condicioncparentesiswhile : iniciocondicioncparentesiswhile condicion ')'
+
+;
+
+iniciocondicioncparentesiswhile : '(' { PI.apilar(); }
+
+;
+
 
 condicion : expresion operador_logico expresion 
 
@@ -129,36 +151,37 @@ condicion : expresion operador_logico expresion
 
 ;
 
-operador_logico : '<' 			{ polacaInversa.put(token <) }
-	| '>'				{ polacaInversa.put(token >) }
-	| MENORIGUAL			{ polacaInversa.put(token <= ) }
-	| MAYORIGUAL			{ polacaInversa.put(token >=) }
-	| IGUALIGUAL			{ polacaInversa.put(token ==) }
-	| DISTINTO			{ polacaInversa.put(token !=) }
+operador_logico : '<' 		{ PI.put("<"); }
+	| '>'				    { PI.put(">"); }
+	| MENORIGUAL			{ PI.put("<="); }
+	| MAYORIGUAL			{ PI.put(">="); }
+	| IGUALIGUAL			{ PI.put("=="); }
+	
+	| DISTINTO			    { PI.put("!="); }
 ;
 
-asignacion : ID ASIGN expresion {	Token t=al.tablaSimbolos.get($1.sval);
+asignacion : ID ASIGN expresion {	Token t=al.tablaSimbolos.get($1.sval); PI.put(":=");
 	if(t.declarada==false)this.erroresGram.add(new ErrorG("Error 34 : La variable "+$1.sval+" no esta declarada ", al.cantLN));}
 	
 	//ESTECOMPILA| ID expresion {this.erroresGram.add(new ErrorG("Error6: Falta el operador de asignacion", al.cantLN));}//Este creo que anda si no hay otro error de los que compilancon el que hace macaana
 	//ESTECOMPILA| ID ASIGN {this.erroresGram.add(new ErrorG("Error SIN NUMERO: Se esperaba una expresion del lado derecho de la asignacion", al.cantLN));}
 ;
 
-expresion : expresion '+' termino	{ polacaInversa.put(token +) }
-	| expresion '-' termino		{ polacaInversa.put(token -) }
+expresion : expresion '+' termino	{ PI.put("+"); }
+	| expresion '-' termino		{ PI.put("-"); }
 	| termino
 ;
 
-termino : termino '*' factor		{ polacaInversa.put(token *) }
-	| termino '/' factor		{ polacaInversa.put(token /) }
+termino : termino '*' factor		{ PI.put("*"); }
+	| termino '/' factor		{ PI.put("/"); }
 	| factor
 ;
 
-factor : ID 				{ polacaInversa.put(este token) }
-	| USLINTEGER 			{ polacaInversa.put(este token) }
-	| SINGLE 			{ polacaInversa.put(este token) }
+factor : ID 				{ PI.put($1.sval); }
+	| USLINTEGER 			{ PI.put($1.sval); }
+	| SINGLE 			    { PI.put($1.sval); }
 	| '-' SINGLE {	Token t=al.tablaSimbolos.get($2.sval);
-	t.lexema="-"+t.lexema;}		{ polacaInversa.put(este token) }
+	t.lexema="-"+t.lexema; PI.put($1.sval);}
 	|ID parametros ','  {Parser.estructuras.add("Se detecto la invocacion de una funcion en la linea "+Analizador_Lexico.cantLN+"\n");}
 ;
 parametros: '(' ID ';' lista_permisos ')' {Token t=al.tablaSimbolos.get($1.sval);
@@ -184,10 +207,13 @@ lista_permisos : READONLY
 
 %%
 
+public Polaca_Inversa PI = new Polaca_Inversa();
 public Analizador_Lexico al;
 public ArrayList<AnalizadorLexico.Error> erroresGram;
 public static TokenValue ultimoTokenleido;
 public static ArrayList<String> estructuras;
+
+
 public int yylex(){
 	Token t=null;
 	try {

@@ -1,15 +1,4 @@
-[Lexema: _asd   Numero: 257   Tipo: identificador
-, Lexema: :=   Numero: 272   Tipo: Operador
-, Lexema: -   Numero: 45   Tipo: Caracter
-, Lexema: else   Numero: 262   Tipo: String
-, Lexema: ,   Numero: 44   Tipo: Caracter
-, Lexema: _asd   Numero: 257   Tipo: identificador
-, Lexema: :=   Numero: 272   Tipo: Operador
-, Lexema: 0.2   Numero: 260   Tipo: single
-, Lexema: -   Numero: 45   Tipo: Caracter
-, Lexema: 0.3   Numero: 260   Tipo: single
-, Lexema: ,   Numero: 44   Tipo: Caracter
-, Lexema: if   Numero: 261   Tipo: String
+[Lexema: if   Numero: 261   Tipo: String
 , Lexema: (   Numero: 40   Tipo: Caracter
 , Lexema: 333_ul   Numero: 259   Tipo: uslinteger
 , Lexema: <   Numero: 60   Tipo: Caracter

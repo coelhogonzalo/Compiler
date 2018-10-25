@@ -1,7 +1,5 @@
-_asd := - else,
-__SIN ERRORES CONTEMPLADOS
-_asd := 0.2 - 0.3,
-if ( 333 < 0.3333333 ){
+
+if ( 333_ul < 0.3333333 ){
 	print ( 'dale que funcionas' ),
 }
 endif
