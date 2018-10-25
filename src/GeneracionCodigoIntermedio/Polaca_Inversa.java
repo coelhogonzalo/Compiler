@@ -12,6 +12,7 @@ public class Polaca_Inversa {
     public Polaca_Inversa() {
         PI = new ArrayList<>();
         pila = new Stack<>();
+        
     }
 
     public void put(String l) {
@@ -43,7 +44,7 @@ public class Polaca_Inversa {
         int pop = pila.pop();
         StringBuilder v = PI.get(pop);
         v.setLength(0);
-        v.append(PI.size());
+        v.append("Label" + PI.size());
         PI.add(new StringBuilder("Label" + pop));
     }
     public void printContent(){//PARA DEBUG
