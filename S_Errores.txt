@@ -1,3 +1,1 @@
-[Error 18: La variable _diversion no esta declarada  en la linea: 25
-, Error 34 : La variable _asd no esta declarada  en la linea: 32
-]
+[]
