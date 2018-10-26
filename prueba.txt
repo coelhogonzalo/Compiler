@@ -1,5 +1,7 @@
-
-if ( 333_ul < 0.3333333 ){
+single _asd,
+if ( 333_ul < 0.3333333 )
 	print ( 'dale que funcionas' ),
+else{
+	_asd:=0.123,
 }
 endif

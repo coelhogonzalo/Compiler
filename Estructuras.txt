@@ -1,3 +1,5 @@
-[Se detecto un print en la linea 3
-, Se detecto un if en la linea 5
+[Se detecto la declaracion de variables en la linea 1
+, Se detecto un print en la linea 3
+, Se detecto una asignacion en  la linea 5
+, Se detecto un if en la linea 7
 ]

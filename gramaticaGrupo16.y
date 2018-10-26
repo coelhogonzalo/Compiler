@@ -36,9 +36,10 @@ sentencia : sentenciaCE
 	
 ;
 sentenciaDEC :  tipo lista_variables ',' {Parser.estructuras.add("Se detecto la declaracion de variables en la linea "+Analizador_Lexico.cantLN+"\n");}
-	| tipo ID parametrosDef cuerpofuncion {Parser.estructuras.add("Se detecto la declaracion de una funcion en la linea "+Analizador_Lexico.cantLN+"\n");
+	| tipoFun parametrosDef cuerpofuncion {Parser.estructuras.add("Se detecto la declaracion de una funcion en la linea "+Analizador_Lexico.cantLN+"\n");
 	Token t=al.tablaSimbolos.get($2.sval);
-	t.declarada=true;}
+	t.declarada=true;
+	}
 	
 	//ESTECOMPILA| lista_variables ',' {this.erroresGram.add(new ErrorG("Error 33: Falta definir el tipo de las variables", al.cantLN));}
 	//| tipo lista_variables {this.erroresGram.add(new ErrorG("Error 32: Se esperaba una ,", al.cantLN));} shift reduce
@@ -47,6 +48,10 @@ sentenciaDEC :  tipo lista_variables ',' {Parser.estructuras.add("Se detecto la 
 	//ESTECOMPILA| tipo ID  cuerpofuncion {this.erroresGram.add(new ErrorG("Error 29: Falta definir los parametros de la funcion", al.cantLN));}
 	//| tipo ID parametrosDef {this.erroresGram.add(new ErrorG("Error 28: Falta definir el cuerpo de la funcion", al.cantLN));} shift reduce
 	
+;
+
+tipoFunID : tipo ID { PI.inicioFuncion($2.sval); }
+
 ;
 
 parametrosDef: '(' tipo ID ')'
@@ -63,7 +68,7 @@ cuerpofuncion: '{' BS retorno '}'
 	//ESTECOMPILA|  BS retorno '}' {this.erroresGram.add(new ErrorG("Error SIN NUMERO: Se esperaba un { al principio de la funcion", al.cantLN));}
 ;
 
-retorno : RETURN expresioncparentesis
+retorno : RETURN expresioncparentesis {PI.finFuncion(); }//el del return tengo qeu hacer lo que dijo anto
 	//ESTECOMPILA|	RETURN {this.erroresGram.add(new ErrorG("Error 24: La funcion debe retornar un valor", al.cantLN));}
 	//ESTECOMPILA|	 expresioncparentesis {this.erroresGram.add(new ErrorG("Error 24.5: Se esperaba un return", al.cantLN));}
 ;
@@ -103,7 +108,7 @@ sentenciaCE : PRINT printeable ',' {Parser.estructuras.add("Se detecto un print 
 	| asignacion ',' {Parser.estructuras.add("Se detecto una asignacion en  la linea "+Analizador_Lexico.cantLN+"\n");}
 	| ifcond BCE ENDIF {Parser.estructuras.add("Se detecto un if en la linea "+Analizador_Lexico.cantLN+"\n"); PI.desapilar(); }
 	| ifcond BCE elsecond BCE ENDIF {Parser.estructuras.add("Se detecto un if en la linea "+Analizador_Lexico.cantLN+"\n"); PI.desapilar();}
-	| whilecond BCE ','{Parser.estructuras.add("Se detecto un while en la linea "+Analizador_Lexico.cantLN+"\n"); PI.desapilar(); PI.salto(); PI.desapilar(); }
+	| whilecond BCE ','{Parser.estructuras.add("Se detecto un while en la linea "+Analizador_Lexico.cantLN+"\n"); PI.saltoIncond(); PI.desapilar(); }
 	
 	
 	//| IF condicioncparentesis BCE {this.erroresGram.add(new ErrorG("Error 7: Falta un endif", al.cantLN));} LA SAQUE POR LA CORRECCION
@@ -121,13 +126,19 @@ ifcond : IF condicioncparentesis { PI.bifurcacion(); }
 
 ;
 
-elsecond : ELSE   { PI.desapilar(); PI.bifurcacion(); }
+elsecond : ELSE   { PI.desapilar(); PI.bifurcacion(); } //ver este si lo hace bien
 
 ;
 
-whilecond : WHILE condicioncparentesiswhile { PI.bifurcacion(); }
+whilecond : whileparaapilar condicioncparentesis { PI.bifurcacion(); }
 
 ;
+
+whileparaapilar: WHILE { PI.setSaltoIncond(); }
+
+;
+
+
 
 condicioncparentesis : '(' condicion ')'
 	//ESTECOMPILA| '('  ')' {this.erroresGram.add(new ErrorG("Error14: No se definio una condicion", al.cantLN));}
@@ -135,13 +146,7 @@ condicioncparentesis : '(' condicion ')'
 	//ESTECOMPILA| condicion ')' {this.erroresGram.add(new ErrorG("Error5: Se esperaba un ( antes de la condicion", al.cantLN));}
 ;
 
-condicioncparentesiswhile : iniciocondicioncparentesiswhile condicion ')'
 
-;
-
-iniciocondicioncparentesiswhile : '(' { PI.apilar(); }
-
-;
 
 
 condicion : expresion operador_logico expresion 
@@ -182,8 +187,9 @@ factor : ID 				{ PI.put($1.sval); }
 	| SINGLE 			    { PI.put($1.sval); }
 	| '-' SINGLE {	Token t=al.tablaSimbolos.get($2.sval);
 	t.lexema="-"+t.lexema; PI.put($1.sval);}
-	|ID parametros ','  {Parser.estructuras.add("Se detecto la invocacion de una funcion en la linea "+Analizador_Lexico.cantLN+"\n");}
+	|ID parametros ','  {Parser.estructuras.add("Se detecto la invocacion de una funcion en la linea "+Analizador_Lexico.cantLN+"\n"); PI.jumpToFun($1.sval); }
 ;
+
 parametros: '(' ID ';' lista_permisos ')' {Token t=al.tablaSimbolos.get($1.sval);
 	if(t!=null&&t.declarada==false)this.erroresGram.add(new ErrorG("Error 35: La variable "+$2.sval+" no esta declarada ", al.cantLN));}
 
