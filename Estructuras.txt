@@ -1,2 +1,3 @@
-[Se detecto un print en la linea 3
+[Se detecto un print en la linea 2
+, Se detecto un if en la linea 3
 ]

@@ -5,6 +5,7 @@ import java.io.*;
 public class FileManager {
     private File fileFuente = null;
     private FileReader in = null;
+    private boolean salto = false;
 
     public FileManager(File fuente) throws FileNotFoundException {
         in = new FileReader(fuente);
@@ -15,8 +16,14 @@ public class FileManager {
         int ret = in.read();
         if (ret != -1)
             return (char) ret;
-        else
-            return null;
+        else{
+        	if (!salto){
+        		salto = true;
+        		return new Character('\n');
+        	}
+        	else 
+        		return null;
+        }
     }
 
     public static void write(String entry, File f) throws IOException {

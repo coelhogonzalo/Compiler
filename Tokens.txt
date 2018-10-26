@@ -9,4 +9,5 @@
 , Lexema: '3'   Numero: 258   Tipo: cadena
 , Lexema: )   Numero: 41   Tipo: Caracter
 , Lexema: ,   Numero: 44   Tipo: Caracter
+, Lexema: endif   Numero: 263   Tipo: String
 ]
