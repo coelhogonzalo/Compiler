@@ -693,6 +693,10 @@ case 26:
 //#line 125 "gramaticaLucho.y"
 { PI.bifurcacion(); }
 break;
+case 28:
+//#line 133 "gramaticaLucho.y"
+{ PI.desapilar(); PI.bifurcacion(); }
+break;
 case 29:
 //#line 137 "gramaticaLucho.y"
 { PI.bifurcacion(); }
@@ -772,7 +776,7 @@ case 51:
 {Token t=al.tablaSimbolos.get(val_peek(4).sval);
 	if(t!=null&&t.declarada==false)this.erroresGram.add(new ErrorG("Error 35: La variable "+val_peek(3).sval+" no esta declarada ", al.cantLN));}
 break;
-//#line 699 "Parser.java"
+//#line 703 "Parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####
