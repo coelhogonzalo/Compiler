@@ -59,22 +59,21 @@ public class Polaca_Inversa {
     }
     
     public void finFuncion() {
-    	System.out.println(funcs.keySet());
-    	System.out.println(nombreFunActual);
-    	if (funcs.get(nombreFunActual) != null)
-    		System.out.println("not null");
-    	else 
-    		System.out.println(" null");
-
     	tamFuncion tf = funcs.get(nombreFunActual);
     	tf.setFin(PI.size());
     	PI.add(new StringBuilder("return"));
-
     }
     
     public void jumpToFun(String fun){
     	tamFuncion tf = funcs.get(fun);
-    	PI.add(new StringBuilder("Label" + tf.getInicio())); //esto en assembler deberia de ser un CALL para usar un RET y ya tener la pos
+    	if (tf != null){
+    		PI.add(new StringBuilder("Label" + tf.getInicio())); //esto en assembler deberia de ser un CALL para usar un RET y ya tener la pos
+    		PI.add(new StringBuilder("BTF"));
+    	}
+    	else {
+    		PI.add(new StringBuilder("Label" + 0)); //aca entra por si no esta definida la funcion
+    		PI.add(new StringBuilder("BTF"));
+    	}
     }
 
    // public void apilar() {
