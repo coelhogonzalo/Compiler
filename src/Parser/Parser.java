@@ -772,11 +772,11 @@ break;
 case 49:
 //#line 182 "gramatica.y"
 {	Token t=al.tablaSimbolos.get(val_peek(0).sval);
-	t.lexema="-"+t.lexema; PI.put(val_peek(1).sval);}
+	t.lexema="-"+t.lexema; PI.put("-" + val_peek(1).sval);}
 break;
 case 50:
 //#line 184 "gramatica.y"
-{Parser.estructuras.add("Se detecto la invocacion de una funcion en la linea "+Analizador_Lexico.cantLN+"\n"); PI.jumpToFun(val_peek(2).sval); }
+{Parser.estructuras.add("Se detecto la invocacion de una funcion en la linea "+Analizador_Lexico.cantLN+"\n"); PI.put(val_peek(2).sval); PI.jumpToFun(val_peek(2).sval); }
 break;
 case 51:
 //#line 187 "gramatica.y"

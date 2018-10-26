@@ -1,16 +1,4 @@
-while ( 0.2 < 0.3 )
-if ( 0.2 < 0.3 ){
-	print ( ' probando1' ),
-}
-else
-	print ( ' probando1' ),
+
+if ( 0. < 0. )
+	print ( '3' ) , 
 endif
-
-while ( 0.2 < 0.3 )
-print ( ' probando1' ),
-while ( 0.2 < 0.3 )
-_asd:=0.1,
-
-while ( 0.2 < 0.3 )
-	while ( 0.2 < 0.3 )
-		print ( ' probando1' ) , 

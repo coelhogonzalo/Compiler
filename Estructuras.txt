@@ -1,12 +1,2 @@
 [Se detecto un print en la linea 3
-, Se detecto un print en la linea 6
-, Se detecto un if en la linea 7
-, Se detecto un while en la linea 7
-, Se detecto un print en la linea 10
-, Se detecto un while en la linea 10
-, Se detecto una asignacion en  la linea 12
-, Se detecto un while en la linea 12
-, Se detecto un print en la linea 16
-, Se detecto un while en la linea 16
-, Se detecto un while en la linea 16
 ]

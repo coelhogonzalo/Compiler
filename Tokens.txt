@@ -1,65 +1,12 @@
-[Lexema: while   Numero: 264   Tipo: String
+[Lexema: if   Numero: 261   Tipo: String
 , Lexema: (   Numero: 40   Tipo: Caracter
-, Lexema: 0.2   Numero: 260   Tipo: single
+, Lexema: 0.   Numero: 260   Tipo: single
 , Lexema: <   Numero: 60   Tipo: Caracter
-, Lexema: 0.3   Numero: 260   Tipo: single
-, Lexema: )   Numero: 41   Tipo: Caracter
-, Lexema: if   Numero: 261   Tipo: String
-, Lexema: (   Numero: 40   Tipo: Caracter
-, Lexema: 0.2   Numero: 260   Tipo: single
-, Lexema: <   Numero: 60   Tipo: Caracter
-, Lexema: 0.3   Numero: 260   Tipo: single
-, Lexema: )   Numero: 41   Tipo: Caracter
-, Lexema: {   Numero: 123   Tipo: Caracter
-, Lexema: print   Numero: 274   Tipo: String
-, Lexema: (   Numero: 40   Tipo: Caracter
-, Lexema: ' probando1'   Numero: 258   Tipo: cadena
-, Lexema: )   Numero: 41   Tipo: Caracter
-, Lexema: ,   Numero: 44   Tipo: Caracter
-, Lexema: }   Numero: 125   Tipo: Caracter
-, Lexema: else   Numero: 262   Tipo: String
-, Lexema: print   Numero: 274   Tipo: String
-, Lexema: (   Numero: 40   Tipo: Caracter
-, Lexema: ' probando1'   Numero: 258   Tipo: cadena
-, Lexema: )   Numero: 41   Tipo: Caracter
-, Lexema: ,   Numero: 44   Tipo: Caracter
-, Lexema: endif   Numero: 263   Tipo: String
-, Lexema: while   Numero: 264   Tipo: String
-, Lexema: (   Numero: 40   Tipo: Caracter
-, Lexema: 0.2   Numero: 260   Tipo: single
-, Lexema: <   Numero: 60   Tipo: Caracter
-, Lexema: 0.3   Numero: 260   Tipo: single
+, Lexema: 0.   Numero: 260   Tipo: single
 , Lexema: )   Numero: 41   Tipo: Caracter
 , Lexema: print   Numero: 274   Tipo: String
 , Lexema: (   Numero: 40   Tipo: Caracter
-, Lexema: ' probando1'   Numero: 258   Tipo: cadena
-, Lexema: )   Numero: 41   Tipo: Caracter
-, Lexema: ,   Numero: 44   Tipo: Caracter
-, Lexema: while   Numero: 264   Tipo: String
-, Lexema: (   Numero: 40   Tipo: Caracter
-, Lexema: 0.2   Numero: 260   Tipo: single
-, Lexema: <   Numero: 60   Tipo: Caracter
-, Lexema: 0.3   Numero: 260   Tipo: single
-, Lexema: )   Numero: 41   Tipo: Caracter
-, Lexema: _asd   Numero: 257   Tipo: identificador
-, Lexema: :=   Numero: 272   Tipo: Operador
-, Lexema: 0.1   Numero: 260   Tipo: single
-, Lexema: ,   Numero: 44   Tipo: Caracter
-, Lexema: while   Numero: 264   Tipo: String
-, Lexema: (   Numero: 40   Tipo: Caracter
-, Lexema: 0.2   Numero: 260   Tipo: single
-, Lexema: <   Numero: 60   Tipo: Caracter
-, Lexema: 0.3   Numero: 260   Tipo: single
-, Lexema: )   Numero: 41   Tipo: Caracter
-, Lexema: while   Numero: 264   Tipo: String
-, Lexema: (   Numero: 40   Tipo: Caracter
-, Lexema: 0.2   Numero: 260   Tipo: single
-, Lexema: <   Numero: 60   Tipo: Caracter
-, Lexema: 0.3   Numero: 260   Tipo: single
-, Lexema: )   Numero: 41   Tipo: Caracter
-, Lexema: print   Numero: 274   Tipo: String
-, Lexema: (   Numero: 40   Tipo: Caracter
-, Lexema: ' probando1'   Numero: 258   Tipo: cadena
+, Lexema: '3'   Numero: 258   Tipo: cadena
 , Lexema: )   Numero: 41   Tipo: Caracter
 , Lexema: ,   Numero: 44   Tipo: Caracter
 ]

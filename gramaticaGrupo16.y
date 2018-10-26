@@ -180,8 +180,8 @@ factor : ID 				{ PI.put($1.sval); }
 	| USLINTEGER 			{ PI.put($1.sval); }
 	| SINGLE 			    { PI.put($1.sval); }
 	| '-' SINGLE {	Token t=al.tablaSimbolos.get($2.sval);
-	t.lexema="-"+t.lexema; PI.put($1.sval);}
-	|ID parametros ','  {Parser.estructuras.add("Se detecto la invocacion de una funcion en la linea "+Analizador_Lexico.cantLN+"\n"); PI.jumpToFun($1.sval); }
+	t.lexema="-"+t.lexema; PI.put("-" + $1.sval);}
+	|ID parametros ','  {Parser.estructuras.add("Se detecto la invocacion de una funcion en la linea "+Analizador_Lexico.cantLN+"\n"); PI.put($1.sval); PI.jumpToFun($1.sval); }
 ;
 
 parametros: '(' ID ';' lista_permisos ')' {Token t=al.tablaSimbolos.get($1.sval);

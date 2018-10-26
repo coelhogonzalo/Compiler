@@ -9,16 +9,16 @@ import AnalizadorLexico.Token;
 public class Polaca_Inversa {
     private ArrayList<StringBuilder> PI = null;
     private Stack<Integer> pila = null;
-    private int saltoIncond;
-    private HashMap<StringBuilder, tamFuncion> funcs;
-    private StringBuilder nombreFunActual;
+    private Stack<Integer> saltoIncond = null;
+    private HashMap<String, tamFuncion> funcs;
+    private String nombreFunActual;
 
     public Polaca_Inversa() {
         PI = new ArrayList<>();
         pila = new Stack<>();
-        saltoIncond = 0;
+        saltoIncond = new Stack<>();
         funcs = new HashMap<>();
-        nombreFunActual = new StringBuilder();
+        nombreFunActual = null;
     }
 
     public void put(String l) {
@@ -30,11 +30,11 @@ public class Polaca_Inversa {
     }
 
     public void setSaltoIncond(){
-        saltoIncond = PI.size();
+        saltoIncond.add(PI.size());
     }
     
     public void saltoIncond(){
-    	PI.add(new StringBuilder("Label" + saltoIncond));
+    	PI.add(new StringBuilder("Label" + saltoIncond.pop()));
     	PI.add(new StringBuilder("BT"));
     }
     
@@ -53,12 +53,19 @@ public class Polaca_Inversa {
     public void inicioFuncion(String nombreFun) {
     	tamFuncion tf = new tamFuncion();
     	tf.setInicio(PI.size());
-    	nombreFunActual = new StringBuilder(nombreFun);
-    	funcs.put(nombreFunActual, tf);
+    	nombreFunActual = nombreFun;
+    	funcs.put(nombreFun, tf);
     	PI.add(new StringBuilder("inicio_funcion"));
     }
     
     public void finFuncion() {
+    	System.out.println(funcs.keySet());
+    	System.out.println(nombreFunActual);
+    	if (funcs.get(nombreFunActual) != null)
+    		System.out.println("not null");
+    	else 
+    		System.out.println(" null");
+
     	tamFuncion tf = funcs.get(nombreFunActual);
     	tf.setFin(PI.size());
     	PI.add(new StringBuilder("return"));
