@@ -36,10 +36,7 @@ sentencia : sentenciaCE
 	
 ;
 sentenciaDEC :  tipo lista_variables ',' {Parser.estructuras.add("Se detecto la declaracion de variables en la linea "+Analizador_Lexico.cantLN+"\n");}
-	| tipoFunID parametrosDef cuerpofuncion {Parser.estructuras.add("Se detecto la declaracion de una funcion en la linea "+Analizador_Lexico.cantLN+"\n");
-	Token t=al.tablaSimbolos.get($2.sval);
-	t.declarada=true;
-	}
+	| tipoFunID parametrosDef cuerpofuncion {Parser.estructuras.add("Se detecto la declaracion de una funcion en la linea "+Analizador_Lexico.cantLN+"\n");}
 	
 	//ESTECOMPILA| lista_variables ',' {this.erroresGram.add(new ErrorG("Error 33: Falta definir el tipo de las variables", al.cantLN));}
 	//| tipo lista_variables {this.erroresGram.add(new ErrorG("Error 32: Se esperaba una ,", al.cantLN));} shift reduce
@@ -50,13 +47,13 @@ sentenciaDEC :  tipo lista_variables ',' {Parser.estructuras.add("Se detecto la 
 	
 ;
 
-tipoFunID : tipo ID { PI.inicioFuncion($2.sval); }
+tipoFunID : tipo ID { Token t=al.tablaSimbolos.get($2.sval);
+	t.declarada=true;
+	PI.inicioFuncion($2.sval); }
 
 ;
 
 parametrosDef: '(' tipo ID ')'
-{Token t=al.tablaSimbolos.get($3.sval);if(t.declarada==false)this.erroresGram.add(new ErrorG("Error 18: La variable "+$3.sval+" no esta declarada ", al.cantLN));}
-
 	//ESTECOMPILA| '(' tipo ID {this.erroresGram.add(new ErrorG("Error SIN NUMERO : Falta un ) despues del identificador", al.cantLN));}
 	//ESTECOMPILA| tipo ID ')' {this.erroresGram.add(new ErrorG("Error SIN NUMERO : Falta un ( antes del tipo del parametro", al.cantLN));}
 ;
@@ -108,11 +105,8 @@ sentenciaCE : PRINT printeable ',' {Parser.estructuras.add("Se detecto un print 
 	| asignacion ',' {Parser.estructuras.add("Se detecto una asignacion en  la linea "+Analizador_Lexico.cantLN+"\n");}
 	| ifcond BCE ENDIF {Parser.estructuras.add("Se detecto un if en la linea "+Analizador_Lexico.cantLN+"\n"); PI.desapilar(); }
 	| ifcond BCE elsecond BCE ENDIF {Parser.estructuras.add("Se detecto un if en la linea "+Analizador_Lexico.cantLN+"\n"); PI.desapilar();}
-	| whilecond BCE ','{Parser.estructuras.add("Se detecto un while en la linea "+Analizador_Lexico.cantLN+"\n"); PI.saltoIncond(); PI.desapilar(); }
+	| whilecond BCE {Parser.estructuras.add("Se detecto un while en la linea "+Analizador_Lexico.cantLN+"\n"); PI.saltoIncond(); PI.desapilar(); }
 	
-	
-	//| IF condicioncparentesis BCE {this.erroresGram.add(new ErrorG("Error 7: Falta un endif", al.cantLN));} LA SAQUE POR LA CORRECCION
-	//| IF condicioncparentesis BCE ELSE BCE  {this.erroresGram.add(new ErrorG("Error 8: Falta un endif", al.cantLN));} LA SAQUE POR LA CORRECCION
 	//ESTECOMPILA| IF condicioncparentesis ELSE BCE ENDIF {this.erroresGram.add(new ErrorG("Error 9: Se esperaba un bloque de sentencias en la rama del if", al.cantLN));}
 	//ESTECOMPILA| IF condicioncparentesis BCE ELSE ENDIF {this.erroresGram.add(new ErrorG("Error 10: Se esperaba un bloque de sentencias en la rama del else", al.cantLN));}
 	//ESTECOMPILA| IF condicioncparentesis ELSE ENDIF{this.erroresGram.add(new ErrorG("Error 11: Se esperaba un bloque de sentencias en la rama del if y del else", al.cantLN));}
@@ -123,11 +117,6 @@ sentenciaCE : PRINT printeable ',' {Parser.estructuras.add("Se detecto un print 
 ;
 
 ifcond : IF condicioncparentesis  { PI.bifurcacion(); }
-
-;
-
-cuerpoif : BCE
-	//| BCE ELSE BCE { PI.desapilar(); PI.bifurcacion(); } //Esto lo puso gonza que mucho no entiende... 
 
 ;
 

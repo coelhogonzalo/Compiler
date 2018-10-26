@@ -1,1 +1,2 @@
-[]
+[Error 34 : La variable _asd no esta declarada  en la linea: 12
+]

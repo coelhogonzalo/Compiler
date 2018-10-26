@@ -35,6 +35,7 @@ public class Polaca_Inversa {
     
     public void saltoIncond(){
     	PI.add(new StringBuilder("Label" + saltoIncond));
+    	PI.add(new StringBuilder("BT"));
     }
     
     public void bifurcacion() {

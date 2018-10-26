@@ -1,7 +1,16 @@
-single _asd,
-if ( 333 < 0.3333333 )
-	print ( 'dale que funcionas' ),
-else{
-	_asd:=0.123,
+while ( 0.2 < 0.3 )
+if ( 0.2 < 0.3 ){
+	print ( ' probando1' ),
 }
+else
+	print ( ' probando1' ),
 endif
+
+while ( 0.2 < 0.3 )
+print ( ' probando1' ),
+while ( 0.2 < 0.3 )
+_asd:=0.1,
+
+while ( 0.2 < 0.3 )
+	while ( 0.2 < 0.3 )
+		print ( ' probando1' ) , 
