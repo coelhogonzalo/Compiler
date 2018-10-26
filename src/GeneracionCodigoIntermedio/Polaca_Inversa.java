@@ -30,7 +30,7 @@ public class Polaca_Inversa {
     }
 
     public void setSaltoIncond(){
-        saltoIncond = PI.size() - 1;
+        saltoIncond = PI.size();
     }
     
     public void saltoIncond(){
@@ -41,6 +41,12 @@ public class Polaca_Inversa {
         pila.add(PI.size());
         PI.add(new StringBuilder("WHERE"));
         PI.add(new StringBuilder("B"));
+    }
+    
+    public void bifurcacionElse() {
+        pila.add(PI.size());
+        PI.add(new StringBuilder("WHERE"));
+        PI.add(new StringBuilder("BT"));
     }
     
     public void inicioFuncion(String nombreFun) {

@@ -7,12 +7,12 @@ private AccionSemantica5 arreglarNumero;
         Analizador_Lexico.errores.add(e);
         if (buffer.length() > 0){
         	System.out.println(buffer);
-        	if (isNumero(buffer)){
+        	if (isNumero(buffer)){//Si es un numero valido le agrega el _u para que en la accionsemantica 5 (arreglar numero) se guarde como un _ul
         		arreglarNumero=new AccionSemantica5();
         		e = new Error("WARNING", buffer.toString() + ": Las constantes de tipo uslinteger deben terminar en _ul", Analizador_Lexico.cantLN);
-
-                Analizador_Lexico.errores.add(e);
+        		System.out.println("entre aca");
         		buffer.append("_u");
+                Analizador_Lexico.errores.add(e);
         		return arreglarNumero.ejecutar(buffer, c);
         	}
         	else{
@@ -48,6 +48,7 @@ private AccionSemantica5 arreglarNumero;
     }
 public boolean isNumero(StringBuilder buffer){
 	String lexema=buffer.toString();
+	//int indice=buffer.lastIndexOf("ul");
 	char[] arreglo= lexema.toCharArray();
 	for(char i:arreglo)
 		if(i<48 || i>57)//Si no es un digito
