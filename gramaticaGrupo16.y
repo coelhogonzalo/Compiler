@@ -106,7 +106,7 @@ printeable : '(' CADENA ')' 		{ PI.put($2.sval); }
 
 sentenciaCE : PRINT printeable ',' {Parser.estructuras.add("Se detecto un print en la linea "+Analizador_Lexico.cantLN+"\n"); PI.put("print");}
 	| asignacion ',' {Parser.estructuras.add("Se detecto una asignacion en  la linea "+Analizador_Lexico.cantLN+"\n");}
-	| ifcond cuerpoif ENDIF {Parser.estructuras.add("Se detecto un if en la linea "+Analizador_Lexico.cantLN+"\n"); PI.desapilar(); }
+	| ifcond BCE ENDIF {Parser.estructuras.add("Se detecto un if en la linea "+Analizador_Lexico.cantLN+"\n"); PI.desapilar(); }
 	| ifcond BCE elsecond BCE ENDIF {Parser.estructuras.add("Se detecto un if en la linea "+Analizador_Lexico.cantLN+"\n"); PI.desapilar();}
 	| whilecond BCE ','{Parser.estructuras.add("Se detecto un while en la linea "+Analizador_Lexico.cantLN+"\n"); PI.saltoIncond(); PI.desapilar(); }
 	
@@ -131,7 +131,7 @@ cuerpoif : BCE
 
 ;
 
-elsecond : ELSE  { PI.desapilarElse(); PI.bifurcacion(); } //ver este si lo hace bien
+elsecond : ELSE  { PI.desapilarElse(); PI.bifurcacionElse(); } //ver este si lo hace bien
 
 ;
 
