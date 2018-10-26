@@ -1,3 +1,1 @@
-if ( 0. < 0. )
-	print ( '3' ) , 
-endif
+_var1 := _fun1(_var2 ;write),

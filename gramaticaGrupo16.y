@@ -200,6 +200,7 @@ lista_permisos : READONLY
 	| WRITE
 	| PASS
 	| WRITE ';' PASS
+	|
 	                                                                                                                                                                                
 	//ESTECOMPILA| WRITE PASS {this.erroresGram.add(new ErrorG("Error3: Se esperaba un ; entre los permisos", al.cantLN));}
 ;

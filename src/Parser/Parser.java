@@ -196,7 +196,7 @@ final static short yylhs[] = {                           -1,
    15,    3,    3,    3,    3,    3,   18,   19,   20,   22,
    21,   23,   24,   24,   24,   24,   24,   24,   17,   14,
    14,   14,   25,   25,   25,   26,   26,   26,   26,   26,
-   27,    5,    5,   28,   28,   28,   28,
+   27,    5,    5,   28,   28,   28,   28,   28,
 };
 final static short yylen[] = {                            2,
     1,    2,    1,    1,    1,    3,    3,    2,    4,    4,
@@ -204,7 +204,7 @@ final static short yylen[] = {                            2,
     4,    3,    2,    3,    5,    2,    2,    1,    2,    1,
     3,    3,    1,    1,    1,    1,    1,    1,    3,    3,
     3,    1,    3,    3,    1,    1,    1,    1,    2,    3,
-    5,    1,    1,    1,    1,    1,    3,
+    5,    1,    1,    1,    1,    1,    3,    0,
 };
 final static short yydefred[] = {                         0,
     0,    0,   30,    0,   53,   52,    0,    0,    3,    4,
@@ -247,13 +247,13 @@ final static short yyrindex[] = {                         0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
   -31,  -11,    0,    0,   73,    0,    0,    0,    0,    0,
-    0,    0,    0,    0,    0,   74,    0,    0,    0,    0,
+   74,    0,    0,    0,    0,   75,    0,    0,    0,    0,
     0,    0,    0,
 };
 final static short yygindex[] = {                         0,
-   70,   14,   23,    0,   90,    0,    0,    0,    0,    0,
+   70,   14,   23,    0,   91,    0,    0,    0,    0,    0,
     0,    7,    0,   -2,    0,    0,    0,    0,    0,    0,
-  100,    0,    0,    0,   32,   33,    0,    0,
+  101,    0,    0,    0,   32,   33,    0,    0,
 };
 final static int YYTABLESIZE=260;
 static short yytable[];
@@ -271,7 +271,7 @@ yytable = new short[]{                         46,
    60,   60,    4,   95,   96,   97,   53,   54,   23,   99,
    81,   82,   56,   83,   84,   58,   70,   71,   72,   73,
    74,   79,   80,   87,   90,   91,   92,  100,   94,  101,
-    1,   39,  103,   32,   55,   48,   33,    0,   75,    0,
+    1,   39,  103,   32,   58,   55,   48,   33,   75,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    1,    1,    0,
@@ -303,7 +303,7 @@ yycheck = new short[] {                         41,
    45,   45,  274,  265,  266,  267,  262,  263,   75,   92,
    59,   60,   40,   61,   62,  260,   41,   41,   41,  257,
   257,  257,   44,   41,  263,   59,   40,   59,  125,   41,
-    0,   44,  267,   41,   41,   26,   17,   -1,   49,   -1,
+    0,   44,  267,   41,   41,   41,   26,   17,   49,   -1,
    -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
    -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
    -1,   -1,   -1,   -1,   -1,   -1,   -1,  257,  257,   -1,
@@ -403,9 +403,10 @@ final static String yyrule[] = {
 "lista_permisos : WRITE",
 "lista_permisos : PASS",
 "lista_permisos : WRITE ';' PASS",
+"lista_permisos :",
 };
 
-//#line 209 "gramatica.y"
+//#line 210 "gramatica.y"
 
 public Polaca_Inversa PI = new Polaca_Inversa();
 public Analizador_Lexico al;
@@ -476,7 +477,7 @@ public static void main(String [] args) throws IOException{
 
 
 
-//#line 408 "Parser.java"
+//#line 409 "Parser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -781,9 +782,26 @@ break;
 case 51:
 //#line 187 "gramatica.y"
 {Token t=al.tablaSimbolos.get(val_peek(4).sval);
-	if(t!=null&&t.declarada==false)this.erroresGram.add(new ErrorG("Error 35: La variable "+val_peek(3).sval+" no esta declarada ", al.cantLN));}
+	if(t!=null&&t.declarada==false)this.erroresGram.add(new ErrorG("Error 35: La variable "+val_peek(3).sval+" no esta declarada ", al.cantLN));
+	PI.put(val_peek(3).sval); }
 break;
-//#line 710 "Parser.java"
+case 54:
+//#line 200 "gramatica.y"
+{ PI.put(val_peek(0).sval); }
+break;
+case 55:
+//#line 201 "gramatica.y"
+{ PI.put(val_peek(0).sval); }
+break;
+case 56:
+//#line 202 "gramatica.y"
+{ PI.put(val_peek(0).sval); }
+break;
+case 57:
+//#line 203 "gramatica.y"
+{ PI.put(val_peek(2).sval); PI.put(val_peek(0).sval); }
+break;
+//#line 728 "Parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####
