@@ -782,26 +782,9 @@ break;
 case 51:
 //#line 187 "gramatica.y"
 {Token t=al.tablaSimbolos.get(val_peek(4).sval);
-	if(t!=null&&t.declarada==false)this.erroresGram.add(new ErrorG("Error 35: La variable "+val_peek(3).sval+" no esta declarada ", al.cantLN));
-	PI.put(val_peek(3).sval); }
+	if(t!=null&&t.declarada==false)this.erroresGram.add(new ErrorG("Error 35: La variable "+val_peek(3).sval+" no esta declarada ", al.cantLN));}
 break;
-case 54:
-//#line 200 "gramatica.y"
-{ PI.put(val_peek(0).sval); }
-break;
-case 55:
-//#line 201 "gramatica.y"
-{ PI.put(val_peek(0).sval); }
-break;
-case 56:
-//#line 202 "gramatica.y"
-{ PI.put(val_peek(0).sval); }
-break;
-case 57:
-//#line 203 "gramatica.y"
-{ PI.put(val_peek(2).sval); PI.put(val_peek(0).sval); }
-break;
-//#line 728 "Parser.java"
+//#line 711 "Parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####
