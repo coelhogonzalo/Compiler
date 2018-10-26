@@ -36,7 +36,7 @@ sentencia : sentenciaCE
 	
 ;
 sentenciaDEC :  tipo lista_variables ',' {Parser.estructuras.add("Se detecto la declaracion de variables en la linea "+Analizador_Lexico.cantLN+"\n");}
-	| tipoFun parametrosDef cuerpofuncion {Parser.estructuras.add("Se detecto la declaracion de una funcion en la linea "+Analizador_Lexico.cantLN+"\n");
+	| tipoFunID parametrosDef cuerpofuncion {Parser.estructuras.add("Se detecto la declaracion de una funcion en la linea "+Analizador_Lexico.cantLN+"\n");
 	Token t=al.tablaSimbolos.get($2.sval);
 	t.declarada=true;
 	}
@@ -106,8 +106,8 @@ printeable : '(' CADENA ')' 		{ PI.put($2.sval); }
 
 sentenciaCE : PRINT printeable ',' {Parser.estructuras.add("Se detecto un print en la linea "+Analizador_Lexico.cantLN+"\n"); PI.put("print");}
 	| asignacion ',' {Parser.estructuras.add("Se detecto una asignacion en  la linea "+Analizador_Lexico.cantLN+"\n");}
-	| ifcond BCE ENDIF {Parser.estructuras.add("Se detecto un if en la linea "+Analizador_Lexico.cantLN+"\n"); PI.desapilar(); }
-	| ifcond BCE elsecond BCE ENDIF {Parser.estructuras.add("Se detecto un if en la linea "+Analizador_Lexico.cantLN+"\n"); PI.desapilar();}
+	| ifcond cuerpoif ENDIF {Parser.estructuras.add("Se detecto un if en la linea "+Analizador_Lexico.cantLN+"\n"); PI.desapilar(); }
+	//La saque porque no la necesitamos mas| ifcond BCE elsecond BCE ENDIF {Parser.estructuras.add("Se detecto un if en la linea "+Analizador_Lexico.cantLN+"\n"); PI.desapilar();}
 	| whilecond BCE ','{Parser.estructuras.add("Se detecto un while en la linea "+Analizador_Lexico.cantLN+"\n"); PI.saltoIncond(); PI.desapilar(); }
 	
 	
@@ -122,13 +122,15 @@ sentenciaCE : PRINT printeable ',' {Parser.estructuras.add("Se detecto un print 
 
 ;
 
-ifcond : IF condicioncparentesis { PI.bifurcacion(); }
+ifcond : IF condicioncparentesis  { PI.bifurcacion(); }
 
 ;
+cuerpoif : BCE
+	| BCE ELSE BCE { PI.desapilar(); PI.bifurcacion(); } //Esto lo puso gonza que mucho no entiende... 
 
-elsecond : ELSE   { PI.desapilar(); PI.bifurcacion(); } //ver este si lo hace bien
+//elsecond : ELSE   //ESTE LO CAMBIO GONZA{ PI.desapilar(); PI.bifurcacion(); } //ver este si lo hace bien
 
-;
+//;
 
 whilecond : whileparaapilar condicioncparentesis { PI.bifurcacion(); }
 
