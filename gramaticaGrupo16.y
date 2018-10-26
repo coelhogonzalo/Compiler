@@ -107,7 +107,7 @@ printeable : '(' CADENA ')' 		{ PI.put($2.sval); }
 sentenciaCE : PRINT printeable ',' {Parser.estructuras.add("Se detecto un print en la linea "+Analizador_Lexico.cantLN+"\n"); PI.put("print");}
 	| asignacion ',' {Parser.estructuras.add("Se detecto una asignacion en  la linea "+Analizador_Lexico.cantLN+"\n");}
 	| ifcond cuerpoif ENDIF {Parser.estructuras.add("Se detecto un if en la linea "+Analizador_Lexico.cantLN+"\n"); PI.desapilar(); }
-	//La saque porque no la necesitamos mas| ifcond BCE elsecond BCE ENDIF {Parser.estructuras.add("Se detecto un if en la linea "+Analizador_Lexico.cantLN+"\n"); PI.desapilar();}
+	| ifcond BCE elsecond BCE ENDIF {Parser.estructuras.add("Se detecto un if en la linea "+Analizador_Lexico.cantLN+"\n"); PI.desapilar();}
 	| whilecond BCE ','{Parser.estructuras.add("Se detecto un while en la linea "+Analizador_Lexico.cantLN+"\n"); PI.saltoIncond(); PI.desapilar(); }
 	
 	
@@ -125,12 +125,15 @@ sentenciaCE : PRINT printeable ',' {Parser.estructuras.add("Se detecto un print 
 ifcond : IF condicioncparentesis  { PI.bifurcacion(); }
 
 ;
+
 cuerpoif : BCE
-	| BCE ELSE BCE { PI.desapilar(); PI.bifurcacion(); } //Esto lo puso gonza que mucho no entiende... 
+	//| BCE ELSE BCE { PI.desapilar(); PI.bifurcacion(); } //Esto lo puso gonza que mucho no entiende... 
 
-//elsecond : ELSE   //ESTE LO CAMBIO GONZA{ PI.desapilar(); PI.bifurcacion(); } //ver este si lo hace bien
+;
 
-//;
+elsecond : ELSE  { PI.desapilarElse(); PI.bifurcacion(); } //ver este si lo hace bien
+
+;
 
 whilecond : whileparaapilar condicioncparentesis { PI.bifurcacion(); }
 
@@ -151,23 +154,23 @@ condicioncparentesis : '(' condicion ')'
 
 
 
-condicion : expresion operador_logico expresion 
+condicion : expresion operador_logico expresion { PI.put($2.sval); }
 
 //| expresion operador_logico  {this.erroresGram.add(new ErrorG("Error1: Falta la expresion del lado derecho", al.cantLN));}//SHIFT REDUCE con y sin el token error
 //ESTECOMPILA| operador_logico expresion  {this.erroresGram.add(new ErrorG("Error2: Se esperaba un operador logico valido", al.cantLN));}
 
 ;
 
-operador_logico : '<' 		{ PI.put("<"); }
-	| '>'				    { PI.put(">"); }
-	| MENORIGUAL			{ PI.put("<="); }
-	| MAYORIGUAL			{ PI.put(">="); }
-	| IGUALIGUAL			{ PI.put("=="); }
+operador_logico : '<' 		{ $$.sval = "<"; }
+	| '>'				    { $$.sval = ">"; }
+	| MENORIGUAL			{ $$.sval = "<="; }
+	| MAYORIGUAL			{ $$.sval = ">="; }
+	| IGUALIGUAL			{ $$.sval = "=="; }
+	| DISTINTO			    { $$.sval = "!="; }
 	
-	| DISTINTO			    { PI.put("!="); }
 ;
 
-asignacion : ID ASIGN expresion {	Token t=al.tablaSimbolos.get($1.sval); PI.put(":=");
+asignacion : ID ASIGN expresion {	Token t=al.tablaSimbolos.get($1.sval); PI.put($1.sval); PI.put(":=");
 	if(t.declarada==false)this.erroresGram.add(new ErrorG("Error 34 : La variable "+$1.sval+" no esta declarada ", al.cantLN));}
 	
 	//ESTECOMPILA| ID expresion {this.erroresGram.add(new ErrorG("Error6: Falta el operador de asignacion", al.cantLN));}//Este creo que anda si no hay otro error de los que compilancon el que hace macaana

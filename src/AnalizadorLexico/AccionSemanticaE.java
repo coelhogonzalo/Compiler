@@ -16,8 +16,9 @@ private AccionSemantica5 arreglarNumero;
         		return arreglarNumero.ejecutar(buffer, c);
         	}
         	else{
-        		//if (buffer.indexOf('_') != 0)
-        		//	buffer.deleteCharAt(buffer.indexOf('_'));
+        		int indice=buffer.indexOf("_");
+        		if (indice != 0)
+        			buffer.deleteCharAt(indice);
         		if (buffer.charAt(0) != '_') {
         			if (buffer.length() < 15){
         				e = new Error("WARNING", buffer.toString() + ": Se agrego el caracter _ al principio y se interpreto como un identificador ", Analizador_Lexico.cantLN);
