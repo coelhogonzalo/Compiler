@@ -27,8 +27,8 @@ public class Main {
 
 
     public static void mainLexico(String[] args) throws IOException {
-        System.out.println("Ejemplos parte 1.txt");
-        File f = new File("Ejemplos parte 1.txt");
+        System.out.println("prueba.txt");
+        File f = new File("prueba.txt");
         Analizador_Lexico lexico = null;
         ArrayList<Token> tokens = null;
         ArrayList<Error> errores = null;
@@ -45,7 +45,7 @@ public class Main {
         File fErroresOut = new File("L_Errores.txt");
         FileManager.write(errores.toString(), fErroresOut);
         File fTSOut = new File("L_Tabla_Simbolos.txt");
-        FileManager.write(lexico.tablaSimbolos.toString(), fTSOut);
+        FileManager.write(Analizador_Lexico.tablaSimbolos.toString(), fTSOut);
     }
 
     public static void main(String[] args) throws IOException {

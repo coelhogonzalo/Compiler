@@ -73,14 +73,14 @@ public class MatrizLexica {
         filaLexica = new CasillaLexica[]{c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[8], -1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1),c(AS[9],-1),c(AS[9],-1),c(AS[0],17)};
         addFila(filaLexica, i++);
         //18
-        filaLexica = new CasillaLexica[]{c(AS[1], 18), c(AS[1], 18), c(AS[1], 18), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[0], 19), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[8], -1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1),/*Toquetie este*/ c(AS[1],18)/*Toquetie este*/, c(AS[1], 18), c(AS[1], 18), c(AS[9],-1), c(AS[9],-1),c(AS[1], 18),c(AS[1], 18),c(AS[0],18)};
+        filaLexica = new CasillaLexica[]{c(AS[1], 18), c(AS[1], 18), c(AS[1], 18), /*Recien cambiado1*/c(AS[1],18), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[0], 19), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[8], -1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[1],18), c(AS[1], 18), c(AS[1], 18), c(AS[9],-1), c(AS[9],-1),c(AS[1], 18),c(AS[1], 18),c(AS[0],18)};
         addFila(filaLexica, i++);
         //19
         filaLexica = new CasillaLexica[]{c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[11], 18), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1),c(AS[9],-1),c(AS[9],-1),c(AS[0],19)};
         addFila(filaLexica, i++);
         //asdas
     }
-
+/*Recien cambiado 1: Es para que las cadenas admitan _ en su formacion*/
 
     private CasillaLexica c(AccionSemantica a, int e) {//Retorna una instancia de CasillaLexica
         return new CasillaLexica(a, e);

@@ -406,7 +406,7 @@ final static String yyrule[] = {
 "lista_permisos :",
 };
 
-//#line 210 "gramatica.y"
+//#line 222 "gramatica.y"
 
 public Polaca_Inversa PI = new Polaca_Inversa();
 public Analizador_Lexico al;
@@ -740,51 +740,63 @@ break;
 case 39:
 //#line 162 "gramatica.y"
 {	Token t=al.tablaSimbolos.get(val_peek(2).sval); PI.put(val_peek(2).sval); PI.put(":=");
-	if(t.declarada==false)this.erroresGram.add(new ErrorG("Error 34 : La variable "+val_peek(2).sval+" no esta declarada ", al.cantLN));}
+	if(t!=null){
+		if(t.declarada==false)
+			this.erroresGram.add(new ErrorG("Error 34 : La variable "+val_peek(2).sval+" no esta declarada ", al.cantLN));
+	}
+	else
+		System.out.println("El identificador "+val_peek(2).sval+" no se agrego a la tabla de simbolos");
+	}
 break;
 case 40:
-//#line 169 "gramatica.y"
+//#line 175 "gramatica.y"
 { PI.put("+"); }
 break;
 case 41:
-//#line 170 "gramatica.y"
+//#line 176 "gramatica.y"
 { PI.put("-"); }
 break;
 case 43:
-//#line 174 "gramatica.y"
+//#line 180 "gramatica.y"
 { PI.put("*"); }
 break;
 case 44:
-//#line 175 "gramatica.y"
+//#line 181 "gramatica.y"
 { PI.put("/"); }
 break;
 case 46:
-//#line 179 "gramatica.y"
+//#line 185 "gramatica.y"
 { PI.put(val_peek(0).sval); }
 break;
 case 47:
-//#line 180 "gramatica.y"
+//#line 186 "gramatica.y"
 { PI.put(val_peek(0).sval); }
 break;
 case 48:
-//#line 181 "gramatica.y"
+//#line 187 "gramatica.y"
 { PI.put(val_peek(0).sval); }
 break;
 case 49:
-//#line 182 "gramatica.y"
+//#line 188 "gramatica.y"
 {	Token t=al.tablaSimbolos.get(val_peek(0).sval);
 	t.lexema="-"+t.lexema; PI.put("-" + val_peek(1).sval);}
 break;
 case 50:
-//#line 184 "gramatica.y"
+//#line 190 "gramatica.y"
 {Parser.estructuras.add("Se detecto la invocacion de una funcion en la linea "+Analizador_Lexico.cantLN+"\n"); PI.put(val_peek(2).sval); PI.jumpToFun(val_peek(2).sval); }
 break;
 case 51:
-//#line 187 "gramatica.y"
-{Token t=al.tablaSimbolos.get(val_peek(4).sval);
-	if(t!=null&&t.declarada==false)this.erroresGram.add(new ErrorG("Error 35: La variable "+val_peek(3).sval+" no esta declarada ", al.cantLN));}
+//#line 193 "gramatica.y"
+{Token t=al.tablaSimbolos.get(val_peek(3).sval);
+	if(t!=null){
+		if(t.declarada==false)
+			this.erroresGram.add(new ErrorG("Error 35: La variable "+val_peek(3).sval+" no esta declarada ", al.cantLN));
+	}
+	else
+		System.out.println("El identificador "+val_peek(3).sval+" no se agrego a la tabla de simbolos");
+	}
 break;
-//#line 711 "Parser.java"
+//#line 723 "Parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

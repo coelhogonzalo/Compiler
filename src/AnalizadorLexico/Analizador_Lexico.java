@@ -123,7 +123,6 @@ public class Analizador_Lexico {
         boolean estadoFantasma = false;
         Token unToken = null;
         Token tokenAnterior = new Token("", 0, "");
-        boolean repetidos;
         Character c;
         if ( charAnterior.charAt(0) == '0')
             c = fm.readChar();

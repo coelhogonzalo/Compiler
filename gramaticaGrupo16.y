@@ -160,7 +160,13 @@ operador_logico : '<' 		{ $$.sval = "<"; }
 ;
 
 asignacion : ID ASIGN expresion {	Token t=al.tablaSimbolos.get($1.sval); PI.put($1.sval); PI.put(":=");
-	if(t.declarada==false)this.erroresGram.add(new ErrorG("Error 34 : La variable "+$1.sval+" no esta declarada ", al.cantLN));}
+	if(t!=null){
+		if(t.declarada==false)
+			this.erroresGram.add(new ErrorG("Error 34 : La variable "+$1.sval+" no esta declarada ", al.cantLN));
+	}
+	else
+		System.out.println("El identificador "+$1.sval+" no se agrego a la tabla de simbolos");
+	}
 	
 	//ESTECOMPILA| ID expresion {this.erroresGram.add(new ErrorG("Error6: Falta el operador de asignacion", al.cantLN));}//Este creo que anda si no hay otro error de los que compilancon el que hace macaana
 	//ESTECOMPILA| ID ASIGN {this.erroresGram.add(new ErrorG("Error SIN NUMERO: Se esperaba una expresion del lado derecho de la asignacion", al.cantLN));}
@@ -185,7 +191,13 @@ factor : ID 				{ PI.put($1.sval); }
 ;
 
 parametros: '(' ID ';' lista_permisos ')' {Token t=al.tablaSimbolos.get($1.sval);
-	if(t!=null&&t.declarada==false)this.erroresGram.add(new ErrorG("Error 35: La variable "+$2.sval+" no esta declarada ", al.cantLN));}
+	if(t!=null){
+		if(t.declarada==false)
+			this.erroresGram.add(new ErrorG("Error 35: La variable "+$2.sval+" no esta declarada ", al.cantLN));
+	}
+	else
+		System.out.println("El identificador "+$2.sval+" no se agrego a la tabla de simbolos");
+	}
 
 //ESTECOMPILA| ID ';' lista_permisos ')'  {this.erroresGram.add(new ErrorG("Error 15: Se esperaba un (", al.cantLN));}
 //ESTECOMPILA|'(' ID ';' lista_permisos   {this.erroresGram.add(new ErrorG("Error 16: Se esperaba un )", al.cantLN));}

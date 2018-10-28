@@ -15,7 +15,7 @@ public class AccionSemantica5 implements AccionSemantica {
                 buffer.append("_ul");
                 String lexema=buffer.toString();
                 Token unToken=new Token(lexema, Analizador_Lexico.TOKEN_UL,"uslinteger");
-                Analizador_Lexico.tablaSimbolos.put(lexema, unToken);//esto esta mal no?
+                Analizador_Lexico.tablaSimbolos.put(lexema, unToken);
                 return unToken;
             } else {
                 Error e = new Error("WARNING", buffer.toString() + ": valor fuera de rango", Analizador_Lexico.cantLN);
