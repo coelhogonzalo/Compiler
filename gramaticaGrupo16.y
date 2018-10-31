@@ -81,7 +81,7 @@ lista_variables : lista_variables ';' ID {Token t=Analizador_Lexico.tablaSimbolo
 		if(t.declarada==false)
 			t.declarada=true;
 		else 
-	this.erroresGram.add(new ErrorG("Error SIN NUMERO: Se redeclaro la variable '"+$1.sval+"' ", Analizador_Lexico.cantLN));
+			this.erroresGram.add(new ErrorG("Error SIN NUMERO: Se redeclaro la variable '"+$1.sval+"' ", Analizador_Lexico.cantLN));
 	}
 	}
 ;
