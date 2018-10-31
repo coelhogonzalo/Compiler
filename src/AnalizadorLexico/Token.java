@@ -6,6 +6,7 @@ public class Token {
     public Integer nro;
     public String tipo;
     public boolean declarada;
+    public String uso;
 
     public Token(String lexema, Integer nro, String tipo) {
         super();
@@ -15,15 +16,7 @@ public class Token {
         this.declarada=false;
     }
     
-    public String getLexema(){
-    	return lexema;
-    }
-    public Integer getNro(){
-    	return nro;
-    }
-    public String getTipo(){
-    	return tipo;
-    }
+    
 
     public String toString(){
         if ( nro != Analizador_Lexico.TOKEN_ERROR )

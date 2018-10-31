@@ -16,7 +16,7 @@ public class Analizador_Lexico {
     private HashMap<String, Integer> equivalentes = null;
     private MatrizLexica MLexica = null;
     public static List<Error> errores;
-    public static int cantLN = 1;
+    public static int cantLN ;
     private static FileManager fm = null;
     public final static int TOKEN_CADENA = 258;//Cambiar si es necesario
     public final static int TOKEN_FLOAT = 260;
@@ -55,7 +55,7 @@ public class Analizador_Lexico {
         fm = new FileManager(mFile);
         Analizador_Lexico.tablaSimbolos = new HashMap<>();
         CargarTablaSimbolos();
-
+        Analizador_Lexico.cantLN=1;
     }
 
     public ArrayList<Error> getErrores() {
@@ -149,14 +149,14 @@ public class Analizador_Lexico {
         if (tokenAnterior == null)
             return false;
         if (tokenAnterior.lexema.equals(buffer.toString())) {
-            tokenAnterior.lexema = buffer.toString();
+            tokenAnterior.lexema = buffer.toString();// ?????
             return false;
         }
         return true;
     }
 
     private void aumentarCantSaltosLinea(char c, boolean repetidos) {
-        if (c == '\n' && !repetidos) {
+        if ((c == '\n' || c=='\r')&& !repetidos) {// Lo de \r lo agregue pero la verdad si anda es de casualidad, REQUIERE TESTING
             cantLN++;
         }
     }

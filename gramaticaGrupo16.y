@@ -1,9 +1,8 @@
 %{
 package Parser;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
+
 
 import AnalizadorLexico.Analizador_Lexico;
 import AnalizadorLexico.Token;
@@ -38,49 +37,60 @@ sentencia : sentenciaCE
 sentenciaDEC :  tipo lista_variables ',' {Parser.estructuras.add("Se detecto la declaracion de variables en la linea "+Analizador_Lexico.cantLN+"\n");}
 	| tipoFunID parametrosDef cuerpofuncion {Parser.estructuras.add("Se detecto la declaracion de una funcion en la linea "+Analizador_Lexico.cantLN+"\n");}
 	
-	//ESTECOMPILA| lista_variables ',' {this.erroresGram.add(new ErrorG("Error 33: Falta definir el tipo de las variables", al.cantLN));}
-	//| tipo lista_variables {this.erroresGram.add(new ErrorG("Error 32: Se esperaba una ,", al.cantLN));} shift reduce
-	//ESTECOMPILA| tipo  parametrosDef cuerpofuncion {this.erroresGram.add(new ErrorG("Error 30: Falta definir el nombre de la funcion", al.cantLN));}
-	//ESTECOMPILA| ID parametrosDef cuerpofuncion {this.erroresGram.add(new ErrorG("Error 31: Falta definir el tipo de la funcion", al.cantLN));}
-	//ESTECOMPILA| tipo ID  cuerpofuncion {this.erroresGram.add(new ErrorG("Error 29: Falta definir los parametros de la funcion", al.cantLN));}
-	//| tipo ID parametrosDef {this.erroresGram.add(new ErrorG("Error 28: Falta definir el cuerpo de la funcion", al.cantLN));} shift reduce
+	//ESTECOMPILA| lista_variables ',' {this.erroresGram.add(new ErrorG("Error 33: Falta definir el tipo de las variables", Analizador_Lexico.cantLN));}
+	//| tipo lista_variables {this.erroresGram.add(new ErrorG("Error 32: Se esperaba una ,", Analizador_Lexico.cantLN));} shift reduce
+	//ESTECOMPILA| tipo  parametrosDef cuerpofuncion {this.erroresGram.add(new ErrorG("Error 30: Falta definir el nombre de la funcion", Analizador_Lexico.cantLN));}
+	//ESTECOMPILA| ID parametrosDef cuerpofuncion {this.erroresGram.add(new ErrorG("Error 31: Falta definir el tipo de la funcion", Analizador_Lexico.cantLN));}
+	//ESTECOMPILA| tipo ID  cuerpofuncion {this.erroresGram.add(new ErrorG("Error 29: Falta definir los parametros de la funcion", Analizador_Lexico.cantLN));}
+	//| tipo ID parametrosDef {this.erroresGram.add(new ErrorG("Error 28: Falta definir el cuerpo de la funcion", Analizador_Lexico.cantLN));} shift reduce
 	
 ;
 
-tipoFunID : tipo ID { Token t=al.tablaSimbolos.get($2.sval);
+tipoFunID : tipo ID { Token t=Analizador_Lexico.tablaSimbolos.get($2.sval);
 	t.declarada=true;
 	PI.inicioFuncion($2.sval); }
 
 ;
 
 parametrosDef: '(' tipo ID ')'
-	//ESTECOMPILA| '(' tipo ID {this.erroresGram.add(new ErrorG("Error SIN NUMERO : Falta un ) despues del identificador", al.cantLN));}
-	//ESTECOMPILA| tipo ID ')' {this.erroresGram.add(new ErrorG("Error SIN NUMERO : Falta un ( antes del tipo del parametro", al.cantLN));}
+	//ESTECOMPILA| '(' tipo ID {this.erroresGram.add(new ErrorG("Error SIN NUMERO : Falta un ) despues del identificador", Analizador_Lexico.cantLN));}
+	//ESTECOMPILA| tipo ID ')' {this.erroresGram.add(new ErrorG("Error SIN NUMERO : Falta un ( antes del tipo del parametro", Analizador_Lexico.cantLN));}
 ;
 
 cuerpofuncion: '{' BS retorno '}'
 
-	//ESTECOMPILA| '{'  retorno '}' {this.erroresGram.add(new ErrorG("Error 23: Se esperaba un bloque de sentencias en el cuerpo de la funcion", al.cantLN));}
+	//ESTECOMPILA| '{'  retorno '}' {this.erroresGram.add(new ErrorG("Error 23: Se esperaba un bloque de sentencias en el cuerpo de la funcion", Analizador_Lexico.cantLN));}
 	//| '{' BS retorno
-	//ESTECOMPILA|  BS retorno '}' {this.erroresGram.add(new ErrorG("Error SIN NUMERO: Se esperaba un { al principio de la funcion", al.cantLN));}
+	//ESTECOMPILA|  BS retorno '}' {this.erroresGram.add(new ErrorG("Error SIN NUMERO: Se esperaba un { al principio de la funcion", Analizador_Lexico.cantLN));}
 ;
 
 retorno : RETURN expresioncparentesis {PI.finFuncion(); }//el del return tengo qeu hacer lo que dijo anto
-	//ESTECOMPILA|	RETURN {this.erroresGram.add(new ErrorG("Error 24: La funcion debe retornar un valor", al.cantLN));}
-	//ESTECOMPILA|	 expresioncparentesis {this.erroresGram.add(new ErrorG("Error 24.5: Se esperaba un return", al.cantLN));}
+	//ESTECOMPILA|	RETURN {this.erroresGram.add(new ErrorG("Error 24: La funcion debe retornar un valor", Analizador_Lexico.cantLN));}
+	//ESTECOMPILA|	 expresioncparentesis {this.erroresGram.add(new ErrorG("Error 24.5: Se esperaba un return", Analizador_Lexico.cantLN));}
 ;
 
-lista_variables : lista_variables ';' ID {Token t=al.tablaSimbolos.get($3.sval);
-	if(t!=null)t.declarada=true;} 
-	| ID{	Token t=al.tablaSimbolos.get($1.sval);
-	if(t!=null)t.declarada=true;}
+lista_variables : lista_variables ';' ID {Token t=Analizador_Lexico.tablaSimbolos.get($3.sval);
+	if(t!=null){
+		if(t.declarada==false)
+			t.declarada=true;
+		else	
+			this.erroresGram.add(new ErrorG("Error SIN NUMERO: Se redeclaro la variable '"+$3.sval+"' ", Analizador_Lexico.cantLN));
+	}}
+	| ID{	Token t=Analizador_Lexico.tablaSimbolos.get($1.sval);
+	if(t!=null){
+		if(t.declarada==false)
+			t.declarada=true;
+		else 
+	this.erroresGram.add(new ErrorG("Error SIN NUMERO: Se redeclaro la variable '"+$1.sval+"' ", Analizador_Lexico.cantLN));
+	}
+	}
 ;
 
 BCE : '{' BCE2 '}'
 	| sentenciaCE 
 	
-	//ESTECOMPILA| BCE2 '}' {this.erroresGram.add(new ErrorG("Error SIN NUMERO: Se esperaba un { al principio del bloque de sentencias", al.cantLN));}
-	//ESTECOMPILA| '{' BCE2  {this.erroresGram.add(new ErrorG("Error SIN NUMERO: Se esperaba un } al final del bloque de sentencias", al.cantLN));}
+	//ESTECOMPILA| BCE2 '}' {this.erroresGram.add(new ErrorG("Error SIN NUMERO: Se esperaba un { al principio del bloque de sentencias", Analizador_Lexico.cantLN));}
+	//ESTECOMPILA| '{' BCE2  {this.erroresGram.add(new ErrorG("Error SIN NUMERO: Se esperaba un } al final del bloque de sentencias", Analizador_Lexico.cantLN));}
 ;
 
 BCE2 :  BCE2 sentenciaCE
@@ -88,17 +98,17 @@ BCE2 :  BCE2 sentenciaCE
 ;
 
 expresioncparentesis:'(' expresion ')'
-	//ESTECOMPILA|'(' expresion  {this.erroresGram.add(new ErrorG("Error 25: Se esperaba un )", al.cantLN));}
-	//ESTECOMPILA| expresion ')' {this.erroresGram.add(new ErrorG("Error 26: Se esperaba un (", al.cantLN));}
-	//ESTECOMPILA|'('  ')' {this.erroresGram.add(new ErrorG("Error 27: Se esperaba una expresion", al.cantLN));}
+	//ESTECOMPILA|'(' expresion  {this.erroresGram.add(new ErrorG("Error 25: Se esperaba un )", Analizador_Lexico.cantLN));}
+	//ESTECOMPILA| expresion ')' {this.erroresGram.add(new ErrorG("Error 26: Se esperaba un (", Analizador_Lexico.cantLN));}
+	//ESTECOMPILA|'('  ')' {this.erroresGram.add(new ErrorG("Error 27: Se esperaba una expresion", Analizador_Lexico.cantLN));}
 ;
 
 printeable : '(' CADENA ')' 		{ PI.put($2.sval); }
 		| '(' ID ')'	{ PI.put($2.sval); } {System.out.println("--------------------------------------------------------------------------------------------");
 		System.out.println("DEBUGUEANDO: esto es un separador");
 		System.out.println("--------------------------------------------------------------------------------------------");}
-	//ESTECOMPILA| '(' CADENA  {this.erroresGram.add(new ErrorG("Error 21 : Falta un )", al.cantLN));}
-	//ESTECOMPILA|  CADENA ')' {this.erroresGram.add(new ErrorG("Error 22 : Falta un (", al.cantLN));}
+	//ESTECOMPILA| '(' CADENA  {this.erroresGram.add(new ErrorG("Error 21 : Falta un )", Analizador_Lexico.cantLN));}
+	//ESTECOMPILA|  CADENA ')' {this.erroresGram.add(new ErrorG("Error 22 : Falta un (", Analizador_Lexico.cantLN));}
 ;
 
 sentenciaCE : PRINT printeable ',' {Parser.estructuras.add("Se detecto un print en la linea "+Analizador_Lexico.cantLN+"\n"); PI.put("print");}
@@ -107,12 +117,12 @@ sentenciaCE : PRINT printeable ',' {Parser.estructuras.add("Se detecto un print 
 	| ifcond BCE elsecond BCE ENDIF {Parser.estructuras.add("Se detecto un if en la linea "+Analizador_Lexico.cantLN+"\n"); PI.desapilar();}
 	| whilecond BCE {Parser.estructuras.add("Se detecto un while en la linea "+Analizador_Lexico.cantLN+"\n"); PI.saltoIncond(); PI.desapilar(); }
 	
-	//ESTECOMPILA| IF condicioncparentesis ELSE BCE ENDIF {this.erroresGram.add(new ErrorG("Error 9: Se esperaba un bloque de sentencias en la rama del if", al.cantLN));}
-	//ESTECOMPILA| IF condicioncparentesis BCE ELSE ENDIF {this.erroresGram.add(new ErrorG("Error 10: Se esperaba un bloque de sentencias en la rama del else", al.cantLN));}
-	//ESTECOMPILA| IF condicioncparentesis ELSE ENDIF{this.erroresGram.add(new ErrorG("Error 11: Se esperaba un bloque de sentencias en la rama del if y del else", al.cantLN));}
+	//ESTECOMPILA| IF condicioncparentesis ELSE BCE ENDIF {this.erroresGram.add(new ErrorG("Error 9: Se esperaba un bloque de sentencias en la rama del if", Analizador_Lexico.cantLN));}
+	//ESTECOMPILA| IF condicioncparentesis BCE ELSE ENDIF {this.erroresGram.add(new ErrorG("Error 10: Se esperaba un bloque de sentencias en la rama del else", Analizador_Lexico.cantLN));}
+	//ESTECOMPILA| IF condicioncparentesis ELSE ENDIF{this.erroresGram.add(new ErrorG("Error 11: Se esperaba un bloque de sentencias en la rama del if y del else", Analizador_Lexico.cantLN));}
 	
-	//| asignacion  {this.erroresGram.add(new ErrorG("Error 12: Se esperaba un ,", al.cantLN));} //SHIFT REDUCE
-	//| PRINT printeable {this.erroresGram.add(new ErrorG("Error 13: Se esperaba un ,", al.cantLN));}//SHIFT REDUCE
+	//| asignacion  {this.erroresGram.add(new ErrorG("Error 12: Se esperaba un ,", Analizador_Lexico.cantLN));} //SHIFT REDUCE
+	//| PRINT printeable {this.erroresGram.add(new ErrorG("Error 13: Se esperaba un ,", Analizador_Lexico.cantLN));}//SHIFT REDUCE
 
 ;
 
@@ -135,9 +145,9 @@ whileparaapilar: WHILE { PI.setSaltoIncond(); }
 
 
 condicioncparentesis : '(' condicion ')'
-	//ESTECOMPILA| '('  ')' {this.erroresGram.add(new ErrorG("Error14: No se definio una condicion", al.cantLN));}
-	//ESTECOMPILA| '(' condicion  {this.erroresGram.add(new ErrorG("Error4: Se esperaba un ) despues de la condicion", al.cantLN));}
-	//ESTECOMPILA| condicion ')' {this.erroresGram.add(new ErrorG("Error5: Se esperaba un ( antes de la condicion", al.cantLN));}
+	//ESTECOMPILA| '('  ')' {this.erroresGram.add(new ErrorG("Error14: No se definio una condicion", Analizador_Lexico.cantLN));}
+	//ESTECOMPILA| '(' condicion  {this.erroresGram.add(new ErrorG("Error4: Se esperaba un ) despues de la condicion", Analizador_Lexico.cantLN));}
+	//ESTECOMPILA| condicion ')' {this.erroresGram.add(new ErrorG("Error5: Se esperaba un ( antes de la condicion", Analizador_Lexico.cantLN));}
 ;
 
 
@@ -145,8 +155,8 @@ condicioncparentesis : '(' condicion ')'
 
 condicion : expresion operador_logico expresion { PI.put($2.sval); }
 
-//| expresion operador_logico  {this.erroresGram.add(new ErrorG("Error1: Falta la expresion del lado derecho", al.cantLN));}//SHIFT REDUCE con y sin el token error
-//ESTECOMPILA| operador_logico expresion  {this.erroresGram.add(new ErrorG("Error2: Se esperaba un operador logico valido", al.cantLN));}
+//| expresion operador_logico  {this.erroresGram.add(new ErrorG("Error1: Falta la expresion del lado derecho", Analizador_Lexico.cantLN));}//SHIFT REDUCE con y sin el token error
+//ESTECOMPILA| operador_logico expresion  {this.erroresGram.add(new ErrorG("Error2: Se esperaba un operador logico valido", Analizador_Lexico.cantLN));}
 
 ;
 
@@ -159,17 +169,17 @@ operador_logico : '<' 		{ $$.sval = "<"; }
 	
 ;
 
-asignacion : ID ASIGN expresion {	Token t=al.tablaSimbolos.get($1.sval); PI.put($1.sval); PI.put(":=");
+asignacion : ID ASIGN expresion {	Token t=Analizador_Lexico.tablaSimbolos.get($1.sval); PI.put($1.sval); PI.put(":=");
 	if(t!=null){
 		if(t.declarada==false)
-			this.erroresGram.add(new ErrorG("Error 34 : La variable "+$1.sval+" no esta declarada ", al.cantLN));
+			this.erroresGram.add(new ErrorG("Error 34 : La variable "+$1.sval+" no esta declarada ", Analizador_Lexico.cantLN));
 	}
 	else
 		System.out.println("El identificador "+$1.sval+" no se agrego a la tabla de simbolos");
 	}
 	
-	//ESTECOMPILA| ID expresion {this.erroresGram.add(new ErrorG("Error6: Falta el operador de asignacion", al.cantLN));}//Este creo que anda si no hay otro error de los que compilancon el que hace macaana
-	//ESTECOMPILA| ID ASIGN {this.erroresGram.add(new ErrorG("Error SIN NUMERO: Se esperaba una expresion del lado derecho de la asignacion", al.cantLN));}
+	//ESTECOMPILA| ID expresion {this.erroresGram.add(new ErrorG("Error6: Falta el operador de asignacion", Analizador_Lexico.cantLN));}//Este creo que anda si no hay otro error de los que compilancon el que hace macaana
+	//ESTECOMPILA| ID ASIGN {this.erroresGram.add(new ErrorG("Error SIN NUMERO: Se esperaba una expresion del lado derecho de la asignacion", Analizador_Lexico.cantLN));}
 ;
 
 expresion : expresion '+' termino	{ PI.put("+"); }
@@ -185,23 +195,29 @@ termino : termino '*' factor		{ PI.put("*"); }
 factor : ID 				{ PI.put($1.sval); }
 	| USLINTEGER 			{ PI.put($1.sval); }
 	| SINGLE 			    { PI.put($1.sval); }
-	| '-' SINGLE {	Token t=al.tablaSimbolos.get($2.sval);
+	| '-' SINGLE {	Token t=Analizador_Lexico.tablaSimbolos.get($2.sval);
 	t.lexema="-"+t.lexema; PI.put("-" + $1.sval);}
-	|ID parametros ','  {Parser.estructuras.add("Se detecto la invocacion de una funcion en la linea "+Analizador_Lexico.cantLN+"\n"); PI.put($1.sval); PI.jumpToFun($1.sval); }
-;
-
-parametros: '(' ID ';' lista_permisos ')' {Token t=al.tablaSimbolos.get($1.sval);
+	|ID parametros ','  {Token t=Analizador_Lexico.tablaSimbolos.get($1.sval);
 	if(t!=null){
 		if(t.declarada==false)
-			this.erroresGram.add(new ErrorG("Error 35: La variable "+$2.sval+" no esta declarada ", al.cantLN));
+			this.erroresGram.add(new ErrorG("Error 34.6 : La funcion "+$1.sval+" no esta declarada ", Analizador_Lexico.cantLN));
+	}
+	else
+		System.out.println("El identificador "+$1.sval+" no se agrego a la tabla de simbolos (El identificador es una funcion)"); }
+;
+
+parametros: '(' ID ';' lista_permisos ')' {Token t=Analizador_Lexico.tablaSimbolos.get($2.sval);
+	if(t!=null){
+		if(t.declarada==false)
+			this.erroresGram.add(new ErrorG("Error 35: La variable "+$2.sval+" no esta declarada ", Analizador_Lexico.cantLN));
 	}
 	else
 		System.out.println("El identificador "+$2.sval+" no se agrego a la tabla de simbolos");
 	}
 
-//ESTECOMPILA| ID ';' lista_permisos ')'  {this.erroresGram.add(new ErrorG("Error 15: Se esperaba un (", al.cantLN));}
-//ESTECOMPILA|'(' ID ';' lista_permisos   {this.erroresGram.add(new ErrorG("Error 16: Se esperaba un )", al.cantLN));}
-//ESTECOMPILA|'(' ID  lista_permisos ')'  {this.erroresGram.add(new ErrorG("Error 17: Se esperaba un ;", al.cantLN));}
+//ESTECOMPILA| ID ';' lista_permisos ')'  {this.erroresGram.add(new ErrorG("Error 15: Se esperaba un (", Analizador_Lexico.cantLN));}
+//ESTECOMPILA|'(' ID ';' lista_permisos   {this.erroresGram.add(new ErrorG("Error 16: Se esperaba un )", Analizador_Lexico.cantLN));}
+//ESTECOMPILA|'(' ID  lista_permisos ')'  {this.erroresGram.add(new ErrorG("Error 17: Se esperaba un ;", Analizador_Lexico.cantLN));}
 ;
 
 tipo : USLINTEGERPR
@@ -214,7 +230,7 @@ lista_permisos : READONLY
 	| WRITE ';' PASS
 	|
 	                                                                                                                                                                                
-	//ESTECOMPILA| WRITE PASS {this.erroresGram.add(new ErrorG("Error3: Se esperaba un ; entre los permisos", al.cantLN));}
+	//ESTECOMPILA| WRITE PASS {this.erroresGram.add(new ErrorG("Error3: Se esperaba un ; entre los permisos", Analizador_Lexico.cantLN));}
 ;
 
 
@@ -238,10 +254,10 @@ public int yylex(){
 	}
 	if(t!=null){
 		yylval = new ParserVal(t.lexema);
-		TokenValue tv = new TokenValue (t.getLexema(), Analizador_Lexico.cantLN);
+		TokenValue tv = new TokenValue (t.lexema, Analizador_Lexico.cantLN);
 		ultimoTokenleido=tv;
-		System.out.println("leyo : "+t.lexema+" 	Numero de token: "+t.getNro());
-		return t.getNro();
+		System.out.println("leyo : "+t.lexema+" 	Numero de token: "+t.nro);
+		return t.nro;
 	}
 	return 0;
 }
