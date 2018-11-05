@@ -29,7 +29,8 @@ import AnalizadorLexico.Main;
 import AnalizadorLexico.TokenValue;
 import java.util.ArrayList;
 import GeneracionCodigoIntermedio.Polaca_Inversa;
-//#line 30 "Parser.java"
+import java.util.Arrays;
+//#line 31 "Parser.java"
 
 
 
@@ -405,7 +406,7 @@ final static String yyrule[] = {
 "lista_permisos :",
 };
 
-//#line 238 "gramatica.y"
+//#line 242 "gramatica.y"
 
 public Polaca_Inversa PI = new Polaca_Inversa();
 public Analizador_Lexico al;
@@ -438,6 +439,29 @@ public void yyerror ( String e){
 }
 public int parsepublico(){
 	return this.yyparse();
+}
+public void registrarTipo(String listaVariables,String tipo){
+	int pos=0;
+	String idVariable="";
+	ArrayList<String> items= new ArrayList<String>(Arrays.asList(listaVariables.split(" ")));
+	for (String item:items){
+		System.out.println(items.size()+" El identificador es :'"+item+"'");
+		Token t=Analizador_Lexico.tablaSimbolos.get(item);
+		t.tipo=tipo;
+		idVariable="";
+	}
+	/*while(pos<listaVariables.length()){
+		char nuevoChar=listaVariables.charAt(pos);
+		if(nuevoChar!=' '){
+			idVariable=idVariable+nuevoChar;
+			System.out.println(idVariable);
+		}
+		else{
+			Token t=Analizador_Lexico.tablaSimbolos.get(idVariable);
+			t.tipo=tipo;
+			idVariable="";
+		}
+	}*/
 }
 public static void main(String [] args) throws IOException{
 	//BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -476,7 +500,7 @@ public static void main(String [] args) throws IOException{
 
 
 
-//#line 408 "Parser.java"
+//#line 432 "Parser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -631,124 +655,127 @@ boolean doaction;
       {
 //########## USER-SUPPLIED ACTIONS ##########
 case 6:
-//#line 37 "gramatica.y"
-{Parser.estructuras.add("Se detecto la declaracion de variables en la linea "+Analizador_Lexico.cantLN+"\n");}
+//#line 38 "gramatica.y"
+{registrarTipo( val_peek(1).sval, val_peek(2).sval); System.out.println(val_peek(1).sval);
+Parser.estructuras.add("Se detecto la declaracion de variables en la linea "+Analizador_Lexico.cantLN+"\n");}
 break;
 case 7:
-//#line 38 "gramatica.y"
+//#line 40 "gramatica.y"
 {Parser.estructuras.add("Se detecto la declaracion de una funcion en la linea "+Analizador_Lexico.cantLN+"\n");}
 break;
 case 8:
-//#line 49 "gramatica.y"
+//#line 51 "gramatica.y"
 { Token t=Analizador_Lexico.tablaSimbolos.get(val_peek(0).sval);
 	t.declarada=true;
 	PI.inicioFuncion(val_peek(0).sval); }
 break;
 case 11:
-//#line 67 "gramatica.y"
+//#line 69 "gramatica.y"
 {PI.finFuncion(); }
 break;
 case 12:
-//#line 72 "gramatica.y"
+//#line 74 "gramatica.y"
 {Token t=Analizador_Lexico.tablaSimbolos.get(val_peek(0).sval);
 	if(t!=null){
 		if(t.declarada==false)
 			t.declarada=true;
 		else	
 			this.erroresGram.add(new ErrorG("Error SIN NUMERO: Se redeclaro la variable '"+val_peek(0).sval+"' ", Analizador_Lexico.cantLN));
+		yyval=new ParserVal(yyval.sval+" "+val_peek(0).sval);
 	}}
 break;
 case 13:
-//#line 79 "gramatica.y"
+//#line 82 "gramatica.y"
 {	Token t=Analizador_Lexico.tablaSimbolos.get(val_peek(0).sval);
 	if(t!=null){
 		if(t.declarada==false)
 			t.declarada=true;
 		else 
-	this.erroresGram.add(new ErrorG("Error SIN NUMERO: Se redeclaro la variable '"+val_peek(0).sval+"' ", Analizador_Lexico.cantLN));
+			this.erroresGram.add(new ErrorG("Error SIN NUMERO: Se redeclaro la variable '"+val_peek(0).sval+"' ", Analizador_Lexico.cantLN));
+		yyval=new ParserVal(yyval.sval+" "+val_peek(0).sval);
 	}
 	}
 break;
 case 19:
-//#line 106 "gramatica.y"
+//#line 110 "gramatica.y"
 { PI.put(val_peek(1).sval); }
 break;
 case 20:
-//#line 107 "gramatica.y"
+//#line 111 "gramatica.y"
 { PI.put(val_peek(1).sval); }
 break;
 case 21:
-//#line 107 "gramatica.y"
+//#line 111 "gramatica.y"
 {System.out.println("--------------------------------------------------------------------------------------------");
 		System.out.println("DEBUGUEANDO: esto es un separador");
 		System.out.println("--------------------------------------------------------------------------------------------");}
 break;
 case 22:
-//#line 114 "gramatica.y"
+//#line 118 "gramatica.y"
 {Parser.estructuras.add("Se detecto un print en la linea "+Analizador_Lexico.cantLN+"\n"); PI.put("print");}
 break;
 case 23:
-//#line 115 "gramatica.y"
+//#line 119 "gramatica.y"
 {Parser.estructuras.add("Se detecto una asignacion en  la linea "+Analizador_Lexico.cantLN+"\n");}
 break;
 case 24:
-//#line 116 "gramatica.y"
+//#line 120 "gramatica.y"
 {Parser.estructuras.add("Se detecto un if en la linea "+Analizador_Lexico.cantLN+"\n"); PI.desapilar(); }
 break;
 case 25:
-//#line 117 "gramatica.y"
+//#line 121 "gramatica.y"
 {Parser.estructuras.add("Se detecto un if en la linea "+Analizador_Lexico.cantLN+"\n"); PI.desapilar();}
 break;
 case 26:
-//#line 118 "gramatica.y"
+//#line 122 "gramatica.y"
 {Parser.estructuras.add("Se detecto un while en la linea "+Analizador_Lexico.cantLN+"\n"); PI.saltoIncond(); PI.desapilar(); }
 break;
 case 27:
-//#line 129 "gramatica.y"
+//#line 133 "gramatica.y"
 { PI.bifurcacion(); }
 break;
 case 28:
-//#line 133 "gramatica.y"
+//#line 137 "gramatica.y"
 { PI.desapilarElse(); PI.bifurcacionElse(); }
 break;
 case 29:
-//#line 137 "gramatica.y"
+//#line 141 "gramatica.y"
 { PI.bifurcacion(); }
 break;
 case 30:
-//#line 141 "gramatica.y"
+//#line 145 "gramatica.y"
 { PI.setSaltoIncond(); }
 break;
 case 32:
-//#line 156 "gramatica.y"
+//#line 160 "gramatica.y"
 { PI.put(val_peek(1).sval); }
 break;
 case 33:
-//#line 163 "gramatica.y"
+//#line 167 "gramatica.y"
 { yyval.sval = "<"; }
 break;
 case 34:
-//#line 164 "gramatica.y"
+//#line 168 "gramatica.y"
 { yyval.sval = ">"; }
 break;
 case 35:
-//#line 165 "gramatica.y"
+//#line 169 "gramatica.y"
 { yyval.sval = "<="; }
 break;
 case 36:
-//#line 166 "gramatica.y"
+//#line 170 "gramatica.y"
 { yyval.sval = ">="; }
 break;
 case 37:
-//#line 167 "gramatica.y"
+//#line 171 "gramatica.y"
 { yyval.sval = "=="; }
 break;
 case 38:
-//#line 168 "gramatica.y"
+//#line 172 "gramatica.y"
 { yyval.sval = "!="; }
 break;
 case 39:
-//#line 172 "gramatica.y"
+//#line 176 "gramatica.y"
 {	Token t=Analizador_Lexico.tablaSimbolos.get(val_peek(2).sval); PI.put(val_peek(2).sval); PI.put(":=");
 	if(t!=null){
 		if(t.declarada==false)
@@ -759,40 +786,40 @@ case 39:
 	}
 break;
 case 40:
-//#line 185 "gramatica.y"
+//#line 189 "gramatica.y"
 { PI.put("+"); }
 break;
 case 41:
-//#line 186 "gramatica.y"
+//#line 190 "gramatica.y"
 { PI.put("-"); }
 break;
 case 43:
-//#line 190 "gramatica.y"
+//#line 194 "gramatica.y"
 { PI.put("*"); }
 break;
 case 44:
-//#line 191 "gramatica.y"
+//#line 195 "gramatica.y"
 { PI.put("/"); }
 break;
 case 46:
-//#line 195 "gramatica.y"
+//#line 199 "gramatica.y"
 { PI.put(val_peek(0).sval); }
 break;
 case 47:
-//#line 196 "gramatica.y"
+//#line 200 "gramatica.y"
 { PI.put(val_peek(0).sval); }
 break;
 case 48:
-//#line 197 "gramatica.y"
+//#line 201 "gramatica.y"
 { PI.put(val_peek(0).sval); }
 break;
 case 49:
-//#line 198 "gramatica.y"
+//#line 202 "gramatica.y"
 {	Token t=Analizador_Lexico.tablaSimbolos.get(val_peek(0).sval);
 	t.lexema="-"+t.lexema; PI.put("-" + val_peek(1).sval);}
 break;
 case 50:
-//#line 200 "gramatica.y"
+//#line 204 "gramatica.y"
 {Token t=Analizador_Lexico.tablaSimbolos.get(val_peek(2).sval);
 	if(t!=null){
 		if(t.declarada==false)
@@ -802,7 +829,7 @@ case 50:
 		System.out.println("El identificador "+val_peek(2).sval+" no se agrego a la tabla de simbolos (El identificador es una funcion)"); }
 break;
 case 51:
-//#line 209 "gramatica.y"
+//#line 213 "gramatica.y"
 {Token t=Analizador_Lexico.tablaSimbolos.get(val_peek(3).sval);
 	if(t!=null){
 		if(t.declarada==false)
@@ -812,7 +839,7 @@ case 51:
 		System.out.println("El identificador "+val_peek(3).sval+" no se agrego a la tabla de simbolos");
 	}
 break;
-//#line 739 "Parser.java"
+//#line 766 "Parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

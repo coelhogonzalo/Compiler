@@ -68,6 +68,7 @@ public class Main {
         Parser.estructuras = new ArrayList<>();
         p.al = al;
         int unint = p.parsepublico();
+        System.out.println(Analizador_Lexico.tablaSimbolos);
         p.PI.printContent();
         if (unint == 0)
             System.out.println("ACCEPT, se reconocio la gramatica");

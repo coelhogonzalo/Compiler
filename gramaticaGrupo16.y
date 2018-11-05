@@ -11,6 +11,7 @@ import AnalizadorLexico.Main;
 import AnalizadorLexico.TokenValue;
 import java.util.ArrayList;
 import GeneracionCodigoIntermedio.Polaca_Inversa;
+import java.util.Arrays;
 %}
 %token ID CADENA USLINTEGER SINGLE IF ELSE ENDIF WHILE READONLY WRITE PASS MAYORIGUAL MENORIGUAL IGUALIGUAL DISTINTO ASIGN RETURN PRINT SINGLEPR USLINTEGERPR INVALIDO
 
@@ -34,7 +35,8 @@ sentencia : sentenciaCE
 	//| error ','// Esta la sacamos y si hay mas de 2 errores que ternmine la compilacion
 	
 ;
-sentenciaDEC :  tipo lista_variables ',' {Parser.estructuras.add("Se detecto la declaracion de variables en la linea "+Analizador_Lexico.cantLN+"\n");}
+sentenciaDEC :  tipo lista_variables ',' {registrarTipo( $2.sval, $1.sval); System.out.println($2.sval);
+Parser.estructuras.add("Se detecto la declaracion de variables en la linea "+Analizador_Lexico.cantLN+"\n");}
 	| tipoFunID parametrosDef cuerpofuncion {Parser.estructuras.add("Se detecto la declaracion de una funcion en la linea "+Analizador_Lexico.cantLN+"\n");}
 	
 	//ESTECOMPILA| lista_variables ',' {this.erroresGram.add(new ErrorG("Error 33: Falta definir el tipo de las variables", Analizador_Lexico.cantLN));}
@@ -75,6 +77,7 @@ lista_variables : lista_variables ';' ID {Token t=Analizador_Lexico.tablaSimbolo
 			t.declarada=true;
 		else	
 			this.erroresGram.add(new ErrorG("Error SIN NUMERO: Se redeclaro la variable '"+$3.sval+"' ", Analizador_Lexico.cantLN));
+		$$=new ParserVal($$.sval+" "+$3.sval);
 	}}
 	| ID{	Token t=Analizador_Lexico.tablaSimbolos.get($1.sval);
 	if(t!=null){
@@ -82,6 +85,7 @@ lista_variables : lista_variables ';' ID {Token t=Analizador_Lexico.tablaSimbolo
 			t.declarada=true;
 		else 
 			this.erroresGram.add(new ErrorG("Error SIN NUMERO: Se redeclaro la variable '"+$1.sval+"' ", Analizador_Lexico.cantLN));
+		$$=new ParserVal($$.sval+" "+$1.sval);
 	}
 	}
 ;
@@ -267,6 +271,29 @@ public void yyerror ( String e){
 }
 public int parsepublico(){
 	return this.yyparse();
+}
+public void registrarTipo(String listaVariables,String tipo){
+	int pos=0;
+	String idVariable="";
+	ArrayList<String> items= new ArrayList<String>(Arrays.asList(listaVariables.split(" ")));
+	for (String item:items){
+		System.out.println(items.size()+" El identificador es :'"+item+"'");
+		Token t=Analizador_Lexico.tablaSimbolos.get(item);
+		t.tipo=tipo;
+		idVariable="";
+	}
+	/*while(pos<listaVariables.length()){
+		char nuevoChar=listaVariables.charAt(pos);
+		if(nuevoChar!=' '){
+			idVariable=idVariable+nuevoChar;
+			System.out.println(idVariable);
+		}
+		else{
+			Token t=Analizador_Lexico.tablaSimbolos.get(idVariable);
+			t.tipo=tipo;
+			idVariable="";
+		}
+	}*/
 }
 public static void main(String [] args) throws IOException{
 	//BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
