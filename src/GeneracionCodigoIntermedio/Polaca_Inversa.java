@@ -83,6 +83,11 @@ public class Polaca_Inversa {
    //     PI.add(new StringBuilder("WHERE"));
    // }
 
+    public ArrayList<StringBuilder> getPI(){
+        ArrayList<StringBuilder> PIOut = new ArrayList<>(PI);
+        return PIOut;
+    }
+
     public void desapilar() {
         int pop = pila.pop();
         StringBuilder v = PI.get(pop);
