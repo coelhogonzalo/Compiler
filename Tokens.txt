@@ -1,6 +1,9 @@
 [Lexema: single   Numero: 275   Tipo: String
 , Lexema: _var123   Numero: 257   Tipo: identificador
 , Lexema: ,   Numero: 44   Tipo: Caracter
+, Lexema: single   Numero: 275   Tipo: String
+, Lexema: _var1234   Numero: 257   Tipo: identificador
+, Lexema: ,   Numero: 44   Tipo: Caracter
 , Lexema: _var123   Numero: 257   Tipo: identificador
 , Lexema: :=   Numero: 272   Tipo: Operador
 , Lexema: 123123_ul   Numero: 259   Tipo: uslinteger

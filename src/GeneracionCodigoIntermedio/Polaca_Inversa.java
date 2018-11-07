@@ -10,6 +10,7 @@ public class Polaca_Inversa {
     private ArrayList<StringBuilder> PI = null;
     private Stack<Integer> pila = null;
     private Stack<Integer> saltoIncond = null;
+    private Stack<Integer> saltoFuncs = null;
     private HashMap<String, tamFuncion> funcs;
     private String nombreFunActual;
 
@@ -18,6 +19,7 @@ public class Polaca_Inversa {
         pila = new Stack<>();
         saltoIncond = new Stack<>();
         funcs = new HashMap<>();
+
         nombreFunActual = null;
     }
 

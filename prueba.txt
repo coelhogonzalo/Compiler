@@ -1,4 +1,5 @@
 single _var123,
+single _var1234,
 _var123 := 123123,
 
 
@@ -8,5 +9,6 @@ single _var1( single _var3){
 	_var3 := 21,
 	return ( _var2 + 2)
 }
+
 single _var2,
 _var1 := _fun1(_var2 ;write),,

@@ -1,9 +1,9 @@
 [Se detecto la declaracion de variables en la linea 1
-, Se detecto una asignacion en  la linea 1
-, Se detecto la declaracion de variables en la linea 1
-, Se detecto una asignacion en  la linea 1
-, Se detecto la declaracion de una funcion en la linea 1
-, Se detecto la declaracion de variables en la linea 1
-, Se detecto la invocacion de una funcion en la linea 1
-, Se detecto una asignacion en  la linea 1
+, Se detecto la declaracion de variables en la linea 2
+, Se detecto una asignacion en  la linea 3
+, Se detecto la declaracion de variables en la linea 8
+, Se detecto una asignacion en  la linea 9
+, Se detecto la declaracion de una funcion en la linea 11
+, Se detecto la declaracion de variables en la linea 12
+, Se detecto una asignacion en  la linea 13
 ]

@@ -1,1 +1,2 @@
-[]
+[Error 34.6 : La funcion _fun1 no esta declarada  en la linea: 13
+]
