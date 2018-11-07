@@ -1,2 +1,4 @@
-[Error 34.6 : La funcion _fun1 no esta declarada  en la linea: 13
+[Error SIN NUMERO: Se redeclaro la variable '_var3'  en la linea: 14
+, Error 34 : La variable _var5 no esta declarada  en la linea: 15
+, Error 34 : La variable _var5 no esta declarada  en la linea: 22
 ]
