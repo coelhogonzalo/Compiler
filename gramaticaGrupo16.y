@@ -25,19 +25,25 @@ import java.util.Arrays;
 program : BS
 ;
 
-BS : BS sentencia
-	| sentencia
+BS : BS sentencia {
+    if ( isPermited($1.sval, $2.sval) )
+        $$.sval = $2.sval;
+    else
+        ERROR DE QUE HAY DIFERENTES PERMISOS EN EL BLOQUE DE LA FUNCION;
+ }
+	| sentencia { $$.sval = $1.sval; }
 	
 ;
 
-sentencia : sentenciaCE
-	| sentenciaDEC
+sentencia : sentenciaCE { $$.sval = $1.sval; }
+	| sentenciaDEC { $$.sval = $1.sval; }
 	//| error ','// Esta la sacamos y si hay mas de 2 errores que ternmine la compilacion
 	
 ;
-sentenciaDEC :  tipo lista_variables ',' {registrarTipo( $2.sval, $1.sval); System.out.println($2.sval);
+
+sentenciaDEC :  tipo lista_variables ',' { $$.sval = "noseusaelparametro"; registrarTipo( $2.sval, $1.sval); System.out.println($2.sval);
 Parser.estructuras.add("Se detecto la declaracion de variables en la linea "+Analizador_Lexico.cantLN+"\n");}
-	| tipoFunID parametrosDef cuerpofuncion {Parser.estructuras.add("Se detecto la declaracion de una funcion en la linea "+Analizador_Lexico.cantLN+"\n");}
+	| tipoFunID parametrosDef cuerpofuncion { al.tablaSimbolos.get($1.sval).permisoFun = $3.sval; Parser.estructuras.add("Se detecto la declaracion de una funcion en la linea "+Analizador_Lexico.cantLN+"\n");}
 	
 	//ESTECOMPILA| lista_variables ',' {this.erroresGram.add(new ErrorG("Error 33: Falta definir el tipo de las variables", Analizador_Lexico.cantLN));}
 	//| tipo lista_variables {this.erroresGram.add(new ErrorG("Error 32: Se esperaba una ,", Analizador_Lexico.cantLN));} shift reduce
@@ -48,18 +54,18 @@ Parser.estructuras.add("Se detecto la declaracion de variables en la linea "+Ana
 	
 ;
 
-tipoFunID : tipo ID { Token t=Analizador_Lexico.tablaSimbolos.get($2.sval);
+tipoFunID : tipo ID { this.idFun = $2.sval; Token t=Analizador_Lexico.tablaSimbolos.get($2.sval);
 	t.declarada=true;
 	PI.inicioFuncion($2.sval); }
 
 ;
 
-parametrosDef: '(' tipo ID ')'
+parametrosDef: '(' tipo ID ')' { this.idParam = $3.sval; }
 	//ESTECOMPILA| '(' tipo ID {this.erroresGram.add(new ErrorG("Error SIN NUMERO : Falta un ) despues del identificador", Analizador_Lexico.cantLN));}
 	//ESTECOMPILA| tipo ID ')' {this.erroresGram.add(new ErrorG("Error SIN NUMERO : Falta un ( antes del tipo del parametro", Analizador_Lexico.cantLN));}
 ;
 
-cuerpofuncion: '{' BS retorno '}'
+cuerpofuncion: '{' BS retorno '}' { $$.sval = $2.sval; }
 
 	//ESTECOMPILA| '{'  retorno '}' {this.erroresGram.add(new ErrorG("Error 23: Se esperaba un bloque de sentencias en el cuerpo de la funcion", Analizador_Lexico.cantLN));}
 	//| '{' BS retorno
@@ -108,18 +114,22 @@ expresioncparentesis:'(' expresion ')'
 ;
 
 printeable : '(' CADENA ')' 		{ PI.put($2.sval); }
-		| '(' ID ')'	{ PI.put($2.sval); } {System.out.println("--------------------------------------------------------------------------------------------");
+		| '(' ID ')'	{ if ( $2.sval == this.idParam )
+		                    $$.sval = "readonly";
+		                  else
+		                    $$.sval = "noseusaelparametro";
+		PI.put($2.sval); } {System.out.println("--------------------------------------------------------------------------------------------");
 		System.out.println("DEBUGUEANDO: esto es un separador");
 		System.out.println("--------------------------------------------------------------------------------------------");}
 	//ESTECOMPILA| '(' CADENA  {this.erroresGram.add(new ErrorG("Error 21 : Falta un )", Analizador_Lexico.cantLN));}
 	//ESTECOMPILA|  CADENA ')' {this.erroresGram.add(new ErrorG("Error 22 : Falta un (", Analizador_Lexico.cantLN));}
 ;
 
-sentenciaCE : PRINT printeable ',' {Parser.estructuras.add("Se detecto un print en la linea "+Analizador_Lexico.cantLN+"\n"); PI.put("print");}
-	| asignacion ',' {Parser.estructuras.add("Se detecto una asignacion en  la linea "+Analizador_Lexico.cantLN+"\n");}
-	| ifcond BCE ENDIF {Parser.estructuras.add("Se detecto un if en la linea "+Analizador_Lexico.cantLN+"\n"); PI.desapilar(); }
-	| ifcond BCE elsecond BCE ENDIF {Parser.estructuras.add("Se detecto un if en la linea "+Analizador_Lexico.cantLN+"\n"); PI.desapilar();}
-	| whilecond BCE {Parser.estructuras.add("Se detecto un while en la linea "+Analizador_Lexico.cantLN+"\n"); PI.saltoIncond(); PI.desapilar(); }
+sentenciaCE : PRINT printeable ',' { $$.sval = $2.sval; Parser.estructuras.add("Se detecto un print en la linea "+Analizador_Lexico.cantLN+"\n"); PI.put("print");}
+	| asignacion ',' {  $$.sval == $1.sval; Parser.estructuras.add("Se detecto una asignacion en  la linea "+Analizador_Lexico.cantLN+"\n");}
+	| ifcond BCE ENDIF { $$.sval == $2.sval; Parser.estructuras.add("Se detecto un if en la linea "+Analizador_Lexico.cantLN+"\n"); PI.desapilar(); }
+	| ifcond BCE elsecond BCE ENDIF { if ( isPermited($2.sval, $4.sval) ) $$.sval = $4.sval; Parser.estructuras.add("Se detecto un if en la linea "+Analizador_Lexico.cantLN+"\n"); PI.desapilar();}
+	| whilecond BCE { $$.sval == $2.sval; Parser.estructuras.add("Se detecto un while en la linea "+Analizador_Lexico.cantLN+"\n"); PI.saltoIncond(); PI.desapilar(); }
 	
 	//ESTECOMPILA| IF condicioncparentesis ELSE BCE ENDIF {this.erroresGram.add(new ErrorG("Error 9: Se esperaba un bloque de sentencias en la rama del if", Analizador_Lexico.cantLN));}
 	//ESTECOMPILA| IF condicioncparentesis BCE ELSE ENDIF {this.erroresGram.add(new ErrorG("Error 10: Se esperaba un bloque de sentencias en la rama del else", Analizador_Lexico.cantLN));}
@@ -173,7 +183,7 @@ operador_logico : '<' 		{ $$.sval = "<"; }
 	
 ;
 
-asignacion : ID ASIGN expresion {	Token t=Analizador_Lexico.tablaSimbolos.get($1.sval); PI.put($1.sval); PI.put(":=");
+asignacion : ID ASIGN expresion { if ( isPermited($1.sval, $3.sval) ) $$.sval = $3.sval; Token t=Analizador_Lexico.tablaSimbolos.get($1.sval); PI.put($1.sval); PI.put(":=");
 	if(t!=null){
 		if(t.declarada==false)
 			this.erroresGram.add(new ErrorG("Error 34 : La variable "+$1.sval+" no esta declarada ", Analizador_Lexico.cantLN));
@@ -186,19 +196,19 @@ asignacion : ID ASIGN expresion {	Token t=Analizador_Lexico.tablaSimbolos.get($1
 	//ESTECOMPILA| ID ASIGN {this.erroresGram.add(new ErrorG("Error SIN NUMERO: Se esperaba una expresion del lado derecho de la asignacion", Analizador_Lexico.cantLN));}
 ;
 
-expresion : expresion '+' termino	{ PI.put("+"); }
-	| expresion '-' termino		{ PI.put("-"); }
-	| termino
+expresion : expresion '+' termino	{ if ( isPermited($1.sval, $2.sval) ) $$.sval = $2 else ERRORMUCHOERROR ; PI.put("+"); }
+	| expresion '-' termino		{ if ( isPermited($1.sval, $2.sval) ) $$.sval = $2 else ERRORMUCHOERROR ; PI.put("-"); }
+	| termino { $$.sval == $1.sval }
 ;
 
-termino : termino '*' factor		{ PI.put("*"); }
-	| termino '/' factor		{ PI.put("/"); }
-	| factor
+termino : termino '*' factor		{ if ( isPermited($1.sval, $2.sval) ) $$.sval = $2 else ERRORMUCHOERROR ; PI.put("*"); }
+	| termino '/' factor		{ if ( isPermited($1.sval, $2.sval) ) $$.sval = $2 else ERRORMUCHOERROR ; PI.put("/"); }
+	| factor { $$.sval == $1.sval }
 ;
 
-factor : ID 				{ PI.put($1.sval); }
-	| USLINTEGER 			{ PI.put($1.sval); }
-	| SINGLE 			    { PI.put($1.sval); }
+factor : ID 				{ if ( idParam == $1) $$.sval == "readonly" else $$.sval == "noseusaelparametro"; PI.put($1.sval); }
+	| USLINTEGER 			{ $$.sval == "noseusaelparametro"; PI.put($1.sval); }
+	| SINGLE 			    { $$.sval == "noseusaelparametro"; PI.put($1.sval); }
 	| '-' SINGLE {	Token t=Analizador_Lexico.tablaSimbolos.get($2.sval);
 	t.lexema="-"+t.lexema; PI.put("-" + $1.sval);}
 	|ID parametros { PI.jumpToFun($1.sval); Token t=Analizador_Lexico.tablaSimbolos.get($1.sval);

@@ -7,6 +7,7 @@ public class Token {
     public String tipo;
     public boolean declarada;
     public String uso;
+    public String permisoFun;
 
     public Token(String lexema, Integer nro, String tipo) {
         super();
@@ -14,6 +15,7 @@ public class Token {
         this.nro = nro;
         this.tipo = tipo;
         this.declarada=false;
+        this.permisoFun = "noseusaelparametro";
     }
     
     

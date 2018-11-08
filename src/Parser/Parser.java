@@ -406,7 +406,7 @@ public class Parser
             "lista_permisos :",
     };
 
-//#line 243 "gramaticaGrupo16.y"
+//#line 253 "gramaticaGrupo16.y"
 
     public Polaca_Inversa PI = new Polaca_Inversa();
     public Analizador_Lexico al;
@@ -654,27 +654,56 @@ public class Parser
             switch(yyn)
             {
 //########## USER-SUPPLIED ACTIONS ##########
-                case 6:
+                case 2:
+//#line 28 "gramaticaGrupo16.y"
+                {
+                    if ( isPermited(val_peek(1).sval, val_peek(0).sval) )
+                        yyval.sval = val_peek(0).sval;
+                    else
+                        ERROR DE QUE HAY DIFERENTES PERMISOS EN EL BLOQUE DE LA FUNCION;
+                }
+                break;
+                case 3:
+//#line 34 "gramaticaGrupo16.y"
+                { yyval.sval = val_peek(0).sval; }
+                break;
+                case 4:
 //#line 38 "gramaticaGrupo16.y"
-                {registrarTipo( val_peek(1).sval, val_peek(2).sval); System.out.println(val_peek(1).sval);
+                { yyval.sval = val_peek(0).sval; }
+                break;
+                case 5:
+//#line 39 "gramaticaGrupo16.y"
+                { yyval.sval = val_peek(0).sval; }
+                break;
+                case 6:
+//#line 44 "gramaticaGrupo16.y"
+                { yyval.sval = "noseusaelparametro"; registrarTipo( val_peek(1).sval, val_peek(2).sval); System.out.println(val_peek(1).sval);
                     Parser.estructuras.add("Se detecto la declaracion de variables en la linea "+Analizador_Lexico.cantLN+"\n");}
                 break;
                 case 7:
-//#line 40 "gramaticaGrupo16.y"
-                {Parser.estructuras.add("Se detecto la declaracion de una funcion en la linea "+Analizador_Lexico.cantLN+"\n");}
+//#line 46 "gramaticaGrupo16.y"
+                { al.tablaSimbolos.get(val_peek(2).sval).permisoFun = val_peek(0).sval; Parser.estructuras.add("Se detecto la declaracion de una funcion en la linea "+Analizador_Lexico.cantLN+"\n");}
                 break;
                 case 8:
-//#line 51 "gramaticaGrupo16.y"
-                { Token t=Analizador_Lexico.tablaSimbolos.get(val_peek(0).sval);
+//#line 57 "gramaticaGrupo16.y"
+                { this.idFun = val_peek(0).sval; Token t=Analizador_Lexico.tablaSimbolos.get(val_peek(0).sval);
                     t.declarada=true;
                     PI.inicioFuncion(val_peek(0).sval); }
                 break;
+                case 9:
+//#line 63 "gramaticaGrupo16.y"
+                { this.idParam = val_peek(1).sval; }
+                break;
+                case 10:
+//#line 68 "gramaticaGrupo16.y"
+                { yyval.sval = val_peek(2).sval; }
+                break;
                 case 11:
-//#line 69 "gramaticaGrupo16.y"
+//#line 75 "gramaticaGrupo16.y"
                 {PI.finFuncion(); }
                 break;
                 case 12:
-//#line 74 "gramaticaGrupo16.y"
+//#line 80 "gramaticaGrupo16.y"
                 {Token t=Analizador_Lexico.tablaSimbolos.get(val_peek(0).sval);
                     if(t!=null){
                         if(t.declarada==false)
@@ -685,7 +714,7 @@ public class Parser
                     }}
                 break;
                 case 13:
-//#line 82 "gramaticaGrupo16.y"
+//#line 88 "gramaticaGrupo16.y"
                 {	Token t=Analizador_Lexico.tablaSimbolos.get(val_peek(0).sval);
                     if(t!=null){
                         if(t.declarada==false)
@@ -697,86 +726,90 @@ public class Parser
                 }
                 break;
                 case 19:
-//#line 110 "gramaticaGrupo16.y"
+//#line 116 "gramaticaGrupo16.y"
                 { PI.put(val_peek(1).sval); }
                 break;
                 case 20:
-//#line 111 "gramaticaGrupo16.y"
-                { PI.put(val_peek(1).sval); }
+//#line 117 "gramaticaGrupo16.y"
+                { if ( val_peek(1).sval == this.idParam )
+                    yyval.sval = "readonly";
+                else
+                    yyval.sval = "noseusaelparametro";
+                    PI.put(val_peek(1).sval); }
                 break;
                 case 21:
-//#line 111 "gramaticaGrupo16.y"
+//#line 121 "gramaticaGrupo16.y"
                 {System.out.println("--------------------------------------------------------------------------------------------");
                     System.out.println("DEBUGUEANDO: esto es un separador");
                     System.out.println("--------------------------------------------------------------------------------------------");}
                 break;
                 case 22:
-//#line 118 "gramaticaGrupo16.y"
-                {Parser.estructuras.add("Se detecto un print en la linea "+Analizador_Lexico.cantLN+"\n"); PI.put("print");}
+//#line 128 "gramaticaGrupo16.y"
+                { yyval.sval = val_peek(1).sval; Parser.estructuras.add("Se detecto un print en la linea "+Analizador_Lexico.cantLN+"\n"); PI.put("print");}
                 break;
                 case 23:
-//#line 119 "gramaticaGrupo16.y"
-                {Parser.estructuras.add("Se detecto una asignacion en  la linea "+Analizador_Lexico.cantLN+"\n");}
+//#line 129 "gramaticaGrupo16.y"
+                {  yyval.sval == val_peek(1).sval; Parser.estructuras.add("Se detecto una asignacion en  la linea "+Analizador_Lexico.cantLN+"\n");}
                 break;
                 case 24:
-//#line 120 "gramaticaGrupo16.y"
-                {Parser.estructuras.add("Se detecto un if en la linea "+Analizador_Lexico.cantLN+"\n"); PI.desapilar(); }
+//#line 130 "gramaticaGrupo16.y"
+                { yyval.sval == val_peek(1).sval; Parser.estructuras.add("Se detecto un if en la linea "+Analizador_Lexico.cantLN+"\n"); PI.desapilar(); }
                 break;
                 case 25:
-//#line 121 "gramaticaGrupo16.y"
-                {Parser.estructuras.add("Se detecto un if en la linea "+Analizador_Lexico.cantLN+"\n"); PI.desapilar();}
+//#line 131 "gramaticaGrupo16.y"
+                { if ( isPermited(val_peek(3).sval, val_peek(1).sval) ) yyval.sval = val_peek(1).sval; Parser.estructuras.add("Se detecto un if en la linea "+Analizador_Lexico.cantLN+"\n"); PI.desapilar();}
                 break;
                 case 26:
-//#line 122 "gramaticaGrupo16.y"
-                {Parser.estructuras.add("Se detecto un while en la linea "+Analizador_Lexico.cantLN+"\n"); PI.saltoIncond(); PI.desapilar(); }
+//#line 132 "gramaticaGrupo16.y"
+                { yyval.sval == val_peek(0).sval; Parser.estructuras.add("Se detecto un while en la linea "+Analizador_Lexico.cantLN+"\n"); PI.saltoIncond(); PI.desapilar(); }
                 break;
                 case 27:
-//#line 133 "gramaticaGrupo16.y"
+//#line 143 "gramaticaGrupo16.y"
                 { PI.bifurcacion(); }
                 break;
                 case 28:
-//#line 137 "gramaticaGrupo16.y"
+//#line 147 "gramaticaGrupo16.y"
                 { PI.desapilarElse(); PI.bifurcacionElse(); }
                 break;
                 case 29:
-//#line 141 "gramaticaGrupo16.y"
+//#line 151 "gramaticaGrupo16.y"
                 { PI.bifurcacion(); }
                 break;
                 case 30:
-//#line 145 "gramaticaGrupo16.y"
+//#line 155 "gramaticaGrupo16.y"
                 { PI.setSaltoIncond(); }
                 break;
                 case 32:
-//#line 160 "gramaticaGrupo16.y"
+//#line 170 "gramaticaGrupo16.y"
                 { PI.put(val_peek(1).sval); }
                 break;
                 case 33:
-//#line 167 "gramaticaGrupo16.y"
+//#line 177 "gramaticaGrupo16.y"
                 { yyval.sval = "<"; }
                 break;
                 case 34:
-//#line 168 "gramaticaGrupo16.y"
+//#line 178 "gramaticaGrupo16.y"
                 { yyval.sval = ">"; }
                 break;
                 case 35:
-//#line 169 "gramaticaGrupo16.y"
+//#line 179 "gramaticaGrupo16.y"
                 { yyval.sval = "<="; }
                 break;
                 case 36:
-//#line 170 "gramaticaGrupo16.y"
+//#line 180 "gramaticaGrupo16.y"
                 { yyval.sval = ">="; }
                 break;
                 case 37:
-//#line 171 "gramaticaGrupo16.y"
+//#line 181 "gramaticaGrupo16.y"
                 { yyval.sval = "=="; }
                 break;
                 case 38:
-//#line 172 "gramaticaGrupo16.y"
+//#line 182 "gramaticaGrupo16.y"
                 { yyval.sval = "!="; }
                 break;
                 case 39:
-//#line 176 "gramaticaGrupo16.y"
-                {	Token t=Analizador_Lexico.tablaSimbolos.get(val_peek(2).sval); PI.put(val_peek(2).sval); PI.put(":=");
+//#line 186 "gramaticaGrupo16.y"
+                { if ( isPermited(val_peek(2).sval, val_peek(0).sval) ) yyval.sval = val_peek(0).sval; Token t=Analizador_Lexico.tablaSimbolos.get(val_peek(2).sval); PI.put(val_peek(2).sval); PI.put(":=");
                     if(t!=null){
                         if(t.declarada==false)
                             this.erroresGram.add(new ErrorG("Error 34 : La variable "+val_peek(2).sval+" no esta declarada ", Analizador_Lexico.cantLN));
@@ -786,40 +819,48 @@ public class Parser
                 }
                 break;
                 case 40:
-//#line 189 "gramaticaGrupo16.y"
-                { PI.put("+"); }
+//#line 199 "gramaticaGrupo16.y"
+                { if ( isPermited(val_peek(2).sval, val_peek(1).sval) ) yyval.sval = val_peek(1) else ERRORMUCHOERROR ; PI.put("+"); }
                 break;
                 case 41:
-//#line 190 "gramaticaGrupo16.y"
-                { PI.put("-"); }
+//#line 200 "gramaticaGrupo16.y"
+                { if ( isPermited(val_peek(2).sval, val_peek(1).sval) ) yyval.sval = val_peek(1) else ERRORMUCHOERROR ; PI.put("-"); }
+                break;
+                case 42:
+//#line 201 "gramaticaGrupo16.y"
+                { yyval.sval == val_peek(0).sval }
                 break;
                 case 43:
-//#line 194 "gramaticaGrupo16.y"
-                { PI.put("*"); }
+//#line 204 "gramaticaGrupo16.y"
+                { if ( isPermited(val_peek(2).sval, val_peek(1).sval) ) yyval.sval = val_peek(1) else ERRORMUCHOERROR ; PI.put("*"); }
                 break;
                 case 44:
-//#line 195 "gramaticaGrupo16.y"
-                { PI.put("/"); }
+//#line 205 "gramaticaGrupo16.y"
+                { if ( isPermited(val_peek(2).sval, val_peek(1).sval) ) yyval.sval = val_peek(1) else ERRORMUCHOERROR ; PI.put("/"); }
+                break;
+                case 45:
+//#line 206 "gramaticaGrupo16.y"
+                { yyval.sval == val_peek(0).sval }
                 break;
                 case 46:
-//#line 199 "gramaticaGrupo16.y"
-                { PI.put(val_peek(0).sval); }
+//#line 209 "gramaticaGrupo16.y"
+                { if ( idParam == val_peek(0)) yyval.sval == "readonly" else yyval.sval == "noseusaelparametro"; PI.put(val_peek(0).sval); }
                 break;
                 case 47:
-//#line 200 "gramaticaGrupo16.y"
-                { PI.put(val_peek(0).sval); }
+//#line 210 "gramaticaGrupo16.y"
+                { yyval.sval == "noseusaelparametro"; PI.put(val_peek(0).sval); }
                 break;
                 case 48:
-//#line 201 "gramaticaGrupo16.y"
-                { PI.put(val_peek(0).sval); }
+//#line 211 "gramaticaGrupo16.y"
+                { yyval.sval == "noseusaelparametro"; PI.put(val_peek(0).sval); }
                 break;
                 case 49:
-//#line 202 "gramaticaGrupo16.y"
+//#line 212 "gramaticaGrupo16.y"
                 {	Token t=Analizador_Lexico.tablaSimbolos.get(val_peek(0).sval);
                     t.lexema="-"+t.lexema; PI.put("-" + val_peek(1).sval);}
                 break;
                 case 50:
-//#line 204 "gramaticaGrupo16.y"
+//#line 214 "gramaticaGrupo16.y"
                 { PI.jumpToFun(val_peek(1).sval); Token t=Analizador_Lexico.tablaSimbolos.get(val_peek(1).sval);
                     if(t!=null){
                         if(t.declarada==false)
@@ -829,7 +870,7 @@ public class Parser
                         System.out.println("El identificador "+val_peek(1).sval+" no se agrego a la tabla de simbolos (El identificador es una funcion)"); }
                 break;
                 case 51:
-//#line 213 "gramaticaGrupo16.y"
+//#line 223 "gramaticaGrupo16.y"
                 { PI.put(val_peek(3).sval);
                     Token t=Analizador_Lexico.tablaSimbolos.get(val_peek(3).sval);
                     if(t!=null){
@@ -840,7 +881,7 @@ public class Parser
                         System.out.println("El identificador "+val_peek(3).sval+" no se agrego a la tabla de simbolos");
                 }
                 break;
-//#line 767 "Parser.java"
+//#line 808 "Parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
             }//switch
             //#### Now let's reduce... ####
