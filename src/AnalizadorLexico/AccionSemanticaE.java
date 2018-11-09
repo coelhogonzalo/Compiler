@@ -15,7 +15,7 @@ private AccionSemantica5 arreglarNumero;
         		return arreglarNumero.ejecutar(buffer, c);
         	}
         	else{
-        		System.out.println("Corrigiendo un identificador!");
+        		//System.out.println("Corrigiendo un identificador!");
         		int indice=buffer.indexOf("_");
         		if (indice != 0)
         			buffer.deleteCharAt(indice);
@@ -60,7 +60,7 @@ private AccionSemantica5 arreglarNumero;
         return null;
     }
 public boolean isNumero(StringBuilder buffer){
-	System.out.println("Corrigiendo un numero!");
+	//System.out.println("Corrigiendo un numero!");
 	if(buffer.charAt(buffer.length()-1)=='l')
 		buffer.deleteCharAt(buffer.length()-1);	
 	if(buffer.charAt(buffer.length()-1)=='u')

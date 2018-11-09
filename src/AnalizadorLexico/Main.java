@@ -68,6 +68,7 @@ public class Main {
         Parser.estructuras = new ArrayList<>();
         p.al = al;
         int unint = p.parsepublico();
+        System.out.println("Tabla de simbolos:");
         System.out.println(Analizador_Lexico.tablaSimbolos);
         p.PI.printContent();
         if (unint == 0)
