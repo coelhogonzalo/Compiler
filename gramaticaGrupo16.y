@@ -29,7 +29,7 @@ BS : BS sentencia {
     if ( isPermited($1.sval, $2.sval) )
         $$.sval = $2.sval;
     else
-        this.erroresGram.add(new ErrorG("Error permiso asginado incorrecto.", Analizador_Lexico.cantLN));
+        $$.sval = $1.sval;
  }
 	| sentencia { $$.sval = $1.sval; }
 	
@@ -196,13 +196,13 @@ asignacion : ID ASIGN expresion { if ( isPermited($1.sval, $3.sval) ) $$.sval = 
 	//ESTECOMPILA| ID ASIGN {this.erroresGram.add(new ErrorG("Error SIN NUMERO: Se esperaba una expresion del lado derecho de la asignacion", Analizador_Lexico.cantLN));}
 ;
 
-expresion : expresion '+' termino	{ if ( isPermited($1.sval, $2.sval) ) $$.sval = $2.sval; else         this.erroresGram.add(new ErrorG("Error permiso asginado incorrecto.", Analizador_Lexico.cantLN)) ; PI.put("+"); }
-	| expresion '-' termino		{ if ( isPermited($1.sval, $2.sval) ) $$.sval = $2.sval; else         this.erroresGram.add(new ErrorG("Error permiso asginado incorrecto.", Analizador_Lexico.cantLN)) ; PI.put("-"); }
+expresion : expresion '+' termino	{ if ( isPermited($1.sval, $2.sval) ) $$.sval = $2.sval; else         $$.sval = $1.sval ; PI.put("+"); }
+	| expresion '-' termino		{ if ( isPermited($1.sval, $2.sval) ) $$.sval = $2.sval; else         $$.sval = $1.sval ; PI.put("-"); }
 	| termino { $$.sval = $1.sval; }
 ;
 
-termino : termino '*' factor		{ if ( isPermited($1.sval, $2.sval) ) $$.sval = $2.sval; else         this.erroresGram.add(new ErrorG("Error permiso asginado incorrecto.", Analizador_Lexico.cantLN)) ; PI.put("*"); }
-	| termino '/' factor		{ if ( isPermited($1.sval, $2.sval) ) $$.sval = $2.sval; else         this.erroresGram.add(new ErrorG("Error permiso asginado incorrecto.", Analizador_Lexico.cantLN)) ; PI.put("/"); }
+termino : termino '*' factor		{ if ( isPermited($1.sval, $2.sval) ) $$.sval = $2.sval; else         $$.sval = $1.sval ; PI.put("*"); }
+	| termino '/' factor		{ if ( isPermited($1.sval, $2.sval) ) $$.sval = $2.sval; else         $$.sval = $1.sval ; PI.put("/"); }
 	| factor { $$.sval = $1.sval; }
 ;
 
@@ -211,7 +211,11 @@ factor : ID 				{ if ( idParam == $1.sval) $$.sval = "readonly"; else $$.sval = 
 	| SINGLE 			    { $$.sval = "noseusaelparametro"; PI.put($1.sval); }
 	| '-' SINGLE {	Token t=Analizador_Lexico.tablaSimbolos.get($2.sval);
 	t.lexema="-"+t.lexema; PI.put("-" + $1.sval);}
-	|ID parametros { PI.jumpToFun($1.sval); Token t=Analizador_Lexico.tablaSimbolos.get($1.sval);
+	|ID parametros { if ( !isPermited(al.tablaSimbolos.get($1.sval), $2.sval) )
+	                    new ErrorG("Error asignacion de permisos", Analizador_Lexico.cantLN);
+                    else
+                        System.out.println("Permiso aceptado");
+	PI.jumpToFun($1.sval); Token t=Analizador_Lexico.tablaSimbolos.get($1.sval);
 	if(t!=null){
 		if(t.declarada==false)
 			this.erroresGram.add(new ErrorG("Error 34.6 : La funcion "+$1.sval+" no esta declarada ", Analizador_Lexico.cantLN));
@@ -220,7 +224,7 @@ factor : ID 				{ if ( idParam == $1.sval) $$.sval = "readonly"; else $$.sval = 
 		System.out.println("El identificador "+$1.sval+" no se agrego a la tabla de simbolos (El identificador es una funcion)"); }
 ;
 
-parametros: '(' ID ';' lista_permisos ')' { PI.put($2.sval);
+parametros: '(' ID ';' lista_permisos ')' { $$.sval = $4.sval; PI.put($2.sval);
 Token t=Analizador_Lexico.tablaSimbolos.get($2.sval);
 	if(t!=null){
 		if(t.declarada==false)
