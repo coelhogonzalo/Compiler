@@ -29,7 +29,7 @@ BS : BS sentencia {
     if ( isPermited($1.sval, $2.sval) )
         $$.sval = $2.sval;
     else
-        ERROR DE QUE HAY DIFERENTES PERMISOS EN EL BLOQUE DE LA FUNCION;
+        this.erroresGram.add(new ErrorG("Error permiso asginado incorrecto.", Analizador_Lexico.cantLN));
  }
 	| sentencia { $$.sval = $1.sval; }
 	
