@@ -69,12 +69,12 @@ public class Polaca_Inversa {
     public void jumpToFun(String fun){
     	tamFuncion tf = funcs.get(fun);
     	if (tf != null){
-    		PI.add(new StringBuilder("Label" + tf.getInicio())); //esto en assembler deberia de ser un CALL para usar un RET y ya tener la pos
-    		PI.add(new StringBuilder("BTF"));
-    	}
+    		PI.add(new StringBuilder("CALL"));
+            PI.add(new StringBuilder(fun)); //esto en assembler deberia de ser un CALL para usar un RET y ya tener la pos
+        }
     	else {
-    		PI.add(new StringBuilder("Label" + 0)); //aca entra por si no esta definida la funcion
-    		PI.add(new StringBuilder("BTF"));
+            PI.add(new StringBuilder("CALL"));
+            PI.add(new StringBuilder(fun)); //aca entra por si no esta definida la funcion
     	}
     }
 
