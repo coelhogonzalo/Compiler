@@ -196,17 +196,17 @@ asignacion : ID ASIGN expresion { if ( isPermited($1.sval, $3.sval) ) $$.sval = 
 	//ESTECOMPILA| ID ASIGN {this.erroresGram.add(new ErrorG("Error SIN NUMERO: Se esperaba una expresion del lado derecho de la asignacion", Analizador_Lexico.cantLN));}
 ;
 
-expresion : expresion '+' termino	{ if ( isPermited($1.sval, $2.sval) ) $$.sval = $2; else         this.erroresGram.add(new ErrorG("Error permiso asginado incorrecto.", Analizador_Lexico.cantLN)) ; PI.put("+"); }
-	| expresion '-' termino		{ if ( isPermited($1.sval, $2.sval) ) $$.sval = $2; else         this.erroresGram.add(new ErrorG("Error permiso asginado incorrecto.", Analizador_Lexico.cantLN)) ; PI.put("-"); }
+expresion : expresion '+' termino	{ if ( isPermited($1.sval, $2.sval) ) $$.sval = $2.sval; else         this.erroresGram.add(new ErrorG("Error permiso asginado incorrecto.", Analizador_Lexico.cantLN)) ; PI.put("+"); }
+	| expresion '-' termino		{ if ( isPermited($1.sval, $2.sval) ) $$.sval = $2.sval; else         this.erroresGram.add(new ErrorG("Error permiso asginado incorrecto.", Analizador_Lexico.cantLN)) ; PI.put("-"); }
 	| termino { $$.sval = $1.sval; }
 ;
 
-termino : termino '*' factor		{ if ( isPermited($1.sval, $2.sval) ) $$.sval = $2; else         this.erroresGram.add(new ErrorG("Error permiso asginado incorrecto.", Analizador_Lexico.cantLN)) ; PI.put("*"); }
-	| termino '/' factor		{ if ( isPermited($1.sval, $2.sval) ) $$.sval = $2; else         this.erroresGram.add(new ErrorG("Error permiso asginado incorrecto.", Analizador_Lexico.cantLN)) ; PI.put("/"); }
-	| factor { $$.sval = $1.sval }
+termino : termino '*' factor		{ if ( isPermited($1.sval, $2.sval) ) $$.sval = $2.sval; else         this.erroresGram.add(new ErrorG("Error permiso asginado incorrecto.", Analizador_Lexico.cantLN)) ; PI.put("*"); }
+	| termino '/' factor		{ if ( isPermited($1.sval, $2.sval) ) $$.sval = $2.sval; else         this.erroresGram.add(new ErrorG("Error permiso asginado incorrecto.", Analizador_Lexico.cantLN)) ; PI.put("/"); }
+	| factor { $$.sval = $1.sval; }
 ;
 
-factor : ID 				{ if ( idParam == $1) $$.sval = "readonly"; else $$.sval = "noseusaelparametro"; PI.put($1.sval); }
+factor : ID 				{ if ( idParam == $1.sval) $$.sval = "readonly"; else $$.sval = "noseusaelparametro"; PI.put($1.sval); }
 	| USLINTEGER 			{ $$.sval = "noseusaelparametro"; PI.put($1.sval); }
 	| SINGLE 			    { $$.sval = "noseusaelparametro"; PI.put($1.sval); }
 	| '-' SINGLE {	Token t=Analizador_Lexico.tablaSimbolos.get($2.sval);
@@ -256,6 +256,8 @@ public Analizador_Lexico al;
 public ArrayList<AnalizadorLexico.Error> erroresGram;
 public static TokenValue ultimoTokenleido;
 public static ArrayList<String> estructuras;
+public String idFun;
+public String idParam;
 
 
 public int yylex(){
@@ -283,6 +285,17 @@ public void yyerror ( String e){
 public int parsepublico(){
 	return this.yyparse();
 }
+public static boolean  isPermited(String permisoFuncion,String permisoInvocacion){
+    	if(permisoFuncion.equals(permisoInvocacion))
+    		return true;
+    	if(permisoFuncion.equals(permisoInvocacion.substring(0, 5)))//Se fija si permisoInvocacion tiene un write y permisoFuncion tambien lo tiene
+    		return true;
+    	if(permisoFuncion.equals(permisoInvocacion.substring(6)))//Se fija si permisoInvocacion tiene un pass y permisoFuncion tambien lo tiene
+        	return true;
+    	if(permisoFuncion=="noseusaelparametro")
+    		return true;
+    	return false;
+    }
 public void registrarTipo(String listaVariables,String tipo){
 	int pos=0;
 	String idVariable="";
@@ -306,6 +319,7 @@ public void registrarTipo(String listaVariables,String tipo){
 		}
 	}*/
 }
+
 public static void main(String [] args) throws IOException{
 	//BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     //File f = new File(reader.readLine());

@@ -413,6 +413,8 @@ public class Parser
     public ArrayList<AnalizadorLexico.Error> erroresGram;
     public static TokenValue ultimoTokenleido;
     public static ArrayList<String> estructuras;
+    public String idFun;
+    public String idParam;
 
 
     public int yylex(){
@@ -440,6 +442,17 @@ public class Parser
     public int parsepublico(){
         return this.yyparse();
     }
+    public static boolean  isPermited(String permisoFuncion,String permisoInvocacion){
+        if(permisoFuncion.equals(permisoInvocacion))
+            return true;
+        if(permisoFuncion.equals(permisoInvocacion.substring(0, 5)))//Se fija si permisoInvocacion tiene un write y permisoFuncion tambien lo tiene
+            return true;
+        if(permisoFuncion.equals(permisoInvocacion.substring(6)))//Se fija si permisoInvocacion tiene un pass y permisoFuncion tambien lo tiene
+            return true;
+        if(permisoFuncion.equals("noseusaelparametro"))
+            return true;
+        return false;
+    }
     public void registrarTipo(String listaVariables,String tipo){
         int pos=0;
         String idVariable="";
@@ -463,6 +476,7 @@ public class Parser
 		}
 	}*/
     }
+
     public static void main(String [] args) throws IOException{
         //BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         //File f = new File(reader.readLine());
@@ -500,7 +514,7 @@ public class Parser
 
 
 
-    //#line 432 "Parser.java"
+    //#line 446 "Parser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -660,7 +674,7 @@ public class Parser
                     if ( isPermited(val_peek(1).sval, val_peek(0).sval) )
                         yyval.sval = val_peek(0).sval;
                     else
-                        ERROR DE QUE HAY DIFERENTES PERMISOS EN EL BLOQUE DE LA FUNCION;
+                        this.erroresGram.add(new ErrorG("Error permiso asginado incorrecto.", Analizador_Lexico.cantLN));
                 }
                 break;
                 case 3:
@@ -749,11 +763,11 @@ public class Parser
                 break;
                 case 23:
 //#line 129 "gramaticaGrupo16.y"
-                {  yyval.sval == val_peek(1).sval; Parser.estructuras.add("Se detecto una asignacion en  la linea "+Analizador_Lexico.cantLN+"\n");}
+                {  yyval.sval = val_peek(1).sval; Parser.estructuras.add("Se detecto una asignacion en  la linea "+Analizador_Lexico.cantLN+"\n");}
                 break;
                 case 24:
 //#line 130 "gramaticaGrupo16.y"
-                { yyval.sval == val_peek(1).sval; Parser.estructuras.add("Se detecto un if en la linea "+Analizador_Lexico.cantLN+"\n"); PI.desapilar(); }
+                { yyval.sval = val_peek(1).sval; Parser.estructuras.add("Se detecto un if en la linea "+Analizador_Lexico.cantLN+"\n"); PI.desapilar(); }
                 break;
                 case 25:
 //#line 131 "gramaticaGrupo16.y"
@@ -761,7 +775,7 @@ public class Parser
                 break;
                 case 26:
 //#line 132 "gramaticaGrupo16.y"
-                { yyval.sval == val_peek(0).sval; Parser.estructuras.add("Se detecto un while en la linea "+Analizador_Lexico.cantLN+"\n"); PI.saltoIncond(); PI.desapilar(); }
+                { yyval.sval = val_peek(0).sval; Parser.estructuras.add("Se detecto un while en la linea "+Analizador_Lexico.cantLN+"\n"); PI.saltoIncond(); PI.desapilar(); }
                 break;
                 case 27:
 //#line 143 "gramaticaGrupo16.y"
@@ -820,39 +834,39 @@ public class Parser
                 break;
                 case 40:
 //#line 199 "gramaticaGrupo16.y"
-                { if ( isPermited(val_peek(2).sval, val_peek(1).sval) ) yyval.sval = val_peek(1) else ERRORMUCHOERROR ; PI.put("+"); }
+                { if ( isPermited(val_peek(2).sval, val_peek(1).sval) ) yyval.sval = val_peek(1).sval; else         this.erroresGram.add(new ErrorG("Error permiso asginado incorrecto.", Analizador_Lexico.cantLN)) ; PI.put("+"); }
                 break;
                 case 41:
 //#line 200 "gramaticaGrupo16.y"
-                { if ( isPermited(val_peek(2).sval, val_peek(1).sval) ) yyval.sval = val_peek(1) else ERRORMUCHOERROR ; PI.put("-"); }
+                { if ( isPermited(val_peek(2).sval, val_peek(1).sval) ) yyval.sval = val_peek(1).sval; else         this.erroresGram.add(new ErrorG("Error permiso asginado incorrecto.", Analizador_Lexico.cantLN)) ; PI.put("-"); }
                 break;
                 case 42:
 //#line 201 "gramaticaGrupo16.y"
-                { yyval.sval == val_peek(0).sval }
+                { yyval.sval = val_peek(0).sval; }
                 break;
                 case 43:
 //#line 204 "gramaticaGrupo16.y"
-                { if ( isPermited(val_peek(2).sval, val_peek(1).sval) ) yyval.sval = val_peek(1) else ERRORMUCHOERROR ; PI.put("*"); }
+                { if ( isPermited(val_peek(2).sval, val_peek(1).sval) ) yyval.sval = val_peek(1).sval; else         this.erroresGram.add(new ErrorG("Error permiso asginado incorrecto.", Analizador_Lexico.cantLN)) ; PI.put("*"); }
                 break;
                 case 44:
 //#line 205 "gramaticaGrupo16.y"
-                { if ( isPermited(val_peek(2).sval, val_peek(1).sval) ) yyval.sval = val_peek(1) else ERRORMUCHOERROR ; PI.put("/"); }
+                { if ( isPermited(val_peek(2).sval, val_peek(1).sval) ) yyval.sval = val_peek(1).sval; else         this.erroresGram.add(new ErrorG("Error permiso asginado incorrecto.", Analizador_Lexico.cantLN)) ; PI.put("/"); }
                 break;
                 case 45:
 //#line 206 "gramaticaGrupo16.y"
-                { yyval.sval == val_peek(0).sval }
+                { yyval.sval = val_peek(0).sval; }
                 break;
                 case 46:
 //#line 209 "gramaticaGrupo16.y"
-                { if ( idParam == val_peek(0)) yyval.sval == "readonly" else yyval.sval == "noseusaelparametro"; PI.put(val_peek(0).sval); }
+                { if ( idParam == val_peek(0).sval) yyval.sval = "readonly"; else yyval.sval = "noseusaelparametro"; PI.put(val_peek(0).sval); }
                 break;
                 case 47:
 //#line 210 "gramaticaGrupo16.y"
-                { yyval.sval == "noseusaelparametro"; PI.put(val_peek(0).sval); }
+                { yyval.sval = "noseusaelparametro"; PI.put(val_peek(0).sval); }
                 break;
                 case 48:
 //#line 211 "gramaticaGrupo16.y"
-                { yyval.sval == "noseusaelparametro"; PI.put(val_peek(0).sval); }
+                { yyval.sval = "noseusaelparametro"; PI.put(val_peek(0).sval); }
                 break;
                 case 49:
 //#line 212 "gramaticaGrupo16.y"
@@ -881,7 +895,7 @@ public class Parser
                         System.out.println("El identificador "+val_peek(3).sval+" no se agrego a la tabla de simbolos");
                 }
                 break;
-//#line 808 "Parser.java"
+//#line 822 "Parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
             }//switch
             //#### Now let's reduce... ####
