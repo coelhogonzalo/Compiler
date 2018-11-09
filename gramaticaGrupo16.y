@@ -60,7 +60,14 @@ tipoFunID : tipo ID { this.idFun = $2.sval; Token t=Analizador_Lexico.tablaSimbo
 
 ;
 
-parametrosDef: '(' tipo ID ')' { this.idParam = $3.sval; }
+parametrosDef: '(' tipo ID ')' { Token t=Analizador_Lexico.tablaSimbolos.get($3.sval);
+	if(t!=null){
+		t.uso="parametro";
+		t.declarada=true;
+	}
+	else
+		System.out.println("El token que quisiste recuperar es null");
+this.idParam = $3.sval; }
 	//ESTECOMPILA| '(' tipo ID {this.erroresGram.add(new ErrorG("Error SIN NUMERO : Falta un ) despues del identificador", Analizador_Lexico.cantLN));}
 	//ESTECOMPILA| tipo ID ')' {this.erroresGram.add(new ErrorG("Error SIN NUMERO : Falta un ( antes del tipo del parametro", Analizador_Lexico.cantLN));}
 ;
@@ -79,20 +86,28 @@ retorno : RETURN expresioncparentesis {PI.finFuncion(); }//el del return tengo q
 
 lista_variables : lista_variables ';' ID {Token t=Analizador_Lexico.tablaSimbolos.get($3.sval);
 	if(t!=null){
-		if(t.declarada==false)
+		if(t.declarada==false&&t.uso!="parametro"){
 			t.declarada=true;
+			t.uso="variable";
+		}
 		else	
-			this.erroresGram.add(new ErrorG("Error SIN NUMERO: Se redeclaro la variable '"+$3.sval+"' ", Analizador_Lexico.cantLN));
+			this.erroresGram.add(new ErrorG("Error SIN NUMERO: Se redeclaro el identificador de tipo "+t.uso+" :'"+t.lexema+"' ", Analizador_Lexico.cantLN));
 		$$=new ParserVal($$.sval+" "+$3.sval);
-	}}
+	}
+	else
+		System.out.println("El token que quisiste recuperar es null");}
 	| ID{	Token t=Analizador_Lexico.tablaSimbolos.get($1.sval);
 	if(t!=null){
-		if(t.declarada==false)
+		if(t.declarada==false&&t.uso!="parametro"){
 			t.declarada=true;
+			t.uso="variable";
+		}
 		else 
-			this.erroresGram.add(new ErrorG("Error SIN NUMERO: Se redeclaro la variable '"+$1.sval+"' ", Analizador_Lexico.cantLN));
+			this.erroresGram.add(new ErrorG("Error SIN NUMERO: Se redeclaro el identificador de tipo "+t.uso+" :'"+t.lexema+"' ", Analizador_Lexico.cantLN));
 		$$=new ParserVal($$.sval+" "+$1.sval);
 	}
+	else
+		System.out.println("El token que quisiste recuperar es null");
 	}
 ;
 
@@ -213,12 +228,16 @@ factor : ID 				{ if ( idParam == $1.sval) $$.sval = "readonly"; else $$.sval = 
 	t.lexema="-"+t.lexema; PI.put("-" + $1.sval);}
 	|ID parametros { if ( !isPermited(al.tablaSimbolos.get($1.sval).permisoFun, $2.sval) )
 	                    new ErrorG("Error asignacion de permisos", Analizador_Lexico.cantLN);
-                    else
-                        System.out.println("Permiso aceptado");
+                    else{
+                        //System.out.println("Permiso aceptado");
+					}
 	PI.jumpToFun($1.sval); Token t=Analizador_Lexico.tablaSimbolos.get($1.sval);
 	if(t!=null){
 		if(t.declarada==false)
 			this.erroresGram.add(new ErrorG("Error 34.6 : La funcion "+$1.sval+" no esta declarada ", Analizador_Lexico.cantLN));
+		else
+			if(t.uso!="funcion")
+				this.erroresGram.add(new ErrorG("Error 34.7 : El identificador "+t.lexema+" no es una funcion ", Analizador_Lexico.cantLN));
 	}
 	else
 		System.out.println("El identificador "+$1.sval+" no se agrego a la tabla de simbolos (El identificador es una funcion)"); }
@@ -277,7 +296,7 @@ public int yylex(){
 		yylval = new ParserVal(t.lexema);
 		TokenValue tv = new TokenValue (t.lexema, Analizador_Lexico.cantLN);
 		ultimoTokenleido=tv;
-		System.out.println("leyo : "+t.lexema+" 	Numero de token: "+t.nro);
+		//System.out.println("leyo : "+t.lexema+" 	Numero de token: "+t.nro);
 		return t.nro;
 	}
 	return 0;
@@ -294,7 +313,7 @@ public void registrarTipo(String listaVariables,String tipo){
 	String idVariable="";
 	ArrayList<String> items= new ArrayList<String>(Arrays.asList(listaVariables.split(" ")));
 	for (String item:items){
-		System.out.println(items.size()+" El identificador es :'"+item+"'");
+		//System.out.println(items.size()+" El identificador es :'"+item+"'");
 		Token t=Analizador_Lexico.tablaSimbolos.get(item);
 		t.tipo=tipo;
 		idVariable="";
@@ -326,7 +345,7 @@ public static boolean  isPermited(String permisoFuncion,String permisoInvocacion
     	if(permisoFuncion!="readonly"&&permisoInvocacion=="readonly")
     		return true;
     	return false;
-    }  
+    }  /* Lo comento asi no genera codigo
     public static void testing_isPermited() {
     	System.out.println("");
     	System.out.println("Testing con readonly en la funcion:");
@@ -383,9 +402,9 @@ public static boolean  isPermited(String permisoFuncion,String permisoInvocacion
     		System.out.println("Recibi un write y la funcion tenia noseusaelparametro, lo acepte");
     	if(isPermited("noseusaelparametro","write;pass"))
     		System.out.println("Recibi un write;pass y la funcion tenia noseusaelparametro, lo acepte");
-    }
+    }*/
 public static void main(String [] args) throws IOException{
-	testing_isPermited();
+	//testing_isPermited();
 	//BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     //File f = new File(reader.readLine());
 	File f = new File("prueba.txt");

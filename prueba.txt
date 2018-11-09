@@ -1,10 +1,10 @@
 single _var123,
 single _var1234,
-_var123 := 123123,
+_var123 := 123123_ul,
 
 
 
-single _fun1( single _var3){
+single _var123( single _var3){
 	single _var3,
 	_var3 := 21,
 	return ( _var2 + 2)
@@ -18,6 +18,6 @@ single _fun2( single _var3){
 
 single _var2,
 single _var1,
-_var1 := _fun1(_var2 ;write),
+_var1 := _var1234(_var2 ;write),
 _var5 := 123,
-_var2 := _fun2(_var2 ;write),
+_var2 := _fun1(_var2 ;write),
