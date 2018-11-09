@@ -442,17 +442,6 @@ public class Parser
     public int parsepublico(){
         return this.yyparse();
     }
-    public static boolean  isPermited(String permisoFuncion,String permisoInvocacion){
-        if(permisoFuncion.equals(permisoInvocacion))
-            return true;
-        if(permisoFuncion.equals(permisoInvocacion.substring(0, 5)))//Se fija si permisoInvocacion tiene un write y permisoFuncion tambien lo tiene
-            return true;
-        if(permisoFuncion.equals(permisoInvocacion.substring(6)))//Se fija si permisoInvocacion tiene un pass y permisoFuncion tambien lo tiene
-            return true;
-        if(permisoFuncion.equals("noseusaelparametro"))
-            return true;
-        return false;
-    }
     public void registrarTipo(String listaVariables,String tipo){
         int pos=0;
         String idVariable="";
@@ -476,8 +465,85 @@ public class Parser
 		}
 	}*/
     }
+    public static boolean  isPermited(String permisoFuncion,String permisoInvocacion){
+    	if(permisoFuncion.equals(permisoInvocacion))
+    		return true;
+    	if(permisoInvocacion.length()>5)
+    	if(permisoFuncion.equals(permisoInvocacion.substring(0, 5)))//Se fija si permisoInvocacion tiene un write y permisoFuncion tambien lo tiene
+    		return true;
+    	if(permisoInvocacion.length()>6)
+    		if(permisoFuncion.equals(permisoInvocacion.substring(6)))//Se fija si permisoInvocacion tiene un pass y permisoFuncion tambien lo tiene
+    			return true;
+    	if(permisoFuncion=="noseusaelparametro")
+    		return true;
+    	if(permisoFuncion!="readonly"&&permisoInvocacion=="readonly")
+    		return true;
+    	return false;
+    }
+
+    
+    public static void testing_isPermited() {
+    	System.out.println("");
+    	System.out.println("Testing con readonly en la funcion:");
+    	System.out.println("");
+    	if(isPermited("readonly","readonly"))
+    		System.out.println("Recibi un readonly y la funcion tenia un readonly, lo acepte");
+    	if(!isPermited("readonly","pass"))
+    		System.out.println("Recibi un pass y la funcion tenia readonly, RECHAZADO");
+    	if(!isPermited("readonly","write"))
+    		System.out.println("Recibi un write y la funcion tenia readonly, RECHAZADO");
+    	if(!isPermited("readonly","write;pass"))
+    		System.out.println("Recibi un write;pass y la funcion tenia readonly, RECHAZADO");
+    	System.out.println("");
+    	System.out.println("Testing con pass en la funcion:");
+    	System.out.println("");
+    	if(isPermited("pass","pass"))
+    		System.out.println("Recibi un pass y la funcion tenia un pass, lo acepte");
+    	if(isPermited("pass","readonly"))
+    		System.out.println("Recibi un readonly y la funcion tenia pass, lo acepte");
+    	if(!isPermited("pass","write"))
+    		System.out.println("Recibi un write y la funcion tenia pass, RECHAZADO");
+    	if(isPermited("pass","write;pass"))
+    		System.out.println("Recibi un write;pass y la funcion tenia pass, lo acepte");
+    	System.out.println("");
+    	System.out.println("Testing con write en la funcion:");
+    	System.out.println("");
+    	if(isPermited("write","write"))
+    		System.out.println("Recibi un write y la funcion tenia write, lo acepte");
+    	if(!isPermited("write","pass"))
+    		System.out.println("Recibi un pass y la funcion tenia un write, RECHAZADO");
+    	if(isPermited("write","readonly"))
+    		System.out.println("Recibi un readonly y la funcion tenia write, lo acepte");
+    	if(isPermited("write","write;pass"))
+    		System.out.println("Recibi un write;pass y la funcion tenia write, lo acepte");
+    	System.out.println("");
+    	System.out.println("Testing con write;pass en la funcion:");
+    	System.out.println("");
+    	if(!isPermited("write;pass","write"))
+    		System.out.println("Recibi un write y la funcion tenia write;pass, RECHAZADO");
+    	if(!isPermited("write;pass","pass"))
+    		System.out.println("Recibi un pass y la funcion tenia un write;pass, RECHAZADO");
+    	if(isPermited("write;pass","readonly"))
+    		System.out.println("Recibi un readonly y la funcion tenia write;pass, lo acepte");
+    	if(isPermited("write;pass","write;pass"))
+    		System.out.println("Recibi un write;pass y la funcion tenia write;pass, lo acepte");
+    	System.out.println("");
+    	System.out.println("Testing con noseusaelparametro en la funcion:");
+    	System.out.println("");
+    	if(isPermited("noseusaelparametro","readonly"))
+    		System.out.println("Recibi un readonly y la funcion tenia un noseusaelparametro, lo acepte");
+    	if(isPermited("noseusaelparametro","pass"))
+    		System.out.println("Recibi un pass y la funcion tenia noseusaelparametro, lo acepte");
+    	if(isPermited("noseusaelparametro","write"))
+    		System.out.println("Recibi un write y la funcion tenia noseusaelparametro, lo acepte");
+    	if(isPermited("noseusaelparametro","write;pass"))
+    		System.out.println("Recibi un write;pass y la funcion tenia noseusaelparametro, lo acepte");
+    }
+
+
 
     public static void main(String [] args) throws IOException{
+    	testing_isPermited();
         //BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         //File f = new File(reader.readLine());
         File f = new File("prueba.txt");
