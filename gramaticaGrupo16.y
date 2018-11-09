@@ -196,17 +196,17 @@ asignacion : ID ASIGN expresion { if ( isPermited($1.sval, $3.sval) ) $$.sval = 
 	//ESTECOMPILA| ID ASIGN {this.erroresGram.add(new ErrorG("Error SIN NUMERO: Se esperaba una expresion del lado derecho de la asignacion", Analizador_Lexico.cantLN));}
 ;
 
-expresion : expresion '+' termino	{ if ( isPermited($1.sval, $2.sval) ) $$.sval = $2 else ERRORMUCHOERROR ; PI.put("+"); }
-	| expresion '-' termino		{ if ( isPermited($1.sval, $2.sval) ) $$.sval = $2 else ERRORMUCHOERROR ; PI.put("-"); }
-	| termino { $$.sval == $1.sval }
+expresion : expresion '+' termino	{ if ( isPermited($1.sval, $2.sval) ) $$.sval = $2; else         this.erroresGram.add(new ErrorG("Error permiso asginado incorrecto.", Analizador_Lexico.cantLN)) ; PI.put("+"); }
+	| expresion '-' termino		{ if ( isPermited($1.sval, $2.sval) ) $$.sval = $2; else         this.erroresGram.add(new ErrorG("Error permiso asginado incorrecto.", Analizador_Lexico.cantLN)) ; PI.put("-"); }
+	| termino { $$.sval == $1.sval; }
 ;
 
-termino : termino '*' factor		{ if ( isPermited($1.sval, $2.sval) ) $$.sval = $2 else ERRORMUCHOERROR ; PI.put("*"); }
-	| termino '/' factor		{ if ( isPermited($1.sval, $2.sval) ) $$.sval = $2 else ERRORMUCHOERROR ; PI.put("/"); }
+termino : termino '*' factor		{ if ( isPermited($1.sval, $2.sval) ) $$.sval = $2; else         this.erroresGram.add(new ErrorG("Error permiso asginado incorrecto.", Analizador_Lexico.cantLN)) ; PI.put("*"); }
+	| termino '/' factor		{ if ( isPermited($1.sval, $2.sval) ) $$.sval = $2; else         this.erroresGram.add(new ErrorG("Error permiso asginado incorrecto.", Analizador_Lexico.cantLN)) ; PI.put("/"); }
 	| factor { $$.sval == $1.sval }
 ;
 
-factor : ID 				{ if ( idParam == $1) $$.sval == "readonly" else $$.sval == "noseusaelparametro"; PI.put($1.sval); }
+factor : ID 				{ if ( idParam == $1) $$.sval == "readonly"; else $$.sval == "noseusaelparametro"; PI.put($1.sval); }
 	| USLINTEGER 			{ $$.sval == "noseusaelparametro"; PI.put($1.sval); }
 	| SINGLE 			    { $$.sval == "noseusaelparametro"; PI.put($1.sval); }
 	| '-' SINGLE {	Token t=Analizador_Lexico.tablaSimbolos.get($2.sval);
