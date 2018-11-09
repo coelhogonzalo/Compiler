@@ -308,7 +308,7 @@ public void registrarTipo(String listaVariables,String tipo){
 		}
 	}*/
 }
-    public static boolean  isPermited(String permisoFuncion,String permisoInvocacion){
+public static boolean  isPermited(String permisoFuncion,String permisoInvocacion){
     	if(permisoFuncion.equals(permisoInvocacion))
     		return true;
     	if(permisoInvocacion.length()>5)
@@ -322,10 +322,8 @@ public void registrarTipo(String listaVariables,String tipo){
     	if(permisoFuncion!="readonly"&&permisoInvocacion=="readonly")
     		return true;
     	return false;
-    }
-
-    
-    public static void mainPrueba(String [] args) throws IOException{
+    }  
+    public static void testing_isPermited() {
     	System.out.println("");
     	System.out.println("Testing con readonly en la funcion:");
     	System.out.println("");
@@ -382,10 +380,8 @@ public void registrarTipo(String listaVariables,String tipo){
     	if(isPermited("noseusaelparametro","write;pass"))
     		System.out.println("Recibi un write;pass y la funcion tenia noseusaelparametro, lo acepte");
     }
-
-
-
 public static void main(String [] args) throws IOException{
+	testing_isPermited();
 	//BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     //File f = new File(reader.readLine());
 	File f = new File("prueba.txt");

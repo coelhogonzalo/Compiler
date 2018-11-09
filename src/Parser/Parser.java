@@ -479,9 +479,7 @@ public class Parser
     	if(permisoFuncion!="readonly"&&permisoInvocacion=="readonly")
     		return true;
     	return false;
-    }
-
-    
+    }  
     public static void testing_isPermited() {
     	System.out.println("");
     	System.out.println("Testing con readonly en la funcion:");
@@ -539,9 +537,6 @@ public class Parser
     	if(isPermited("noseusaelparametro","write;pass"))
     		System.out.println("Recibi un write;pass y la funcion tenia noseusaelparametro, lo acepte");
     }
-
-
-
     public static void main(String [] args) throws IOException{
     	testing_isPermited();
         //BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
