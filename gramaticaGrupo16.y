@@ -211,7 +211,7 @@ factor : ID 				{ if ( idParam == $1.sval) $$.sval = "readonly"; else $$.sval = 
 	| SINGLE 			    { $$.sval = "noseusaelparametro"; PI.put($1.sval); }
 	| '-' SINGLE {	Token t=Analizador_Lexico.tablaSimbolos.get($2.sval);
 	t.lexema="-"+t.lexema; PI.put("-" + $1.sval);}
-	|ID parametros { if ( !isPermited(al.tablaSimbolos.get($1.sval), $2.sval) )
+	|ID parametros { if ( !isPermited(al.tablaSimbolos.get($1.sval).permisoFun, $2.sval) )
 	                    new ErrorG("Error asignacion de permisos", Analizador_Lexico.cantLN);
                     else
                         System.out.println("Permiso aceptado");

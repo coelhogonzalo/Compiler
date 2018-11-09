@@ -406,7 +406,7 @@ public class Parser
             "lista_permisos :",
     };
 
-//#line 253 "gramaticaGrupo16.y"
+//#line 257 "gramaticaGrupo16.y"
 
     public Polaca_Inversa PI = new Polaca_Inversa();
     public Analizador_Lexico al;
@@ -466,79 +466,79 @@ public class Parser
 	}*/
     }
     public static boolean  isPermited(String permisoFuncion,String permisoInvocacion){
-    	if(permisoFuncion.equals(permisoInvocacion))
-    		return true;
-    	if(permisoInvocacion.length()>5)
-    	if(permisoFuncion.equals(permisoInvocacion.substring(0, 5)))//Se fija si permisoInvocacion tiene un write y permisoFuncion tambien lo tiene
-    		return true;
-    	if(permisoInvocacion.length()>6)
-    		if(permisoFuncion.equals(permisoInvocacion.substring(6)))//Se fija si permisoInvocacion tiene un pass y permisoFuncion tambien lo tiene
-    			return true;
-    	if(permisoFuncion=="noseusaelparametro")
-    		return true;
-    	if(permisoFuncion!="readonly"&&permisoInvocacion=="readonly")
-    		return true;
-    	return false;
-    }  
+        if(permisoFuncion.equals(permisoInvocacion))
+            return true;
+        if(permisoInvocacion.length()>5)
+            if(permisoFuncion.equals(permisoInvocacion.substring(0, 5)))//Se fija si permisoInvocacion tiene un write y permisoFuncion tambien lo tiene
+                return true;
+        if(permisoInvocacion.length()>6)
+            if(permisoFuncion.equals(permisoInvocacion.substring(6)))//Se fija si permisoInvocacion tiene un pass y permisoFuncion tambien lo tiene
+                return true;
+        if(permisoFuncion=="noseusaelparametro")
+            return true;
+        if(permisoFuncion!="readonly"&&permisoInvocacion=="readonly")
+            return true;
+        return false;
+    }
     public static void testing_isPermited() {
-    	System.out.println("");
-    	System.out.println("Testing con readonly en la funcion:");
-    	System.out.println("");
-    	if(isPermited("readonly","readonly"))
-    		System.out.println("Recibi un readonly y la funcion tenia un readonly, lo acepte");
-    	if(!isPermited("readonly","pass"))
-    		System.out.println("Recibi un pass y la funcion tenia readonly, RECHAZADO");
-    	if(!isPermited("readonly","write"))
-    		System.out.println("Recibi un write y la funcion tenia readonly, RECHAZADO");
-    	if(!isPermited("readonly","write;pass"))
-    		System.out.println("Recibi un write;pass y la funcion tenia readonly, RECHAZADO");
-    	System.out.println("");
-    	System.out.println("Testing con pass en la funcion:");
-    	System.out.println("");
-    	if(isPermited("pass","pass"))
-    		System.out.println("Recibi un pass y la funcion tenia un pass, lo acepte");
-    	if(isPermited("pass","readonly"))
-    		System.out.println("Recibi un readonly y la funcion tenia pass, lo acepte");
-    	if(!isPermited("pass","write"))
-    		System.out.println("Recibi un write y la funcion tenia pass, RECHAZADO");
-    	if(isPermited("pass","write;pass"))
-    		System.out.println("Recibi un write;pass y la funcion tenia pass, lo acepte");
-    	System.out.println("");
-    	System.out.println("Testing con write en la funcion:");
-    	System.out.println("");
-    	if(isPermited("write","write"))
-    		System.out.println("Recibi un write y la funcion tenia write, lo acepte");
-    	if(!isPermited("write","pass"))
-    		System.out.println("Recibi un pass y la funcion tenia un write, RECHAZADO");
-    	if(isPermited("write","readonly"))
-    		System.out.println("Recibi un readonly y la funcion tenia write, lo acepte");
-    	if(isPermited("write","write;pass"))
-    		System.out.println("Recibi un write;pass y la funcion tenia write, lo acepte");
-    	System.out.println("");
-    	System.out.println("Testing con write;pass en la funcion:");
-    	System.out.println("");
-    	if(!isPermited("write;pass","write"))
-    		System.out.println("Recibi un write y la funcion tenia write;pass, RECHAZADO");
-    	if(!isPermited("write;pass","pass"))
-    		System.out.println("Recibi un pass y la funcion tenia un write;pass, RECHAZADO");
-    	if(isPermited("write;pass","readonly"))
-    		System.out.println("Recibi un readonly y la funcion tenia write;pass, lo acepte");
-    	if(isPermited("write;pass","write;pass"))
-    		System.out.println("Recibi un write;pass y la funcion tenia write;pass, lo acepte");
-    	System.out.println("");
-    	System.out.println("Testing con noseusaelparametro en la funcion:");
-    	System.out.println("");
-    	if(isPermited("noseusaelparametro","readonly"))
-    		System.out.println("Recibi un readonly y la funcion tenia un noseusaelparametro, lo acepte");
-    	if(isPermited("noseusaelparametro","pass"))
-    		System.out.println("Recibi un pass y la funcion tenia noseusaelparametro, lo acepte");
-    	if(isPermited("noseusaelparametro","write"))
-    		System.out.println("Recibi un write y la funcion tenia noseusaelparametro, lo acepte");
-    	if(isPermited("noseusaelparametro","write;pass"))
-    		System.out.println("Recibi un write;pass y la funcion tenia noseusaelparametro, lo acepte");
+        System.out.println("");
+        System.out.println("Testing con readonly en la funcion:");
+        System.out.println("");
+        if(isPermited("readonly","readonly"))
+            System.out.println("Recibi un readonly y la funcion tenia un readonly, lo acepte");
+        if(!isPermited("readonly","pass"))
+            System.out.println("Recibi un pass y la funcion tenia readonly, RECHAZADO");
+        if(!isPermited("readonly","write"))
+            System.out.println("Recibi un write y la funcion tenia readonly, RECHAZADO");
+        if(!isPermited("readonly","write;pass"))
+            System.out.println("Recibi un write;pass y la funcion tenia readonly, RECHAZADO");
+        System.out.println("");
+        System.out.println("Testing con pass en la funcion:");
+        System.out.println("");
+        if(isPermited("pass","pass"))
+            System.out.println("Recibi un pass y la funcion tenia un pass, lo acepte");
+        if(isPermited("pass","readonly"))
+            System.out.println("Recibi un readonly y la funcion tenia pass, lo acepte");
+        if(!isPermited("pass","write"))
+            System.out.println("Recibi un write y la funcion tenia pass, RECHAZADO");
+        if(isPermited("pass","write;pass"))
+            System.out.println("Recibi un write;pass y la funcion tenia pass, lo acepte");
+        System.out.println("");
+        System.out.println("Testing con write en la funcion:");
+        System.out.println("");
+        if(isPermited("write","write"))
+            System.out.println("Recibi un write y la funcion tenia write, lo acepte");
+        if(!isPermited("write","pass"))
+            System.out.println("Recibi un pass y la funcion tenia un write, RECHAZADO");
+        if(isPermited("write","readonly"))
+            System.out.println("Recibi un readonly y la funcion tenia write, lo acepte");
+        if(isPermited("write","write;pass"))
+            System.out.println("Recibi un write;pass y la funcion tenia write, lo acepte");
+        System.out.println("");
+        System.out.println("Testing con write;pass en la funcion:");
+        System.out.println("");
+        if(!isPermited("write;pass","write"))
+            System.out.println("Recibi un write y la funcion tenia write;pass, RECHAZADO");
+        if(!isPermited("write;pass","pass"))
+            System.out.println("Recibi un pass y la funcion tenia un write;pass, RECHAZADO");
+        if(isPermited("write;pass","readonly"))
+            System.out.println("Recibi un readonly y la funcion tenia write;pass, lo acepte");
+        if(isPermited("write;pass","write;pass"))
+            System.out.println("Recibi un write;pass y la funcion tenia write;pass, lo acepte");
+        System.out.println("");
+        System.out.println("Testing con noseusaelparametro en la funcion:");
+        System.out.println("");
+        if(isPermited("noseusaelparametro","readonly"))
+            System.out.println("Recibi un readonly y la funcion tenia un noseusaelparametro, lo acepte");
+        if(isPermited("noseusaelparametro","pass"))
+            System.out.println("Recibi un pass y la funcion tenia noseusaelparametro, lo acepte");
+        if(isPermited("noseusaelparametro","write"))
+            System.out.println("Recibi un write y la funcion tenia noseusaelparametro, lo acepte");
+        if(isPermited("noseusaelparametro","write;pass"))
+            System.out.println("Recibi un write;pass y la funcion tenia noseusaelparametro, lo acepte");
     }
     public static void main(String [] args) throws IOException{
-    	testing_isPermited();
+        testing_isPermited();
         //BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         //File f = new File(reader.readLine());
         File f = new File("prueba.txt");
@@ -575,7 +575,7 @@ public class Parser
 
 
 
-    //#line 446 "Parser.java"
+    //#line 507 "Parser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -735,7 +735,7 @@ public class Parser
                     if ( isPermited(val_peek(1).sval, val_peek(0).sval) )
                         yyval.sval = val_peek(0).sval;
                     else
-                        this.erroresGram.add(new ErrorG("Error permiso asginado incorrecto.", Analizador_Lexico.cantLN));
+                        yyval.sval = val_peek(1).sval;
                 }
                 break;
                 case 3:
@@ -895,11 +895,11 @@ public class Parser
                 break;
                 case 40:
 //#line 199 "gramaticaGrupo16.y"
-                { if ( isPermited(val_peek(2).sval, val_peek(1).sval) ) yyval.sval = val_peek(1).sval; else         this.erroresGram.add(new ErrorG("Error permiso asginado incorrecto.", Analizador_Lexico.cantLN)) ; PI.put("+"); }
+                { if ( isPermited(val_peek(2).sval, val_peek(1).sval) ) yyval.sval = val_peek(1).sval; else         yyval.sval = val_peek(2).sval ; PI.put("+"); }
                 break;
                 case 41:
 //#line 200 "gramaticaGrupo16.y"
-                { if ( isPermited(val_peek(2).sval, val_peek(1).sval) ) yyval.sval = val_peek(1).sval; else         this.erroresGram.add(new ErrorG("Error permiso asginado incorrecto.", Analizador_Lexico.cantLN)) ; PI.put("-"); }
+                { if ( isPermited(val_peek(2).sval, val_peek(1).sval) ) yyval.sval = val_peek(1).sval; else         yyval.sval = val_peek(2).sval ; PI.put("-"); }
                 break;
                 case 42:
 //#line 201 "gramaticaGrupo16.y"
@@ -907,11 +907,11 @@ public class Parser
                 break;
                 case 43:
 //#line 204 "gramaticaGrupo16.y"
-                { if ( isPermited(val_peek(2).sval, val_peek(1).sval) ) yyval.sval = val_peek(1).sval; else         this.erroresGram.add(new ErrorG("Error permiso asginado incorrecto.", Analizador_Lexico.cantLN)) ; PI.put("*"); }
+                { if ( isPermited(val_peek(2).sval, val_peek(1).sval) ) yyval.sval = val_peek(1).sval; else         yyval.sval = val_peek(2).sval ; PI.put("*"); }
                 break;
                 case 44:
 //#line 205 "gramaticaGrupo16.y"
-                { if ( isPermited(val_peek(2).sval, val_peek(1).sval) ) yyval.sval = val_peek(1).sval; else         this.erroresGram.add(new ErrorG("Error permiso asginado incorrecto.", Analizador_Lexico.cantLN)) ; PI.put("/"); }
+                { if ( isPermited(val_peek(2).sval, val_peek(1).sval) ) yyval.sval = val_peek(1).sval; else         yyval.sval = val_peek(2).sval ; PI.put("/"); }
                 break;
                 case 45:
 //#line 206 "gramaticaGrupo16.y"
@@ -936,7 +936,11 @@ public class Parser
                 break;
                 case 50:
 //#line 214 "gramaticaGrupo16.y"
-                { PI.jumpToFun(val_peek(1).sval); Token t=Analizador_Lexico.tablaSimbolos.get(val_peek(1).sval);
+                { if ( !isPermited(al.tablaSimbolos.get(val_peek(1).sval).permisoFun, val_peek(0).sval) )
+                    new ErrorG("Error asignacion de permisos", Analizador_Lexico.cantLN);
+                else
+                    System.out.println("Permiso aceptado");
+                    PI.jumpToFun(val_peek(1).sval); Token t=Analizador_Lexico.tablaSimbolos.get(val_peek(1).sval);
                     if(t!=null){
                         if(t.declarada==false)
                             this.erroresGram.add(new ErrorG("Error 34.6 : La funcion "+val_peek(1).sval+" no esta declarada ", Analizador_Lexico.cantLN));
@@ -945,8 +949,8 @@ public class Parser
                         System.out.println("El identificador "+val_peek(1).sval+" no se agrego a la tabla de simbolos (El identificador es una funcion)"); }
                 break;
                 case 51:
-//#line 223 "gramaticaGrupo16.y"
-                { PI.put(val_peek(3).sval);
+//#line 227 "gramaticaGrupo16.y"
+                { yyval.sval = val_peek(1).sval; PI.put(val_peek(3).sval);
                     Token t=Analizador_Lexico.tablaSimbolos.get(val_peek(3).sval);
                     if(t!=null){
                         if(t.declarada==false)
@@ -956,7 +960,7 @@ public class Parser
                         System.out.println("El identificador "+val_peek(3).sval+" no se agrego a la tabla de simbolos");
                 }
                 break;
-//#line 822 "Parser.java"
+//#line 887 "Parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
             }//switch
             //#### Now let's reduce... ####
