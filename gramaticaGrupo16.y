@@ -126,10 +126,10 @@ printeable : '(' CADENA ')' 		{ PI.put($2.sval); }
 ;
 
 sentenciaCE : PRINT printeable ',' { $$.sval = $2.sval; Parser.estructuras.add("Se detecto un print en la linea "+Analizador_Lexico.cantLN+"\n"); PI.put("print");}
-	| asignacion ',' {  $$.sval == $1.sval; Parser.estructuras.add("Se detecto una asignacion en  la linea "+Analizador_Lexico.cantLN+"\n");}
-	| ifcond BCE ENDIF { $$.sval == $2.sval; Parser.estructuras.add("Se detecto un if en la linea "+Analizador_Lexico.cantLN+"\n"); PI.desapilar(); }
+	| asignacion ',' {  $$.sval = $1.sval; Parser.estructuras.add("Se detecto una asignacion en  la linea "+Analizador_Lexico.cantLN+"\n");}
+	| ifcond BCE ENDIF { $$.sval = $2.sval; Parser.estructuras.add("Se detecto un if en la linea "+Analizador_Lexico.cantLN+"\n"); PI.desapilar(); }
 	| ifcond BCE elsecond BCE ENDIF { if ( isPermited($2.sval, $4.sval) ) $$.sval = $4.sval; Parser.estructuras.add("Se detecto un if en la linea "+Analizador_Lexico.cantLN+"\n"); PI.desapilar();}
-	| whilecond BCE { $$.sval == $2.sval; Parser.estructuras.add("Se detecto un while en la linea "+Analizador_Lexico.cantLN+"\n"); PI.saltoIncond(); PI.desapilar(); }
+	| whilecond BCE { $$.sval = $2.sval; Parser.estructuras.add("Se detecto un while en la linea "+Analizador_Lexico.cantLN+"\n"); PI.saltoIncond(); PI.desapilar(); }
 	
 	//ESTECOMPILA| IF condicioncparentesis ELSE BCE ENDIF {this.erroresGram.add(new ErrorG("Error 9: Se esperaba un bloque de sentencias en la rama del if", Analizador_Lexico.cantLN));}
 	//ESTECOMPILA| IF condicioncparentesis BCE ELSE ENDIF {this.erroresGram.add(new ErrorG("Error 10: Se esperaba un bloque de sentencias en la rama del else", Analizador_Lexico.cantLN));}
@@ -198,17 +198,17 @@ asignacion : ID ASIGN expresion { if ( isPermited($1.sval, $3.sval) ) $$.sval = 
 
 expresion : expresion '+' termino	{ if ( isPermited($1.sval, $2.sval) ) $$.sval = $2; else         this.erroresGram.add(new ErrorG("Error permiso asginado incorrecto.", Analizador_Lexico.cantLN)) ; PI.put("+"); }
 	| expresion '-' termino		{ if ( isPermited($1.sval, $2.sval) ) $$.sval = $2; else         this.erroresGram.add(new ErrorG("Error permiso asginado incorrecto.", Analizador_Lexico.cantLN)) ; PI.put("-"); }
-	| termino { $$.sval == $1.sval; }
+	| termino { $$.sval = $1.sval; }
 ;
 
 termino : termino '*' factor		{ if ( isPermited($1.sval, $2.sval) ) $$.sval = $2; else         this.erroresGram.add(new ErrorG("Error permiso asginado incorrecto.", Analizador_Lexico.cantLN)) ; PI.put("*"); }
 	| termino '/' factor		{ if ( isPermited($1.sval, $2.sval) ) $$.sval = $2; else         this.erroresGram.add(new ErrorG("Error permiso asginado incorrecto.", Analizador_Lexico.cantLN)) ; PI.put("/"); }
-	| factor { $$.sval == $1.sval }
+	| factor { $$.sval = $1.sval }
 ;
 
-factor : ID 				{ if ( idParam == $1) $$.sval == "readonly"; else $$.sval == "noseusaelparametro"; PI.put($1.sval); }
-	| USLINTEGER 			{ $$.sval == "noseusaelparametro"; PI.put($1.sval); }
-	| SINGLE 			    { $$.sval == "noseusaelparametro"; PI.put($1.sval); }
+factor : ID 				{ if ( idParam == $1) $$.sval = "readonly"; else $$.sval = "noseusaelparametro"; PI.put($1.sval); }
+	| USLINTEGER 			{ $$.sval = "noseusaelparametro"; PI.put($1.sval); }
+	| SINGLE 			    { $$.sval = "noseusaelparametro"; PI.put($1.sval); }
 	| '-' SINGLE {	Token t=Analizador_Lexico.tablaSimbolos.get($2.sval);
 	t.lexema="-"+t.lexema; PI.put("-" + $1.sval);}
 	|ID parametros { PI.jumpToFun($1.sval); Token t=Analizador_Lexico.tablaSimbolos.get($1.sval);
