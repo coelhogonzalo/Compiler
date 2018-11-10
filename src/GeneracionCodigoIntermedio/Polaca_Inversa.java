@@ -57,7 +57,8 @@ public class Polaca_Inversa {
     	tf.setInicio(PI.size());
     	nombreFunActual = nombreFun;
     	funcs.put(nombreFun, tf);
-    	PI.add(new StringBuilder("inicio_funcion"));
+        PI.add(new StringBuilder(nombreFun));
+        PI.add(new StringBuilder("inicio_funcion"));
     }
     
     public void finFuncion() {
