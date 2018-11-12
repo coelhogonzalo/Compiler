@@ -188,8 +188,8 @@ public final static short USLINTEGERPR=276;
 public final static short INVALIDO=277;
 public final static short YYERRCODE=256;
 final static short yylhs[] = {                           -1,
-    0,    1,    1,    2,    2,    4,    4,    7,    8,    9,
-   10,   10,   12,   12,   13,   13,   11,    6,    6,   15,
+    0,    1,    1,    2,    2,    4,    4,    6,    6,    7,
+    8,    9,   10,   10,   12,   12,   13,   13,   11,   15,
    15,   16,   16,   14,   18,   19,   18,    3,    3,    3,
     3,    3,   21,   22,   23,   25,   24,   26,   27,   27,
    27,   27,   27,   27,   20,   17,   17,   17,   28,   28,
@@ -197,8 +197,8 @@ final static short yylhs[] = {                           -1,
    31,   31,   31,   31,
 };
 final static short yylen[] = {                            2,
-    1,    2,    1,    1,    1,    3,    3,    2,    4,    4,
-    2,    1,    1,    1,    3,    3,    2,    3,    1,    3,
+    1,    2,    1,    1,    1,    3,    3,    3,    1,    2,
+    4,    4,    2,    1,    1,    1,    3,    3,    2,    3,
     1,    2,    1,    3,    3,    0,    4,    3,    2,    3,
     5,    2,    2,    1,    2,    1,    3,    3,    1,    1,
     1,    1,    1,    1,    3,    3,    3,    1,    3,    3,
@@ -213,10 +213,10 @@ final static short yydefred[] = {                         0,
     0,    0,    0,    0,   28,    6,    0,    0,    0,    7,
    23,    0,   34,   30,    0,    0,   56,   55,    0,    0,
     0,    0,   42,   41,   43,   44,   39,   40,    0,   37,
-   26,   25,   18,    0,   13,    0,    0,    0,   12,   14,
+   26,   25,    8,    0,   15,    0,    0,    0,   14,   16,
    20,   22,    0,    0,    0,    0,   49,   50,    0,   27,
-    9,    0,    0,    0,    0,   11,   31,    0,   15,   16,
-    0,   17,   10,   60,    0,   62,    0,    0,    0,   57,
+   11,    0,    0,    0,    0,   13,   31,    0,   17,   18,
+    0,   19,   12,   60,    0,   62,    0,    0,    0,   57,
    24,   63,
 };
 final static short yydgoto[] = {                          7,
@@ -267,9 +267,9 @@ yytable = new short[]{                         52,
    52,   52,   52,   52,   48,   52,   48,   48,   48,   46,
    37,   46,   46,   46,   29,   81,   41,   59,   52,   60,
    52,   48,   32,   48,   77,   48,   46,   10,   46,   47,
-   46,   47,   47,   47,   67,   10,   68,   59,    8,   60,
-   18,   47,   19,   19,   76,    1,   43,   44,   47,    2,
-   47,    1,    3,   77,   21,    2,   51,   19,    3,   99,
+   46,   47,   47,   47,   67,   10,   68,   59,   10,   60,
+   18,   47,    9,   19,   76,    1,   43,   44,   47,    2,
+   47,    1,    3,   77,   21,    2,   51,    9,    3,   99,
    61,   83,    4,    5,    6,   62,   89,   94,    4,    5,
     6,    1,   26,   76,   47,    2,   75,   28,    3,   82,
   111,   24,   59,   49,   60,  104,  105,  106,    4,   45,
@@ -357,6 +357,8 @@ final static String yyrule[] = {
 "sentencia : sentenciaDEC",
 "sentenciaDEC : tipo lista_variables ','",
 "sentenciaDEC : tipoFunID parametrosDef cuerpofuncion",
+"lista_variables : lista_variables ';' ID",
+"lista_variables : ID",
 "tipoFunID : tipo ID",
 "parametrosDef : '(' tipo ID ')'",
 "cuerpofuncion : '{' BSFuncion retorno '}'",
@@ -367,8 +369,6 @@ final static String yyrule[] = {
 "sentenciaDECFuncion : tipo lista_variables ','",
 "sentenciaDECFuncion : tipoFunID parametrosDef cuerpofuncion",
 "retorno : RETURN expresioncparentesis",
-"lista_variables : lista_variables ';' ID",
-"lista_variables : ID",
 "BCE : '{' BCE2 '}'",
 "BCE : sentenciaCE",
 "BCE2 : BCE2 sentenciaCE",
@@ -416,7 +416,7 @@ final static String yyrule[] = {
 "lista_permisos :",
 };
 
-//#line 303 "gramatica.y"
+//#line 326 "gramatica.y"
 
 public Polaca_Inversa PI = new Polaca_Inversa();
 public Analizador_Lexico al;
@@ -425,6 +425,7 @@ public static TokenValue ultimoTokenleido;
 public static ArrayList<String> estructuras;
 public String idFun;
 public String idParam;
+public static String ambitoActual="@main";
 
 
 public int yylex(){
@@ -452,6 +453,31 @@ public void yyerror ( String e){
 public int parsepublico(){
 	return this.yyparse();
 }
+public String removerUltimoAmbito(String identificador){//Toma un identificador y devuelve un substring sin el ultimo ambito 
+	System.out.println(identificador);
+	while(identificador.charAt(identificador.length()-1)!='@')
+		identificador=identificador.substring(0, identificador.length()-1);
+	identificador=identificador.substring(0, identificador.length()-1);
+	return identificador;
+}
+/*
+public static void testRemoverUltimoAmbito(String [] args){
+	Parser p=new Parser(false);
+	String variable="_var1@main@ambito1@ambito2";
+	String aux=variable;
+	System.out.println(aux);
+	aux=p.removerUltimoAmbito(aux);
+	System.out.println(aux);
+	aux=variable;
+	aux=p.removerUltimoAmbito(aux);
+	aux=p.removerUltimoAmbito(aux);
+	System.out.println(aux);
+	aux=variable;
+	aux=p.removerUltimoAmbito(aux);
+	aux=p.removerUltimoAmbito(aux);
+	aux=p.removerUltimoAmbito(aux);
+	System.out.println(aux);
+}*/
 public void registrarTipo(String listaVariables,String tipo){
 	ArrayList<String> items= new ArrayList<String>(Arrays.asList(listaVariables.split(" ")));
 	for (String item:items){
@@ -548,7 +574,7 @@ public static boolean  isPermited(String permisoFuncion,String permisoInvocacion
 
 
 
-//#line 480 "Parser.java"
+//#line 506 "Parser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -730,11 +756,49 @@ Parser.estructuras.add("Se detecto la declaracion de variables en la linea "+Ana
 break;
 case 7:
 //#line 43 "gramatica.y"
-{ Analizador_Lexico.tablaSimbolos.get(val_peek(2).sval).permisoFun = val_peek(0).sval; Parser.estructuras.add("Se detecto la declaracion de una funcion en la linea "+Analizador_Lexico.cantLN+"\r\n");}
+{ Parser.ambitoActual="@main";
+	Analizador_Lexico.tablaSimbolos.get(val_peek(2).sval).permisoFun = val_peek(0).sval; Parser.estructuras.add("Se detecto la declaracion de una funcion en la linea "+Analizador_Lexico.cantLN+"\r\n");}
 break;
 case 8:
-//#line 54 "gramatica.y"
-{ this.idFun = val_peek(0).sval; Token t=Analizador_Lexico.tablaSimbolos.get(val_peek(0).sval);
+//#line 57 "gramatica.y"
+{/*System.out.println("Busque esto en la declaracion de una var"+$3.sval+" ");*/
+Token t=Analizador_Lexico.tablaSimbolos.get(val_peek(0).sval);
+	if(t!=null){
+		if(t.declarada==false&&t.uso!="parametro"){
+			t.declarada=true;
+			t.uso="variable";
+		}
+		else	
+			this.errores.add(new ErrorG("Error SIN NUMERO: Se redeclaro el identificador de uso "+t.uso+" :'"+t.lexema+"' ", Analizador_Lexico.cantLN));
+		yyval=new ParserVal(yyval.sval+" "+val_peek(0).sval);
+	}
+	else
+		System.out.println("El token que quisiste recuperar es null o no esta en el ambito ndmpp");}
+break;
+case 9:
+//#line 70 "gramatica.y"
+{	/*System.out.println("Busque esto en la declaracion de una var"+$1.sval+" ");*/
+	Token t=Analizador_Lexico.tablaSimbolos.get(val_peek(0).sval);
+	if(t!=null){
+		if(t.declarada==false&&t.uso!="parametro"){
+			t.declarada=true;
+			t.uso="variable";
+		}
+		else 
+			this.errores.add(new ErrorG("Error SIN NUMERO: Se redeclaro el identificador de tipo "+t.uso+" :'"+t.lexema+"' ", Analizador_Lexico.cantLN));
+		yyval=new ParserVal(yyval.sval+" "+val_peek(0).sval);
+	}
+	else
+		System.out.println("El token que quisiste recuperar es null o no esta en el ambito ndmpp");
+	}
+break;
+case 10:
+//#line 86 "gramatica.y"
+{ /*Parser.ambitoActual+="@"+removerUltimoAmbito($2.sval);*/
+
+System.out.println("El ambito actual"+Parser.ambitoActual);
+
+this.idFun = val_peek(0).sval; Token t=Analizador_Lexico.tablaSimbolos.get(val_peek(0).sval);
 	if(t.declarada){
 		this.errores.add(new ErrorG("Error SIN NUMERO: El identificador '"+t.lexema+"' ,de uso '"+t.uso+"' ya esta declarado", Analizador_Lexico.cantLN));
 		PI.inicioFuncion(val_peek(0).sval);
@@ -747,92 +811,63 @@ case 8:
 	}
 	}
 break;
-case 9:
-//#line 69 "gramatica.y"
-{ Token t=Analizador_Lexico.tablaSimbolos.get(val_peek(1).sval);
+case 11:
+//#line 105 "gramatica.y"
+{ 
+/*System.out.println("Busque esto en la definicion de param"+$3.sval+Parser.ambitoActual);*/
+Token t=Analizador_Lexico.tablaSimbolos.get(val_peek(1).sval);
 	if(t!=null){
 		t.uso="parametro";
 		t.declarada=true;
 	}
 	else
-		System.out.println("El token que quisiste recuperar es null (ndmpp)");
+		System.out.println("El token que quisiste recuperar es null o no esta en el ambito ndmpp");
 this.idParam = val_peek(1).sval; }
 break;
-case 10:
-//#line 81 "gramatica.y"
+case 12:
+//#line 119 "gramatica.y"
 { yyval.sval = val_peek(2).sval; }
 break;
-case 11:
-//#line 87 "gramatica.y"
-{
+case 13:
+//#line 125 "gramatica.y"
+{ /*ACA DEBERIAMOS PONERLE EL AMBITO QUE VA A TENER EL BSFUNCION QUE ES '@main@IDFUNCION'*/
     if ( isPermited(val_peek(1).sval, val_peek(0).sval) )
         yyval.sval = val_peek(0).sval;
     else
         yyval.sval = val_peek(1).sval;
  }
 break;
-case 12:
-//#line 93 "gramatica.y"
-{ yyval.sval = val_peek(0).sval; }
-break;
-case 13:
-//#line 95 "gramatica.y"
-{ yyval.sval = val_peek(0).sval; }
-break;
 case 14:
-//#line 96 "gramatica.y"
+//#line 131 "gramatica.y"
 { yyval.sval = val_peek(0).sval; }
 break;
 case 15:
-//#line 98 "gramatica.y"
+//#line 133 "gramatica.y"
+{ yyval.sval = val_peek(0).sval; }
+break;
+case 16:
+//#line 134 "gramatica.y"
+{ yyval.sval = val_peek(0).sval; }
+break;
+case 17:
+//#line 136 "gramatica.y"
 { yyval.sval = "noseusaelparametro"; registrarTipo( val_peek(1).sval, val_peek(2).sval); /*System.out.println($2.sval);*/
 Parser.estructuras.add("Se detecto la declaracion de variables en la linea "+Analizador_Lexico.cantLN+"\r\n");}
 break;
-case 16:
-//#line 102 "gramatica.y"
+case 18:
+//#line 140 "gramatica.y"
 {this.errores.add(new ErrorG("Error SIN NUMERO: Se declaró una funcion dentro de otra funcion", Analizador_Lexico.cantLN));}
 break;
-case 17:
-//#line 109 "gramatica.y"
+case 19:
+//#line 147 "gramatica.y"
 {PI.finFuncion(); }
 break;
-case 18:
-//#line 114 "gramatica.y"
-{Token t=Analizador_Lexico.tablaSimbolos.get(val_peek(0).sval);
-	if(t!=null){
-		if(t.declarada==false&&t.uso!="parametro"){
-			t.declarada=true;
-			t.uso="variable";
-		}
-		else	
-			this.errores.add(new ErrorG("Error SIN NUMERO: Se redeclaro el identificador de uso "+t.uso+" :'"+t.lexema+"' ", Analizador_Lexico.cantLN));
-		yyval=new ParserVal(yyval.sval+" "+val_peek(0).sval);
-	}
-	else
-		System.out.println("El token que quisiste recuperar es null");}
-break;
-case 19:
-//#line 126 "gramatica.y"
-{	Token t=Analizador_Lexico.tablaSimbolos.get(val_peek(0).sval);
-	if(t!=null){
-		if(t.declarada==false&&t.uso!="parametro"){
-			t.declarada=true;
-			t.uso="variable";
-		}
-		else 
-			this.errores.add(new ErrorG("Error SIN NUMERO: Se redeclaro el identificador de tipo "+t.uso+" :'"+t.lexema+"' ", Analizador_Lexico.cantLN));
-		yyval=new ParserVal(yyval.sval+" "+val_peek(0).sval);
-	}
-	else
-		System.out.println("El token que quisiste recuperar es null");
-	}
-break;
 case 25:
-//#line 158 "gramatica.y"
+//#line 169 "gramatica.y"
 { PI.put(val_peek(1).sval); }
 break;
 case 26:
-//#line 159 "gramatica.y"
+//#line 170 "gramatica.y"
 { if ( val_peek(1).sval == this.idParam )
 		                    yyval.sval = "readonly";
 		                  else
@@ -840,134 +875,138 @@ case 26:
 		PI.put(val_peek(1).sval); }
 break;
 case 27:
-//#line 163 "gramatica.y"
+//#line 174 "gramatica.y"
 {System.out.println("--------------------------------------------------------------------------------------------");
 		System.out.println("DEBUGUEANDO: esto es un separador");
 		System.out.println("--------------------------------------------------------------------------------------------");}
 break;
 case 28:
-//#line 170 "gramatica.y"
+//#line 181 "gramatica.y"
 { yyval.sval = val_peek(1).sval; Parser.estructuras.add("Se detecto un print en la linea "+Analizador_Lexico.cantLN+"\r\n"); PI.put("print");}
 break;
 case 29:
-//#line 171 "gramatica.y"
+//#line 182 "gramatica.y"
 {  yyval.sval = val_peek(1).sval; Parser.estructuras.add("Se detecto una asignacion en  la linea "+Analizador_Lexico.cantLN+"\r\n");}
 break;
 case 30:
-//#line 172 "gramatica.y"
+//#line 183 "gramatica.y"
 { yyval.sval = val_peek(1).sval; Parser.estructuras.add("Se detecto un if en la linea "+Analizador_Lexico.cantLN+"\r\n"); PI.desapilar(); }
 break;
 case 31:
-//#line 173 "gramatica.y"
+//#line 184 "gramatica.y"
 { if ( isPermited(val_peek(3).sval, val_peek(1).sval) ) yyval.sval = val_peek(1).sval; Parser.estructuras.add("Se detecto un if en la linea "+Analizador_Lexico.cantLN+"\r\n"); PI.desapilar();}
 break;
 case 32:
-//#line 174 "gramatica.y"
+//#line 185 "gramatica.y"
 { yyval.sval = val_peek(0).sval; Parser.estructuras.add("Se detecto un while en la linea "+Analizador_Lexico.cantLN+"\r\n"); PI.saltoIncond(); PI.desapilar(); }
 break;
 case 33:
-//#line 185 "gramatica.y"
+//#line 196 "gramatica.y"
 { PI.bifurcacion(); }
 break;
 case 34:
-//#line 189 "gramatica.y"
+//#line 200 "gramatica.y"
 { PI.desapilarElse(); PI.bifurcacionElse(); }
 break;
 case 35:
-//#line 193 "gramatica.y"
+//#line 204 "gramatica.y"
 { PI.bifurcacion(); }
 break;
 case 36:
-//#line 197 "gramatica.y"
+//#line 208 "gramatica.y"
 { PI.setSaltoIncond(); }
 break;
 case 38:
-//#line 212 "gramatica.y"
+//#line 223 "gramatica.y"
 { PI.put(val_peek(1).sval); }
 break;
 case 39:
-//#line 219 "gramatica.y"
+//#line 230 "gramatica.y"
 { yyval.sval = "<"; }
 break;
 case 40:
-//#line 220 "gramatica.y"
+//#line 231 "gramatica.y"
 { yyval.sval = ">"; }
 break;
 case 41:
-//#line 221 "gramatica.y"
+//#line 232 "gramatica.y"
 { yyval.sval = "<="; }
 break;
 case 42:
-//#line 222 "gramatica.y"
+//#line 233 "gramatica.y"
 { yyval.sval = ">="; }
 break;
 case 43:
-//#line 223 "gramatica.y"
+//#line 234 "gramatica.y"
 { yyval.sval = "=="; }
 break;
 case 44:
-//#line 224 "gramatica.y"
+//#line 235 "gramatica.y"
 { yyval.sval = "!="; }
 break;
 case 45:
-//#line 228 "gramatica.y"
-{ if ( isPermited(val_peek(2).sval, val_peek(0).sval) ) yyval.sval = val_peek(0).sval; Token t=Analizador_Lexico.tablaSimbolos.get(val_peek(2).sval); PI.put(val_peek(2).sval); PI.put(":=");
+//#line 239 "gramatica.y"
+{ if ( isPermited(val_peek(2).sval, val_peek(0).sval) ) yyval.sval = val_peek(0).sval; 
+/*System.out.println("Busque esto asignacion:"+$1.sval);*/
+Token t=Analizador_Lexico.tablaSimbolos.get(val_peek(2).sval); PI.put(val_peek(2).sval); PI.put(":=");
 	if(t!=null){
 		if(t.declarada==false)
 			this.errores.add(new ErrorG("Error 34 : La variable "+val_peek(2).sval+" no esta declarada ", Analizador_Lexico.cantLN));
 	}
 	else
-		System.out.println("El identificador "+val_peek(2).sval+" no se agrego a la tabla de simbolos (ndmpp)");
+		System.out.println("El identificador "+val_peek(2).sval+" no se agrego a la tabla de simbolos o no esta al alcance ndmpp");
 	}
 break;
 case 46:
-//#line 241 "gramatica.y"
+//#line 254 "gramatica.y"
 { if ( isPermited(val_peek(2).sval, val_peek(1).sval) ) yyval.sval = val_peek(1).sval; else         yyval.sval = val_peek(2).sval ; PI.put("+"); }
 break;
 case 47:
-//#line 242 "gramatica.y"
+//#line 255 "gramatica.y"
 { if ( isPermited(val_peek(2).sval, val_peek(1).sval) ) yyval.sval = val_peek(1).sval; else         yyval.sval = val_peek(2).sval ; PI.put("-"); }
 break;
 case 48:
-//#line 243 "gramatica.y"
+//#line 256 "gramatica.y"
 { yyval.sval = val_peek(0).sval; }
 break;
 case 49:
-//#line 246 "gramatica.y"
+//#line 259 "gramatica.y"
 { if ( isPermited(val_peek(2).sval, val_peek(1).sval) ) yyval.sval = val_peek(1).sval; else         yyval.sval = val_peek(2).sval ; PI.put("*"); }
 break;
 case 50:
-//#line 247 "gramatica.y"
+//#line 260 "gramatica.y"
 { if ( isPermited(val_peek(2).sval, val_peek(1).sval) ) yyval.sval = val_peek(1).sval; else         yyval.sval = val_peek(2).sval ; PI.put("/"); }
 break;
 case 51:
-//#line 248 "gramatica.y"
+//#line 261 "gramatica.y"
 { yyval.sval = val_peek(0).sval; }
 break;
 case 52:
-//#line 251 "gramatica.y"
+//#line 264 "gramatica.y"
 { if ( idParam == val_peek(0).sval) yyval.sval = "readonly"; else yyval.sval = "noseusaelparametro"; PI.put(val_peek(0).sval); }
 break;
 case 53:
-//#line 252 "gramatica.y"
+//#line 265 "gramatica.y"
 { yyval.sval = "noseusaelparametro"; PI.put(val_peek(0).sval); }
 break;
 case 54:
-//#line 253 "gramatica.y"
+//#line 266 "gramatica.y"
 { yyval.sval = "noseusaelparametro"; PI.put(val_peek(0).sval); }
 break;
 case 55:
-//#line 254 "gramatica.y"
+//#line 267 "gramatica.y"
 {	Token t=Analizador_Lexico.tablaSimbolos.get(val_peek(0).sval);
 	t.lexema="-"+t.lexema; PI.put("-" + val_peek(1).sval);}
 break;
 case 56:
-//#line 256 "gramatica.y"
-{ if ( !isPermited(Analizador_Lexico.tablaSimbolos.get(val_peek(1).sval).permisoFun, val_peek(0).sval) )
-	                    new ErrorG("Error asignacion de permisos", Analizador_Lexico.cantLN);
-                    else{
-                        /*System.out.println("Permiso aceptado");*/
-					}
+//#line 274 "gramatica.y"
+{/* if ( !isPermited(Analizador_Lexico.tablaSimbolos.get($1.sval).permisoFun, $2.sval) )*/
+	  /*                  new ErrorG("Error asignacion de permisos", Analizador_Lexico.cantLN);*/
+      /*              else{*/
+		/*			}*/
+      /*   	              //System.out.println("Permiso aceptado");*/
+					
+				/*System.out.println("Busque esto es para el invocacion de la funcion"+$1.sval);*/
 	PI.jumpToFun(val_peek(1).sval); Token t=Analizador_Lexico.tablaSimbolos.get(val_peek(1).sval);
 	if(t!=null){
 		if(t.declarada==false)
@@ -976,22 +1015,25 @@ case 56:
 			if(t.uso!="funcion")
 				this.errores.add(new ErrorG("Error 34.7 : El identificador "+t.lexema+" no es una funcion. ", Analizador_Lexico.cantLN));
 	}
+	/*Aca gon, para mi aca arriba tiene que registrar que la funcion invoca a otra funcion con el parametro como parametro*/
+	/*Aca gon, para mi aca arriba tiene que registrar que la funcion invoca a otra funcion con el parametro como parametro*/
 	else
-		System.out.println("El identificador "+val_peek(1).sval+" no se agrego a la tabla de simbolos (El identificador es una funcion) (ndmpp)"); }
+		System.out.println("El identificador "+val_peek(1).sval+" no se agrego a la tabla de simbolos o no esta al alcance (El identificador es una funcion) ndmpp"); }
 break;
 case 57:
-//#line 273 "gramatica.y"
+//#line 295 "gramatica.y"
 { yyval.sval = val_peek(1).sval; PI.put(val_peek(3).sval);
+/*System.out.println("Busque esto , el id era un parametro "+$2.sval+Parser.ambitoActual);*/
 Token t=Analizador_Lexico.tablaSimbolos.get(val_peek(3).sval);
 	if(t!=null){
 		if(t.declarada==false)
 			this.errores.add(new ErrorG("Error 35: La variable "+val_peek(3).sval+" no esta declarada ", Analizador_Lexico.cantLN));
 	}
 	else
-		System.out.println("El identificador "+val_peek(3).sval+" no se agrego a la tabla de simbolos (ndmpp)");
+		System.out.println("El identificador "+val_peek(3).sval+" no se agrego a la tabla de simbolos o no esta al alcance ndmpp");
 	}
 break;
-//#line 918 "Parser.java"
+//#line 960 "Parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

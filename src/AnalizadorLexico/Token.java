@@ -22,7 +22,13 @@ public class Token {
 
     public String toString(){
         if ( nro != Analizador_Lexico.TOKEN_ERROR )
-            return "Lexema: " + lexema + "   Numero: " + nro + "   Tipo: " + tipo +"\r\n";
+            return "Lexema: '" + lexema + "'   Numero: " + nro + "   Tipo: " + tipo +"\r\n";
+        else
+            return "TOKEN ERROR\n";
+    }
+    public String toStringDetallado(){
+        if ( nro != Analizador_Lexico.TOKEN_ERROR )
+            return "LEXEMA: '" + lexema + "'||| NUMERO: " + nro + "||| TIPO: " + tipo +"|||DECLARADA?: "+this.declarada+"|||USO: "+this.uso+"|||PERMISO: "+this.permisoFun+"\r\n";
         else
             return "TOKEN ERROR\n";
     }
