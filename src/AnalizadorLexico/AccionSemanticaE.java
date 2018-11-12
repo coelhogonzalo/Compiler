@@ -6,7 +6,6 @@ private AccionSemantica5 arreglarNumero;
         Error e = new Error("ERROR", "Definicion no valida.", Analizador_Lexico.cantLN);
         Analizador_Lexico.errores.add(e);
         if (buffer.length() > 0){
-        	System.out.println(buffer);
         	if (isNumero(buffer)){//Si es un numero valido le agrega el _u para que en la accionsemantica 5 (arreglar numero) se guarde como un _ul
         		arreglarNumero=new AccionSemantica5();
         		e = new Error("WARNING", buffer.toString() + ": Las constantes de tipo uslinteger deben terminar en _ul", Analizador_Lexico.cantLN);
@@ -30,7 +29,7 @@ private AccionSemantica5 arreglarNumero;
         			}
         			else{
         				e = new Error("WARNING", buffer.toString() + ": Se agrego el caracter _ al principio y se interpreto como un identificador ", Analizador_Lexico.cantLN);
-                        System.out.println(e.toString());
+        				Analizador_Lexico.errores.add(e);
                         String lexema="_" +buffer.subSequence(0, 24);
                         Token unToken = new Token(lexema, Analizador_Lexico.TOKEN_ID, "identificador");
                         Analizador_Lexico.tablaSimbolos.put(lexema, unToken);
@@ -49,7 +48,6 @@ private AccionSemantica5 arreglarNumero;
         				e = new Error("WARNING", buffer.toString() + ": Se interpreto como un identificador ", Analizador_Lexico.cantLN);
                         Analizador_Lexico.errores.add(e);
                         String lexema=buffer.subSequence(0, 24).toString();
-                        System.out.println("El lexema quedo asi: '"+lexema+"'");
                         Token unToken = new Token(lexema, Analizador_Lexico.TOKEN_ID, "identificador");
                         Analizador_Lexico.tablaSimbolos.put(lexema, unToken);
         				return unToken;

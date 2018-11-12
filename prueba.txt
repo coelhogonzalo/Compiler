@@ -1,6 +1,6 @@
 single _var123,
 single _var1234,
-_var123 := 123123_ul,
+_var123 := 123123,
 
 
 

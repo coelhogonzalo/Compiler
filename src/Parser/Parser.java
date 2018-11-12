@@ -410,7 +410,7 @@ final static String yyrule[] = {
 
 public Polaca_Inversa PI = new Polaca_Inversa();
 public Analizador_Lexico al;
-public ArrayList<AnalizadorLexico.Error> erroresGram;
+public ArrayList<AnalizadorLexico.Error> errores;
 public static TokenValue ultimoTokenleido;
 public static ArrayList<String> estructuras;
 public String idFun;
@@ -443,14 +443,11 @@ public int parsepublico(){
 	return this.yyparse();
 }
 public void registrarTipo(String listaVariables,String tipo){
-	int pos=0;
-	String idVariable="";
 	ArrayList<String> items= new ArrayList<String>(Arrays.asList(listaVariables.split(" ")));
 	for (String item:items){
 		//System.out.println(items.size()+" El identificador es :'"+item+"'");
 		Token t=Analizador_Lexico.tablaSimbolos.get(item);
 		t.tipo=tipo;
-		idVariable="";
 	}
 	/*while(pos<listaVariables.length()){
 		char nuevoChar=listaVariables.charAt(pos);
@@ -537,45 +534,11 @@ public static boolean  isPermited(String permisoFuncion,String permisoInvocacion
     	if(isPermited("noseusaelparametro","write;pass"))
     		System.out.println("Recibi un write;pass y la funcion tenia noseusaelparametro, lo acepte");
     }*/
-public static void main(String [] args) throws IOException{
-	//testing_isPermited();
-	//BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-    //File f = new File(reader.readLine());
-	File f = new File("prueba.txt");
-    Analizador_Lexico lexico = null;
-    ArrayList<AnalizadorLexico.Error> erroresGram = null;
-    ArrayList<Token> tokens = null;
-    try {
-        lexico = new Analizador_Lexico(f);
-        tokens = Main.getAllTokens(lexico);
-        erroresGram = new ArrayList<>();
-    } catch (IOException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-    }
-	Analizador_Lexico al=new Analizador_Lexico(f);
-	Parser p=new Parser(false);
-	p.erroresGram=erroresGram;
-	Parser.estructuras=new ArrayList<>();
-	p.al=al;
-	int unint=p.parsepublico();
-	if(unint==0)
-		System.out.println("ACCEPT, se reconocio la gramatica");
-	else
-		System.out.println("n");
 	
-	File fErroresOut = new File("S_Errores.txt");
-	FileManager.write(erroresGram.toString(), fErroresOut);
-    File fTokensOut = new File("S_Tokens.txt");
-    FileManager.write(tokens.toString(), fTokensOut);
-	File estructurasOut = new File("Estructuras.txt");
-	FileManager.write(Parser.estructuras.toString(), estructurasOut);
-}
 
 
 
-
-//#line 507 "Parser.java"
+//#line 470 "Parser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -752,12 +715,12 @@ case 5:
 break;
 case 6:
 //#line 44 "gramatica.y"
-{ yyval.sval = "noseusaelparametro"; registrarTipo( val_peek(1).sval, val_peek(2).sval); System.out.println(val_peek(1).sval);
-Parser.estructuras.add("Se detecto la declaracion de variables en la linea "+Analizador_Lexico.cantLN+"\n");}
+{ yyval.sval = "noseusaelparametro"; registrarTipo( val_peek(1).sval, val_peek(2).sval); /*System.out.println($2.sval);*/
+Parser.estructuras.add("Se detecto la declaracion de variables en la linea "+Analizador_Lexico.cantLN+"\r\n");}
 break;
 case 7:
 //#line 46 "gramatica.y"
-{ al.tablaSimbolos.get(val_peek(2).sval).permisoFun = val_peek(0).sval; Parser.estructuras.add("Se detecto la declaracion de una funcion en la linea "+Analizador_Lexico.cantLN+"\n");}
+{ Analizador_Lexico.tablaSimbolos.get(val_peek(2).sval).permisoFun = val_peek(0).sval; Parser.estructuras.add("Se detecto la declaracion de una funcion en la linea "+Analizador_Lexico.cantLN+"\r\n");}
 break;
 case 8:
 //#line 57 "gramatica.y"
@@ -793,7 +756,7 @@ case 12:
 			t.uso="variable";
 		}
 		else	
-			this.erroresGram.add(new ErrorG("Error SIN NUMERO: Se redeclaro el identificador de tipo "+t.uso+" :'"+t.lexema+"' ", Analizador_Lexico.cantLN));
+			this.errores.add(new ErrorG("Error SIN NUMERO: Se redeclaro el identificador de tipo "+t.uso+" :'"+t.lexema+"' ", Analizador_Lexico.cantLN));
 		yyval=new ParserVal(yyval.sval+" "+val_peek(0).sval);
 	}
 	else
@@ -808,7 +771,7 @@ case 13:
 			t.uso="variable";
 		}
 		else 
-			this.erroresGram.add(new ErrorG("Error SIN NUMERO: Se redeclaro el identificador de tipo "+t.uso+" :'"+t.lexema+"' ", Analizador_Lexico.cantLN));
+			this.errores.add(new ErrorG("Error SIN NUMERO: Se redeclaro el identificador de tipo "+t.uso+" :'"+t.lexema+"' ", Analizador_Lexico.cantLN));
 		yyval=new ParserVal(yyval.sval+" "+val_peek(0).sval);
 	}
 	else
@@ -835,23 +798,23 @@ case 21:
 break;
 case 22:
 //#line 143 "gramatica.y"
-{ yyval.sval = val_peek(1).sval; Parser.estructuras.add("Se detecto un print en la linea "+Analizador_Lexico.cantLN+"\n"); PI.put("print");}
+{ yyval.sval = val_peek(1).sval; Parser.estructuras.add("Se detecto un print en la linea "+Analizador_Lexico.cantLN+"\r\n"); PI.put("print");}
 break;
 case 23:
 //#line 144 "gramatica.y"
-{  yyval.sval = val_peek(1).sval; Parser.estructuras.add("Se detecto una asignacion en  la linea "+Analizador_Lexico.cantLN+"\n");}
+{  yyval.sval = val_peek(1).sval; Parser.estructuras.add("Se detecto una asignacion en  la linea "+Analizador_Lexico.cantLN+"\r\n");}
 break;
 case 24:
 //#line 145 "gramatica.y"
-{ yyval.sval = val_peek(1).sval; Parser.estructuras.add("Se detecto un if en la linea "+Analizador_Lexico.cantLN+"\n"); PI.desapilar(); }
+{ yyval.sval = val_peek(1).sval; Parser.estructuras.add("Se detecto un if en la linea "+Analizador_Lexico.cantLN+"\r\n"); PI.desapilar(); }
 break;
 case 25:
 //#line 146 "gramatica.y"
-{ if ( isPermited(val_peek(3).sval, val_peek(1).sval) ) yyval.sval = val_peek(1).sval; Parser.estructuras.add("Se detecto un if en la linea "+Analizador_Lexico.cantLN+"\n"); PI.desapilar();}
+{ if ( isPermited(val_peek(3).sval, val_peek(1).sval) ) yyval.sval = val_peek(1).sval; Parser.estructuras.add("Se detecto un if en la linea "+Analizador_Lexico.cantLN+"\r\n"); PI.desapilar();}
 break;
 case 26:
 //#line 147 "gramatica.y"
-{ yyval.sval = val_peek(0).sval; Parser.estructuras.add("Se detecto un while en la linea "+Analizador_Lexico.cantLN+"\n"); PI.saltoIncond(); PI.desapilar(); }
+{ yyval.sval = val_peek(0).sval; Parser.estructuras.add("Se detecto un while en la linea "+Analizador_Lexico.cantLN+"\r\n"); PI.saltoIncond(); PI.desapilar(); }
 break;
 case 27:
 //#line 158 "gramatica.y"
@@ -902,7 +865,7 @@ case 39:
 { if ( isPermited(val_peek(2).sval, val_peek(0).sval) ) yyval.sval = val_peek(0).sval; Token t=Analizador_Lexico.tablaSimbolos.get(val_peek(2).sval); PI.put(val_peek(2).sval); PI.put(":=");
 	if(t!=null){
 		if(t.declarada==false)
-			this.erroresGram.add(new ErrorG("Error 34 : La variable "+val_peek(2).sval+" no esta declarada ", Analizador_Lexico.cantLN));
+			this.errores.add(new ErrorG("Error 34 : La variable "+val_peek(2).sval+" no esta declarada ", Analizador_Lexico.cantLN));
 	}
 	else
 		System.out.println("El identificador "+val_peek(2).sval+" no se agrego a la tabla de simbolos");
@@ -951,7 +914,7 @@ case 49:
 break;
 case 50:
 //#line 229 "gramatica.y"
-{ if ( !isPermited(al.tablaSimbolos.get(val_peek(1).sval).permisoFun, val_peek(0).sval) )
+{ if ( !isPermited(Analizador_Lexico.tablaSimbolos.get(val_peek(1).sval).permisoFun, val_peek(0).sval) )
 	                    new ErrorG("Error asignacion de permisos", Analizador_Lexico.cantLN);
                     else{
                         /*System.out.println("Permiso aceptado");*/
@@ -959,10 +922,10 @@ case 50:
 	PI.jumpToFun(val_peek(1).sval); Token t=Analizador_Lexico.tablaSimbolos.get(val_peek(1).sval);
 	if(t!=null){
 		if(t.declarada==false)
-			this.erroresGram.add(new ErrorG("Error 34.6 : La funcion "+val_peek(1).sval+" no esta declarada ", Analizador_Lexico.cantLN));
+			this.errores.add(new ErrorG("Error 34.6 : La funcion "+val_peek(1).sval+" no esta declarada ", Analizador_Lexico.cantLN));
 		else
 			if(t.uso!="funcion")
-				this.erroresGram.add(new ErrorG("Error 34.7 : El identificador "+t.lexema+" no es una funcion ", Analizador_Lexico.cantLN));
+				this.errores.add(new ErrorG("Error 34.7 : El identificador "+t.lexema+" no es una funcion ", Analizador_Lexico.cantLN));
 	}
 	else
 		System.out.println("El identificador "+val_peek(1).sval+" no se agrego a la tabla de simbolos (El identificador es una funcion)"); }
@@ -973,13 +936,13 @@ case 51:
 Token t=Analizador_Lexico.tablaSimbolos.get(val_peek(3).sval);
 	if(t!=null){
 		if(t.declarada==false)
-			this.erroresGram.add(new ErrorG("Error 35: La variable "+val_peek(3).sval+" no esta declarada ", Analizador_Lexico.cantLN));
+			this.errores.add(new ErrorG("Error 35: La variable "+val_peek(3).sval+" no esta declarada ", Analizador_Lexico.cantLN));
 	}
 	else
 		System.out.println("El identificador "+val_peek(3).sval+" no se agrego a la tabla de simbolos");
 	}
 break;
-//#line 906 "Parser.java"
+//#line 869 "Parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

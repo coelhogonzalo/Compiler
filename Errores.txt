@@ -1,1 +1,19 @@
-[]
+[Tipo: ERROR   Lexema:  Definicion no valida.  Numero de linea: 3
+, Tipo: WARNING   Lexema:  123123: Las constantes de tipo uslinteger deben terminar en _ul  Numero de linea: 3
+, Error SIN NUMERO: Se redeclaro el identificador de tipo parametro :'_var3'  en la linea: 8
+, Tipo: ERROR   Lexema:  Definicion no valida.  Numero de linea: 9
+, Tipo: WARNING   Lexema:  21: Las constantes de tipo uslinteger deben terminar en _ul  Numero de linea: 9
+, Tipo: ERROR   Lexema:  Definicion no valida.  Numero de linea: 10
+, Tipo: WARNING   Lexema:  2: Las constantes de tipo uslinteger deben terminar en _ul  Numero de linea: 10
+, Error SIN NUMERO: Se redeclaro el identificador de tipo parametro :'_var3'  en la linea: 14
+, Tipo: ERROR   Lexema:  Definicion no valida.  Numero de linea: 15
+, Tipo: WARNING   Lexema:  22: Las constantes de tipo uslinteger deben terminar en _ul  Numero de linea: 15
+, Error 34 : La variable _var5 no esta declarada  en la linea: 15
+, Tipo: ERROR   Lexema:  Definicion no valida.  Numero de linea: 16
+, Tipo: WARNING   Lexema:  2: Las constantes de tipo uslinteger deben terminar en _ul  Numero de linea: 16
+, Error 34.7 : El identificador _var1234 no es una funcion  en la linea: 21
+, Tipo: ERROR   Lexema:  Definicion no valida.  Numero de linea: 22
+, Tipo: WARNING   Lexema:  123: Las constantes de tipo uslinteger deben terminar en _ul  Numero de linea: 22
+, Error 34 : La variable _var5 no esta declarada  en la linea: 22
+, Error 34.6 : La funcion _fun1 no esta declarada  en la linea: 23
+]

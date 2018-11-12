@@ -17,6 +17,7 @@ public class Analizador_Lexico {
     private MatrizLexica MLexica = null;
     public static List<Error> errores;
     public static int cantLN ;
+    public static List<Token> tokens;
     private static FileManager fm = null;
     public final static int TOKEN_CADENA = 258;//Cambiar si es necesario
     public final static int TOKEN_FLOAT = 260;
@@ -51,6 +52,7 @@ public class Analizador_Lexico {
     public Analizador_Lexico(File mFile) throws IOException {
         MLexica = new MatrizLexica();
         errores = new ArrayList<>();
+        tokens= new ArrayList<>();
         cargarEquivalentes();
         fm = new FileManager(mFile);
         Analizador_Lexico.tablaSimbolos = new HashMap<>();
@@ -142,6 +144,8 @@ public class Analizador_Lexico {
                 charAnterior = "1" + c;
             }
         }
+        if(unToken!=null)
+        	Analizador_Lexico.tokens.add(unToken);
         return unToken;
     }
 

@@ -22,7 +22,7 @@ public class Token {
 
     public String toString(){
         if ( nro != Analizador_Lexico.TOKEN_ERROR )
-            return "Lexema: " + lexema + "   Numero: " + nro + "   Tipo: " + tipo +"\n";
+            return "Lexema: " + lexema + "   Numero: " + nro + "   Tipo: " + tipo +"\r\n";
         else
             return "TOKEN ERROR\n";
     }
