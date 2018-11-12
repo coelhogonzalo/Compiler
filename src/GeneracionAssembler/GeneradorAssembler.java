@@ -21,6 +21,7 @@ public class GeneradorAssembler {
     public GeneradorAssembler(Stack<StringBuilder> pilaVar,Polaca_Inversa PI){
     	this.pilaVar=pilaVar;
     	this.PI=PI;
+    	//Analizador_Lexico.tablaSimbolos.get(PI.getPI().get(i)).tipo;
     }
     
     

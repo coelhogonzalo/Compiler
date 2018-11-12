@@ -18,19 +18,16 @@
 
 //#line 2 "gramatica.y"
 package Parser;
-import java.io.File;
 import java.io.IOException;
 
 
 import AnalizadorLexico.Analizador_Lexico;
 import AnalizadorLexico.Token;
-import AnalizadorLexico.FileManager;
-import AnalizadorLexico.Main;
 import AnalizadorLexico.TokenValue;
 import java.util.ArrayList;
 import GeneracionCodigoIntermedio.Polaca_Inversa;
 import java.util.Arrays;
-//#line 31 "Parser.java"
+//#line 28 "Parser.java"
 
 
 
@@ -192,87 +189,94 @@ public final static short INVALIDO=277;
 public final static short YYERRCODE=256;
 final static short yylhs[] = {                           -1,
     0,    1,    1,    2,    2,    4,    4,    7,    8,    9,
-   10,    6,    6,   12,   12,   13,   13,   11,   15,   16,
-   15,    3,    3,    3,    3,    3,   18,   19,   20,   22,
-   21,   23,   24,   24,   24,   24,   24,   24,   17,   14,
-   14,   14,   25,   25,   25,   26,   26,   26,   26,   26,
-   27,    5,    5,   28,   28,   28,   28,   28,
+   10,   10,   12,   12,   13,   13,   11,    6,    6,   15,
+   15,   16,   16,   14,   18,   19,   18,    3,    3,    3,
+    3,    3,   21,   22,   23,   25,   24,   26,   27,   27,
+   27,   27,   27,   27,   20,   17,   17,   17,   28,   28,
+   28,   29,   29,   29,   29,   29,   30,    5,    5,   31,
+   31,   31,   31,   31,
 };
 final static short yylen[] = {                            2,
     1,    2,    1,    1,    1,    3,    3,    2,    4,    4,
-    2,    3,    1,    3,    1,    2,    1,    3,    3,    0,
-    4,    3,    2,    3,    5,    2,    2,    1,    2,    1,
-    3,    3,    1,    1,    1,    1,    1,    1,    3,    3,
-    3,    1,    3,    3,    1,    1,    1,    1,    2,    2,
-    5,    1,    1,    1,    1,    1,    3,    0,
+    2,    1,    1,    1,    3,    3,    2,    3,    1,    3,
+    1,    2,    1,    3,    3,    0,    4,    3,    2,    3,
+    5,    2,    2,    1,    2,    1,    3,    3,    1,    1,
+    1,    1,    1,    1,    3,    3,    3,    1,    3,    3,
+    1,    1,    1,    1,    2,    2,    5,    1,    1,    1,
+    1,    1,    3,    0,
 };
 final static short yydefred[] = {                         0,
-    0,    0,   30,    0,   53,   52,    0,    0,    3,    4,
-    5,    0,    0,    0,    0,    0,    0,    0,    0,   27,
-    0,    0,    2,    0,    0,    0,    0,   23,    0,   15,
-    0,   26,   29,    0,   47,   48,    0,    0,    0,   45,
-    0,    0,    0,    0,   22,    6,    0,    0,    0,    7,
-   17,    0,   28,   24,    0,    0,   50,   49,    0,    0,
-    0,    0,   36,   35,   37,   38,   33,   34,    0,   31,
-   20,   19,   12,    0,    0,   14,   16,    0,    0,    0,
-    0,   43,   44,    0,   21,    9,    0,    0,   25,    0,
-    0,   11,   10,   54,    0,   56,    0,    0,    0,   51,
-   18,   57,
+    0,    0,   36,    0,   59,   58,    0,    0,    3,    4,
+    5,    0,    0,    0,    0,    0,    0,    0,    0,   33,
+    0,    0,    2,    0,    0,    0,    0,   29,    0,   21,
+    0,   32,   35,    0,   53,   54,    0,    0,    0,   51,
+    0,    0,    0,    0,   28,    6,    0,    0,    0,    7,
+   23,    0,   34,   30,    0,    0,   56,   55,    0,    0,
+    0,    0,   42,   41,   43,   44,   39,   40,    0,   37,
+   26,   25,   18,    0,   13,    0,    0,    0,   12,   14,
+   20,   22,    0,    0,    0,    0,   49,   50,    0,   27,
+    9,    0,    0,    0,    0,   11,   31,    0,   15,   16,
+    0,   17,   10,   60,    0,   62,    0,    0,    0,   57,
+   24,   63,
 };
 final static short yydgoto[] = {                          7,
-    8,    9,   10,   11,   12,   25,   13,   27,   50,   88,
-   92,   31,   52,   38,   22,   85,   14,   15,   55,   16,
-   20,   17,   42,   69,   39,   40,   57,   97,
+    8,    9,   30,   11,   12,   25,   13,   27,   50,   78,
+   95,   79,   80,  102,   31,   52,   38,   22,   90,   14,
+   15,   55,   16,   20,   17,   42,   69,   39,   40,   57,
+  107,
 };
 final static short yysindex[] = {                      -211,
- -247,  -12,    0,   -4,    0,    0,    0, -211,    0,    0,
-    0, -214,    8,   27, -108, -108,  -12,  -34,  -34,    0,
- -203,   44,    0,    0,  -17, -199,  -39,    0, -195,    0,
- -176,    0,    0,   53,    0,    0, -164,   40,   26,    0,
-  -25,   56,   57,   58,    0,    0, -157, -156, -211,    0,
-    0, -109,    0,    0, -108, -155,    0,    0,  -34,  -34,
+ -231,    4,    0,   15,    0,    0,    0, -211,    0,    0,
+    0, -175,   33,   34, -108, -108,    4,  -34,  -34,    0,
+ -210,   46,    0,    0,  -17, -184,  -39,    0, -185,    0,
+ -169,    0,    0,   57,    0,    0, -162,   -5,   19,    0,
+  -25,   61,   62,   63,    0,    0, -152, -150, -211,    0,
+    0, -109,    0,    0, -108, -149,    0,    0,  -34,  -34,
   -34,  -34,    0,    0,    0,    0,    0,    0,  -34,    0,
-    0,    0,    0,   62, -217,    0,    0, -159,   46,   26,
-   26,    0,    0,   40,    0,    0,   66,  -18,    0, -185,
-  -34,    0,    0,    0,   49,    0,   68,   29, -154,    0,
+    0,    0,    0,   68,    0, -175,   33, -205,    0,    0,
+    0,    0, -153,   52,   19,   19,    0,    0,   -5,    0,
+    0,   16,  -39,   72,  -12,    0,    0, -179,    0,    0,
+  -34,    0,    0,    0,   55,    0,   74,   40, -151,    0,
     0,    0,
 };
 final static short yyrindex[] = {                         0,
-    0,    0,    0,    0,    0,    0,    0,  110,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,  117,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,    0,    1,    0,    0,    0,    0,    0,    0,
-    0,    0,    0,  -41,    0,    0,    0,   67,  -36,    0,
+    0,    0,    0,   -1,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,  -41,    0,    0,    0,   46,  -36,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,    0,    0,    0,    0,    0,    0,    0,  -31,
-  -11,    0,    0,   71,    0,    0,    0,    0,    0,   73,
-    0,    0,    0,    0,   74,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,  -31,  -11,    0,    0,   77,    0,
+    0,    0,    0,    0,    0,    0,    0,   78,    0,    0,
+    0,    0,    0,    0,   79,    0,    0,    0,    0,    0,
     0,    0,
 };
 final static short yygindex[] = {                         0,
-   69,   15,   23,    0,   90,    0,    0,    0,    0,    0,
-    0,    6,    0,   -2,    0,    0,    0,    0,    0,    0,
-  100,    0,    0,    0,   32,   33,    0,    0,
+    0,  113,   28,    0,   -4,   47,  -24,   45,   31,    0,
+    0,   48,    0,    0,    7,    0,   -2,    0,    0,    0,
+    0,    0,    0,  108,    0,    0,    0,   36,   39,    0,
+    0,
 };
 final static int YYTABLESIZE=260;
 static short yytable[];
 static { yytable();}
 static void yytable(){
-yytable = new short[]{                         46,
-   46,   46,   46,   46,   42,   46,   42,   42,   42,   40,
-   37,   40,   40,   40,   29,   76,   41,   59,   46,   60,
-   46,   32,   23,   42,   18,   42,   46,   19,   40,   41,
-   40,   41,   41,   41,   67,   21,   68,   30,   30,    1,
-    8,   47,   24,    2,   13,    1,    3,   26,   41,    2,
-   41,   51,    3,   43,   44,   87,    4,    5,    6,   13,
-   78,    1,    4,    5,    6,    2,   84,   61,    3,  101,
-   28,   59,   62,   60,   77,    5,    6,   30,    4,   94,
-   95,   96,   59,   49,   60,   53,   54,   45,   98,   23,
-   80,   81,   56,   82,   83,   58,   70,   71,   72,   73,
-   74,   79,   86,   89,   90,   91,   93,   99,  100,    1,
-   39,   32,  102,   58,   55,   48,   33,   75,    0,    0,
-    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+yytable = new short[]{                         52,
+   52,   52,   52,   52,   48,   52,   48,   48,   48,   46,
+   37,   46,   46,   46,   29,   81,   41,   59,   52,   60,
+   52,   48,   32,   48,   77,   48,   46,   10,   46,   47,
+   46,   47,   47,   47,   67,   10,   68,   59,    8,   60,
+   18,   47,   19,   19,   76,    1,   43,   44,   47,    2,
+   47,    1,    3,   77,   21,    2,   51,   19,    3,   99,
+   61,   83,    4,    5,    6,   62,   89,   94,    4,    5,
+    6,    1,   26,   76,   47,    2,   75,   28,    3,   82,
+  111,   24,   59,   49,   60,  104,  105,  106,    4,   45,
+    5,    6,   53,   54,   85,   86,   56,   58,  108,   87,
+   88,   70,   71,   72,   73,   75,   74,   84,   91,   97,
+   98,  101,  103,  109,  110,  112,    1,   38,   64,   61,
+   23,   93,   92,  100,   33,   96,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    1,    1,    0,
     0,    2,    2,    0,    3,    3,    0,    0,    0,    0,
@@ -282,10 +286,10 @@ yytable = new short[]{                         46,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,   34,    0,   35,   36,   46,   46,   46,   46,
-    0,   42,   42,   42,   42,    0,   40,   40,   40,   40,
+    0,    0,   34,    0,   35,   36,   52,   52,   52,   52,
+    0,   48,   48,   48,   48,    0,   46,   46,   46,   46,
     0,    0,   63,   64,   65,   66,    0,    0,    0,    0,
-    0,    0,    0,    0,    0,    0,   41,   41,   41,   41,
+    0,    0,    0,    0,    0,    0,   47,   47,   47,   47,
 };
 }
 static short yycheck[];
@@ -294,17 +298,17 @@ static void yycheck() {
 yycheck = new short[] {                         41,
    42,   43,   44,   45,   41,   47,   43,   44,   45,   41,
    45,   43,   44,   45,  123,  125,   19,   43,   60,   45,
-   62,   16,    8,   60,  272,   62,   44,   40,   60,   41,
-   62,   43,   44,   45,   60,   40,   62,   15,   16,  257,
-   40,   59,  257,  261,   44,  257,  264,   40,   60,  261,
-   62,   29,  264,  257,  258,  273,  274,  275,  276,   59,
-   55,  257,  274,  275,  276,  261,   69,   42,  264,   41,
-   44,   43,   47,   45,   52,  275,  276,   55,  274,  265,
-  266,  267,   43,  123,   45,  262,  263,   44,   91,   75,
-   59,   60,   40,   61,   62,  260,   41,   41,   41,  257,
-  257,  257,   41,  263,   59,   40,  125,   59,   41,    0,
-   44,   41,  267,   41,   41,   26,   17,   49,   -1,   -1,
-   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
+   62,   26,   16,   60,   49,   62,   44,    0,   60,   41,
+   62,   43,   44,   45,   60,    8,   62,   43,   40,   45,
+  272,   59,   44,   40,   49,  257,  257,  258,   60,  261,
+   62,  257,  264,   78,   40,  261,   29,   59,  264,   44,
+   42,   55,  274,  275,  276,   47,   69,  273,  274,  275,
+  276,  257,   40,   78,   59,  261,   49,   44,  264,   52,
+   41,  257,   43,  123,   45,  265,  266,  267,  274,   44,
+  275,  276,  262,  263,   59,   60,   40,  260,  101,   61,
+   62,   41,   41,   41,  257,   78,  257,  257,   41,  263,
+   59,   40,  125,   59,   41,  267,    0,   41,   41,   41,
+    8,   77,   76,   93,   17,   78,   -1,   -1,   -1,   -1,
    -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
    -1,   -1,   -1,   -1,   -1,   -1,   -1,  257,  257,   -1,
    -1,  261,  261,   -1,  264,  264,   -1,   -1,   -1,   -1,
@@ -355,7 +359,13 @@ final static String yyrule[] = {
 "sentenciaDEC : tipoFunID parametrosDef cuerpofuncion",
 "tipoFunID : tipo ID",
 "parametrosDef : '(' tipo ID ')'",
-"cuerpofuncion : '{' BS retorno '}'",
+"cuerpofuncion : '{' BSFuncion retorno '}'",
+"BSFuncion : BSFuncion sentenciaFuncion",
+"BSFuncion : sentenciaFuncion",
+"sentenciaFuncion : sentenciaCE",
+"sentenciaFuncion : sentenciaDECFuncion",
+"sentenciaDECFuncion : tipo lista_variables ','",
+"sentenciaDECFuncion : tipoFunID parametrosDef cuerpofuncion",
 "retorno : RETURN expresioncparentesis",
 "lista_variables : lista_variables ';' ID",
 "lista_variables : ID",
@@ -406,7 +416,7 @@ final static String yyrule[] = {
 "lista_permisos :",
 };
 
-//#line 276 "gramatica.y"
+//#line 303 "gramatica.y"
 
 public Polaca_Inversa PI = new Polaca_Inversa();
 public Analizador_Lexico al;
@@ -538,7 +548,7 @@ public static boolean  isPermited(String permisoFuncion,String permisoInvocacion
 
 
 
-//#line 470 "Parser.java"
+//#line 480 "Parser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -693,7 +703,7 @@ boolean doaction;
       {
 //########## USER-SUPPLIED ACTIONS ##########
 case 2:
-//#line 28 "gramatica.y"
+//#line 25 "gramatica.y"
 {
     if ( isPermited(val_peek(1).sval, val_peek(0).sval) )
         yyval.sval = val_peek(0).sval;
@@ -702,53 +712,92 @@ case 2:
  }
 break;
 case 3:
-//#line 34 "gramatica.y"
+//#line 31 "gramatica.y"
 { yyval.sval = val_peek(0).sval; }
 break;
 case 4:
-//#line 38 "gramatica.y"
+//#line 35 "gramatica.y"
 { yyval.sval = val_peek(0).sval; }
 break;
 case 5:
-//#line 39 "gramatica.y"
+//#line 36 "gramatica.y"
 { yyval.sval = val_peek(0).sval; }
 break;
 case 6:
-//#line 44 "gramatica.y"
+//#line 41 "gramatica.y"
 { yyval.sval = "noseusaelparametro"; registrarTipo( val_peek(1).sval, val_peek(2).sval); /*System.out.println($2.sval);*/
 Parser.estructuras.add("Se detecto la declaracion de variables en la linea "+Analizador_Lexico.cantLN+"\r\n");}
 break;
 case 7:
-//#line 46 "gramatica.y"
+//#line 43 "gramatica.y"
 { Analizador_Lexico.tablaSimbolos.get(val_peek(2).sval).permisoFun = val_peek(0).sval; Parser.estructuras.add("Se detecto la declaracion de una funcion en la linea "+Analizador_Lexico.cantLN+"\r\n");}
 break;
 case 8:
-//#line 57 "gramatica.y"
+//#line 54 "gramatica.y"
 { this.idFun = val_peek(0).sval; Token t=Analizador_Lexico.tablaSimbolos.get(val_peek(0).sval);
-	t.declarada=true;
-	PI.inicioFuncion(val_peek(0).sval); }
+	if(t.declarada){
+		this.errores.add(new ErrorG("Error SIN NUMERO: El identificador '"+t.lexema+"' ,de uso '"+t.uso+"' ya esta declarado", Analizador_Lexico.cantLN));
+		PI.inicioFuncion(val_peek(0).sval);
+	}
+	else{
+		t.declarada=true;
+		PI.inicioFuncion(val_peek(0).sval);
+		t.uso="funcion";
+		t.tipo=val_peek(1).sval;
+	}
+	}
 break;
 case 9:
-//#line 63 "gramatica.y"
+//#line 69 "gramatica.y"
 { Token t=Analizador_Lexico.tablaSimbolos.get(val_peek(1).sval);
 	if(t!=null){
 		t.uso="parametro";
 		t.declarada=true;
 	}
 	else
-		System.out.println("El token que quisiste recuperar es null");
+		System.out.println("El token que quisiste recuperar es null (ndmpp)");
 this.idParam = val_peek(1).sval; }
 break;
 case 10:
-//#line 75 "gramatica.y"
+//#line 81 "gramatica.y"
 { yyval.sval = val_peek(2).sval; }
 break;
 case 11:
-//#line 82 "gramatica.y"
-{PI.finFuncion(); }
+//#line 87 "gramatica.y"
+{
+    if ( isPermited(val_peek(1).sval, val_peek(0).sval) )
+        yyval.sval = val_peek(0).sval;
+    else
+        yyval.sval = val_peek(1).sval;
+ }
 break;
 case 12:
-//#line 87 "gramatica.y"
+//#line 93 "gramatica.y"
+{ yyval.sval = val_peek(0).sval; }
+break;
+case 13:
+//#line 95 "gramatica.y"
+{ yyval.sval = val_peek(0).sval; }
+break;
+case 14:
+//#line 96 "gramatica.y"
+{ yyval.sval = val_peek(0).sval; }
+break;
+case 15:
+//#line 98 "gramatica.y"
+{ yyval.sval = "noseusaelparametro"; registrarTipo( val_peek(1).sval, val_peek(2).sval); /*System.out.println($2.sval);*/
+Parser.estructuras.add("Se detecto la declaracion de variables en la linea "+Analizador_Lexico.cantLN+"\r\n");}
+break;
+case 16:
+//#line 102 "gramatica.y"
+{this.errores.add(new ErrorG("Error SIN NUMERO: Se declaró una funcion dentro de otra funcion", Analizador_Lexico.cantLN));}
+break;
+case 17:
+//#line 109 "gramatica.y"
+{PI.finFuncion(); }
+break;
+case 18:
+//#line 114 "gramatica.y"
 {Token t=Analizador_Lexico.tablaSimbolos.get(val_peek(0).sval);
 	if(t!=null){
 		if(t.declarada==false&&t.uso!="parametro"){
@@ -756,14 +805,14 @@ case 12:
 			t.uso="variable";
 		}
 		else	
-			this.errores.add(new ErrorG("Error SIN NUMERO: Se redeclaro el identificador de tipo "+t.uso+" :'"+t.lexema+"' ", Analizador_Lexico.cantLN));
+			this.errores.add(new ErrorG("Error SIN NUMERO: Se redeclaro el identificador de uso "+t.uso+" :'"+t.lexema+"' ", Analizador_Lexico.cantLN));
 		yyval=new ParserVal(yyval.sval+" "+val_peek(0).sval);
 	}
 	else
 		System.out.println("El token que quisiste recuperar es null");}
 break;
-case 13:
-//#line 99 "gramatica.y"
+case 19:
+//#line 126 "gramatica.y"
 {	Token t=Analizador_Lexico.tablaSimbolos.get(val_peek(0).sval);
 	if(t!=null){
 		if(t.declarada==false&&t.uso!="parametro"){
@@ -778,142 +827,142 @@ case 13:
 		System.out.println("El token que quisiste recuperar es null");
 	}
 break;
-case 19:
-//#line 131 "gramatica.y"
+case 25:
+//#line 158 "gramatica.y"
 { PI.put(val_peek(1).sval); }
 break;
-case 20:
-//#line 132 "gramatica.y"
+case 26:
+//#line 159 "gramatica.y"
 { if ( val_peek(1).sval == this.idParam )
 		                    yyval.sval = "readonly";
 		                  else
 		                    yyval.sval = "noseusaelparametro";
 		PI.put(val_peek(1).sval); }
 break;
-case 21:
-//#line 136 "gramatica.y"
+case 27:
+//#line 163 "gramatica.y"
 {System.out.println("--------------------------------------------------------------------------------------------");
 		System.out.println("DEBUGUEANDO: esto es un separador");
 		System.out.println("--------------------------------------------------------------------------------------------");}
 break;
-case 22:
-//#line 143 "gramatica.y"
+case 28:
+//#line 170 "gramatica.y"
 { yyval.sval = val_peek(1).sval; Parser.estructuras.add("Se detecto un print en la linea "+Analizador_Lexico.cantLN+"\r\n"); PI.put("print");}
 break;
-case 23:
-//#line 144 "gramatica.y"
+case 29:
+//#line 171 "gramatica.y"
 {  yyval.sval = val_peek(1).sval; Parser.estructuras.add("Se detecto una asignacion en  la linea "+Analizador_Lexico.cantLN+"\r\n");}
 break;
-case 24:
-//#line 145 "gramatica.y"
+case 30:
+//#line 172 "gramatica.y"
 { yyval.sval = val_peek(1).sval; Parser.estructuras.add("Se detecto un if en la linea "+Analizador_Lexico.cantLN+"\r\n"); PI.desapilar(); }
 break;
-case 25:
-//#line 146 "gramatica.y"
+case 31:
+//#line 173 "gramatica.y"
 { if ( isPermited(val_peek(3).sval, val_peek(1).sval) ) yyval.sval = val_peek(1).sval; Parser.estructuras.add("Se detecto un if en la linea "+Analizador_Lexico.cantLN+"\r\n"); PI.desapilar();}
 break;
-case 26:
-//#line 147 "gramatica.y"
+case 32:
+//#line 174 "gramatica.y"
 { yyval.sval = val_peek(0).sval; Parser.estructuras.add("Se detecto un while en la linea "+Analizador_Lexico.cantLN+"\r\n"); PI.saltoIncond(); PI.desapilar(); }
 break;
-case 27:
-//#line 158 "gramatica.y"
-{ PI.bifurcacion(); }
-break;
-case 28:
-//#line 162 "gramatica.y"
-{ PI.desapilarElse(); PI.bifurcacionElse(); }
-break;
-case 29:
-//#line 166 "gramatica.y"
-{ PI.bifurcacion(); }
-break;
-case 30:
-//#line 170 "gramatica.y"
-{ PI.setSaltoIncond(); }
-break;
-case 32:
-//#line 185 "gramatica.y"
-{ PI.put(val_peek(1).sval); }
-break;
 case 33:
-//#line 192 "gramatica.y"
-{ yyval.sval = "<"; }
+//#line 185 "gramatica.y"
+{ PI.bifurcacion(); }
 break;
 case 34:
-//#line 193 "gramatica.y"
-{ yyval.sval = ">"; }
+//#line 189 "gramatica.y"
+{ PI.desapilarElse(); PI.bifurcacionElse(); }
 break;
 case 35:
-//#line 194 "gramatica.y"
-{ yyval.sval = "<="; }
+//#line 193 "gramatica.y"
+{ PI.bifurcacion(); }
 break;
 case 36:
-//#line 195 "gramatica.y"
-{ yyval.sval = ">="; }
-break;
-case 37:
-//#line 196 "gramatica.y"
-{ yyval.sval = "=="; }
+//#line 197 "gramatica.y"
+{ PI.setSaltoIncond(); }
 break;
 case 38:
-//#line 197 "gramatica.y"
-{ yyval.sval = "!="; }
+//#line 212 "gramatica.y"
+{ PI.put(val_peek(1).sval); }
 break;
 case 39:
-//#line 201 "gramatica.y"
+//#line 219 "gramatica.y"
+{ yyval.sval = "<"; }
+break;
+case 40:
+//#line 220 "gramatica.y"
+{ yyval.sval = ">"; }
+break;
+case 41:
+//#line 221 "gramatica.y"
+{ yyval.sval = "<="; }
+break;
+case 42:
+//#line 222 "gramatica.y"
+{ yyval.sval = ">="; }
+break;
+case 43:
+//#line 223 "gramatica.y"
+{ yyval.sval = "=="; }
+break;
+case 44:
+//#line 224 "gramatica.y"
+{ yyval.sval = "!="; }
+break;
+case 45:
+//#line 228 "gramatica.y"
 { if ( isPermited(val_peek(2).sval, val_peek(0).sval) ) yyval.sval = val_peek(0).sval; Token t=Analizador_Lexico.tablaSimbolos.get(val_peek(2).sval); PI.put(val_peek(2).sval); PI.put(":=");
 	if(t!=null){
 		if(t.declarada==false)
 			this.errores.add(new ErrorG("Error 34 : La variable "+val_peek(2).sval+" no esta declarada ", Analizador_Lexico.cantLN));
 	}
 	else
-		System.out.println("El identificador "+val_peek(2).sval+" no se agrego a la tabla de simbolos");
+		System.out.println("El identificador "+val_peek(2).sval+" no se agrego a la tabla de simbolos (ndmpp)");
 	}
 break;
-case 40:
-//#line 214 "gramatica.y"
+case 46:
+//#line 241 "gramatica.y"
 { if ( isPermited(val_peek(2).sval, val_peek(1).sval) ) yyval.sval = val_peek(1).sval; else         yyval.sval = val_peek(2).sval ; PI.put("+"); }
 break;
-case 41:
-//#line 215 "gramatica.y"
+case 47:
+//#line 242 "gramatica.y"
 { if ( isPermited(val_peek(2).sval, val_peek(1).sval) ) yyval.sval = val_peek(1).sval; else         yyval.sval = val_peek(2).sval ; PI.put("-"); }
 break;
-case 42:
-//#line 216 "gramatica.y"
-{ yyval.sval = val_peek(0).sval; }
-break;
-case 43:
-//#line 219 "gramatica.y"
-{ if ( isPermited(val_peek(2).sval, val_peek(1).sval) ) yyval.sval = val_peek(1).sval; else         yyval.sval = val_peek(2).sval ; PI.put("*"); }
-break;
-case 44:
-//#line 220 "gramatica.y"
-{ if ( isPermited(val_peek(2).sval, val_peek(1).sval) ) yyval.sval = val_peek(1).sval; else         yyval.sval = val_peek(2).sval ; PI.put("/"); }
-break;
-case 45:
-//#line 221 "gramatica.y"
-{ yyval.sval = val_peek(0).sval; }
-break;
-case 46:
-//#line 224 "gramatica.y"
-{ if ( idParam == val_peek(0).sval) yyval.sval = "readonly"; else yyval.sval = "noseusaelparametro"; PI.put(val_peek(0).sval); }
-break;
-case 47:
-//#line 225 "gramatica.y"
-{ yyval.sval = "noseusaelparametro"; PI.put(val_peek(0).sval); }
-break;
 case 48:
-//#line 226 "gramatica.y"
-{ yyval.sval = "noseusaelparametro"; PI.put(val_peek(0).sval); }
+//#line 243 "gramatica.y"
+{ yyval.sval = val_peek(0).sval; }
 break;
 case 49:
-//#line 227 "gramatica.y"
+//#line 246 "gramatica.y"
+{ if ( isPermited(val_peek(2).sval, val_peek(1).sval) ) yyval.sval = val_peek(1).sval; else         yyval.sval = val_peek(2).sval ; PI.put("*"); }
+break;
+case 50:
+//#line 247 "gramatica.y"
+{ if ( isPermited(val_peek(2).sval, val_peek(1).sval) ) yyval.sval = val_peek(1).sval; else         yyval.sval = val_peek(2).sval ; PI.put("/"); }
+break;
+case 51:
+//#line 248 "gramatica.y"
+{ yyval.sval = val_peek(0).sval; }
+break;
+case 52:
+//#line 251 "gramatica.y"
+{ if ( idParam == val_peek(0).sval) yyval.sval = "readonly"; else yyval.sval = "noseusaelparametro"; PI.put(val_peek(0).sval); }
+break;
+case 53:
+//#line 252 "gramatica.y"
+{ yyval.sval = "noseusaelparametro"; PI.put(val_peek(0).sval); }
+break;
+case 54:
+//#line 253 "gramatica.y"
+{ yyval.sval = "noseusaelparametro"; PI.put(val_peek(0).sval); }
+break;
+case 55:
+//#line 254 "gramatica.y"
 {	Token t=Analizador_Lexico.tablaSimbolos.get(val_peek(0).sval);
 	t.lexema="-"+t.lexema; PI.put("-" + val_peek(1).sval);}
 break;
-case 50:
-//#line 229 "gramatica.y"
+case 56:
+//#line 256 "gramatica.y"
 { if ( !isPermited(Analizador_Lexico.tablaSimbolos.get(val_peek(1).sval).permisoFun, val_peek(0).sval) )
 	                    new ErrorG("Error asignacion de permisos", Analizador_Lexico.cantLN);
                     else{
@@ -925,13 +974,13 @@ case 50:
 			this.errores.add(new ErrorG("Error 34.6 : La funcion "+val_peek(1).sval+" no esta declarada ", Analizador_Lexico.cantLN));
 		else
 			if(t.uso!="funcion")
-				this.errores.add(new ErrorG("Error 34.7 : El identificador "+t.lexema+" no es una funcion ", Analizador_Lexico.cantLN));
+				this.errores.add(new ErrorG("Error 34.7 : El identificador "+t.lexema+" no es una funcion. ", Analizador_Lexico.cantLN));
 	}
 	else
-		System.out.println("El identificador "+val_peek(1).sval+" no se agrego a la tabla de simbolos (El identificador es una funcion)"); }
+		System.out.println("El identificador "+val_peek(1).sval+" no se agrego a la tabla de simbolos (El identificador es una funcion) (ndmpp)"); }
 break;
-case 51:
-//#line 246 "gramatica.y"
+case 57:
+//#line 273 "gramatica.y"
 { yyval.sval = val_peek(1).sval; PI.put(val_peek(3).sval);
 Token t=Analizador_Lexico.tablaSimbolos.get(val_peek(3).sval);
 	if(t!=null){
@@ -939,10 +988,10 @@ Token t=Analizador_Lexico.tablaSimbolos.get(val_peek(3).sval);
 			this.errores.add(new ErrorG("Error 35: La variable "+val_peek(3).sval+" no esta declarada ", Analizador_Lexico.cantLN));
 	}
 	else
-		System.out.println("El identificador "+val_peek(3).sval+" no se agrego a la tabla de simbolos");
+		System.out.println("El identificador "+val_peek(3).sval+" no se agrego a la tabla de simbolos (ndmpp)");
 	}
 break;
-//#line 869 "Parser.java"
+//#line 918 "Parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

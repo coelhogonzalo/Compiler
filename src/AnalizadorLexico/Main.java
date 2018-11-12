@@ -28,8 +28,10 @@ public class Main {
             System.out.print("ACCEPT, se reconocio la gramatica");
         else
             System.out.print("No se reconocio la gramatica");
-        if(p.errores.isEmpty())
+        if(!Error.huboErrores){
         	System.out.print(" y no se encontraron errores (PROCEED COMPILATION)");
+        	//ACA EMA NOS GENERA UN TERRIBLE ASSEMBLER
+        }
         else
         	System.out.print(" y se encontraron errores (ABORT COMPILATION)");
 
@@ -39,6 +41,7 @@ public class Main {
         FileManager.write(Analizador_Lexico.tokens.toString(), fTokensOut);
         File estructurasOut = new File("Estructuras.txt");
         FileManager.write(Parser.estructuras.toString(), estructurasOut);
+        Error.huboErrores=false;
     }
 
 }

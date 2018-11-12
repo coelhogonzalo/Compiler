@@ -3,7 +3,7 @@ import AnalizadorLexico.Error;
 public class ErrorG extends Error{
 
 	public ErrorG( String texto, int linea) {
-		super(null, texto, linea);
+		super("ERROR", texto, linea);
 		// TODO Auto-generated constructor stub
 		System.out.println(this.toString());
 	}

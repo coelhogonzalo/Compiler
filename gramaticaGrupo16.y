@@ -1,13 +1,10 @@
 %{
 package Parser;
-import java.io.File;
 import java.io.IOException;
 
 
 import AnalizadorLexico.Analizador_Lexico;
 import AnalizadorLexico.Token;
-import AnalizadorLexico.FileManager;
-import AnalizadorLexico.Main;
 import AnalizadorLexico.TokenValue;
 import java.util.ArrayList;
 import GeneracionCodigoIntermedio.Polaca_Inversa;
@@ -55,8 +52,17 @@ Parser.estructuras.add("Se detecto la declaracion de variables en la linea "+Ana
 ;
 
 tipoFunID : tipo ID { this.idFun = $2.sval; Token t=Analizador_Lexico.tablaSimbolos.get($2.sval);
-	t.declarada=true;
-	PI.inicioFuncion($2.sval); }
+	if(t.declarada){
+		this.errores.add(new ErrorG("Error SIN NUMERO: El identificador '"+t.lexema+"' ,de uso '"+t.uso+"' ya esta declarado", Analizador_Lexico.cantLN));
+		PI.inicioFuncion($2.sval);
+	}
+	else{
+		t.declarada=true;
+		PI.inicioFuncion($2.sval);
+		t.uso="funcion";
+		t.tipo=$1.sval;
+	}
+	}
 
 ;
 
@@ -66,17 +72,38 @@ parametrosDef: '(' tipo ID ')' { Token t=Analizador_Lexico.tablaSimbolos.get($3.
 		t.declarada=true;
 	}
 	else
-		System.out.println("El token que quisiste recuperar es null");
+		System.out.println("El token que quisiste recuperar es null (ndmpp)");
 this.idParam = $3.sval; }
 	//ESTECOMPILA| '(' tipo ID {this.errores.add(new ErrorG("Error SIN NUMERO : Falta un ) despues del identificador", Analizador_Lexico.cantLN));}
 	//ESTECOMPILA| tipo ID ')' {this.errores.add(new ErrorG("Error SIN NUMERO : Falta un ( antes del tipo del parametro", Analizador_Lexico.cantLN));}
 ;
 
-cuerpofuncion: '{' BS retorno '}' { $$.sval = $2.sval; }
+cuerpofuncion: '{' BSFuncion retorno '}' { $$.sval = $2.sval; }
 
 	//ESTECOMPILA| '{'  retorno '}' {this.errores.add(new ErrorG("Error 23: Se esperaba un bloque de sentencias en el cuerpo de la funcion", Analizador_Lexico.cantLN));}
 	//| '{' BS retorno
 	//ESTECOMPILA|  BS retorno '}' {this.errores.add(new ErrorG("Error SIN NUMERO: Se esperaba un { al principio de la funcion", Analizador_Lexico.cantLN));}
+;
+BSFuncion : BSFuncion sentenciaFuncion {
+    if ( isPermited($1.sval, $2.sval) )
+        $$.sval = $2.sval;
+    else
+        $$.sval = $1.sval;
+ }
+	| sentenciaFuncion { $$.sval = $1.sval; }
+;
+sentenciaFuncion : sentenciaCE { $$.sval = $1.sval; }
+	| sentenciaDECFuncion { $$.sval = $1.sval; }
+;
+sentenciaDECFuncion :  tipo lista_variables ',' { $$.sval = "noseusaelparametro"; registrarTipo( $2.sval, $1.sval); //System.out.println($2.sval);
+Parser.estructuras.add("Se detecto la declaracion de variables en la linea "+Analizador_Lexico.cantLN+"\r\n");}
+	//ESTECOMPILA| lista_variables ',' {this.errores.add(new ErrorG("Error 33: Falta definir el tipo de las variables", Analizador_Lexico.cantLN));}
+	//| tipo lista_variables {this.errores.add(new ErrorG("Error 32: Se esperaba una ,", Analizador_Lexico.cantLN));} shift reduce
+	| tipoFunID parametrosDef cuerpofuncion {this.errores.add(new ErrorG("Error SIN NUMERO: Se declaró una funcion dentro de otra funcion", Analizador_Lexico.cantLN));}
+	//ESTECOMPILA| tipo  parametrosDef cuerpofuncion {this.errores.add(new ErrorG("Error 30: Falta definir el nombre de la funcion", Analizador_Lexico.cantLN));}
+	//ESTECOMPILA| ID parametrosDef cuerpofuncion {this.errores.add(new ErrorG("Error 31: Falta definir el tipo de la funcion", Analizador_Lexico.cantLN));}
+	//ESTECOMPILA| tipo ID  cuerpofuncion {this.errores.add(new ErrorG("Error 29: Falta definir los parametros de la funcion", Analizador_Lexico.cantLN));}
+	//| tipo ID parametrosDef {this.errores.add(new ErrorG("Error 28: Falta definir el cuerpo de la funcion", Analizador_Lexico.cantLN));} shift reduce
 ;
 
 retorno : RETURN expresioncparentesis {PI.finFuncion(); }//el del return tengo qeu hacer lo que dijo anto
@@ -91,7 +118,7 @@ lista_variables : lista_variables ';' ID {Token t=Analizador_Lexico.tablaSimbolo
 			t.uso="variable";
 		}
 		else	
-			this.errores.add(new ErrorG("Error SIN NUMERO: Se redeclaro el identificador de tipo "+t.uso+" :'"+t.lexema+"' ", Analizador_Lexico.cantLN));
+			this.errores.add(new ErrorG("Error SIN NUMERO: Se redeclaro el identificador de uso "+t.uso+" :'"+t.lexema+"' ", Analizador_Lexico.cantLN));
 		$$=new ParserVal($$.sval+" "+$3.sval);
 	}
 	else
@@ -204,7 +231,7 @@ asignacion : ID ASIGN expresion { if ( isPermited($1.sval, $3.sval) ) $$.sval = 
 			this.errores.add(new ErrorG("Error 34 : La variable "+$1.sval+" no esta declarada ", Analizador_Lexico.cantLN));
 	}
 	else
-		System.out.println("El identificador "+$1.sval+" no se agrego a la tabla de simbolos");
+		System.out.println("El identificador "+$1.sval+" no se agrego a la tabla de simbolos (ndmpp)");
 	}
 	
 	//ESTECOMPILA| ID expresion {this.errores.add(new ErrorG("Error6: Falta el operador de asignacion", Analizador_Lexico.cantLN));}//Este creo que anda si no hay otro error de los que compilancon el que hace macaana
@@ -237,10 +264,10 @@ factor : ID 				{ if ( idParam == $1.sval) $$.sval = "readonly"; else $$.sval = 
 			this.errores.add(new ErrorG("Error 34.6 : La funcion "+$1.sval+" no esta declarada ", Analizador_Lexico.cantLN));
 		else
 			if(t.uso!="funcion")
-				this.errores.add(new ErrorG("Error 34.7 : El identificador "+t.lexema+" no es una funcion ", Analizador_Lexico.cantLN));
+				this.errores.add(new ErrorG("Error 34.7 : El identificador "+t.lexema+" no es una funcion. ", Analizador_Lexico.cantLN));
 	}
 	else
-		System.out.println("El identificador "+$1.sval+" no se agrego a la tabla de simbolos (El identificador es una funcion)"); }
+		System.out.println("El identificador "+$1.sval+" no se agrego a la tabla de simbolos (El identificador es una funcion) (ndmpp)"); }
 ;
 
 parametros: '(' ID ';' lista_permisos ')' { $$.sval = $4.sval; PI.put($2.sval);
@@ -250,7 +277,7 @@ Token t=Analizador_Lexico.tablaSimbolos.get($2.sval);
 			this.errores.add(new ErrorG("Error 35: La variable "+$2.sval+" no esta declarada ", Analizador_Lexico.cantLN));
 	}
 	else
-		System.out.println("El identificador "+$2.sval+" no se agrego a la tabla de simbolos");
+		System.out.println("El identificador "+$2.sval+" no se agrego a la tabla de simbolos (ndmpp)");
 	}
 
 //ESTECOMPILA| ID ';' lista_permisos ')'  {this.errores.add(new ErrorG("Error 15: Se esperaba un (", Analizador_Lexico.cantLN));}
