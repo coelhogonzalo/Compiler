@@ -106,6 +106,10 @@ public class Polaca_Inversa {
     public void printContent(){//PARA DEBUG
     	System.out.println(this.PI);
     }
+
+    public void paramFun(String param){
+        PI.add(PI.size()-2, new StringBuilder(param));
+    }
     /*public void apiloBranch(){
     	pila.add(PI.size());
     	PI.add(new Token("Branch", -1, "Branch"));

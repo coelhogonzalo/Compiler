@@ -23,9 +23,9 @@ program : BS
 ;
 
 BS : BS sentencia {
-    if ( isPermited($1.sval, $2.sval) )
+    if ( isPermited($1.sval, $2.sval) ){
         $$.sval = $2.sval;
-    else
+    }else
         $$.sval = $1.sval;
  }
 	| sentencia { $$.sval = $1.sval; }
@@ -61,12 +61,13 @@ tipoFunID : tipo ID { this.idFun = $2.sval; Token t=Analizador_Lexico.tablaSimbo
 		PI.inicioFuncion($2.sval);
 		t.uso="funcion";
 		t.tipo=$1.sval;
-	}
+	    }
 	}
 
 ;
 
-parametrosDef: '(' tipo ID ')' { Token t=Analizador_Lexico.tablaSimbolos.get($3.sval);
+parametrosDef: '(' tipo ID ')' { PI.paramFun($3.sval);
+Token t=Analizador_Lexico.tablaSimbolos.get($3.sval);
 	if(t!=null){
 		t.uso="parametro";
 		t.declarada=true;
@@ -99,7 +100,7 @@ sentenciaDECFuncion :  tipo lista_variables ',' { $$.sval = "noseusaelparametro"
 Parser.estructuras.add("Se detecto la declaracion de variables en la linea "+Analizador_Lexico.cantLN+"\r\n");}
 	//ESTECOMPILA| lista_variables ',' {this.errores.add(new ErrorG("Error 33: Falta definir el tipo de las variables", Analizador_Lexico.cantLN));}
 	//| tipo lista_variables {this.errores.add(new ErrorG("Error 32: Se esperaba una ,", Analizador_Lexico.cantLN));} shift reduce
-	| tipoFunID parametrosDef cuerpofuncion {this.errores.add(new ErrorG("Error SIN NUMERO: Se declaró una funcion dentro de otra funcion", Analizador_Lexico.cantLN));}
+	| tipoFunID parametrosDef cuerpofuncion { this.errores.add(new ErrorG("Error SIN NUMERO: Se declarï¿½ una funcion dentro de otra funcion", Analizador_Lexico.cantLN));}
 	//ESTECOMPILA| tipo  parametrosDef cuerpofuncion {this.errores.add(new ErrorG("Error 30: Falta definir el nombre de la funcion", Analizador_Lexico.cantLN));}
 	//ESTECOMPILA| ID parametrosDef cuerpofuncion {this.errores.add(new ErrorG("Error 31: Falta definir el tipo de la funcion", Analizador_Lexico.cantLN));}
 	//ESTECOMPILA| tipo ID  cuerpofuncion {this.errores.add(new ErrorG("Error 29: Falta definir los parametros de la funcion", Analizador_Lexico.cantLN));}
@@ -225,7 +226,16 @@ operador_logico : '<' 		{ $$.sval = "<"; }
 	
 ;
 
-asignacion : ID ASIGN expresion { if ( isPermited($1.sval, $3.sval) ) $$.sval = $3.sval; Token t=Analizador_Lexico.tablaSimbolos.get($1.sval); PI.put($1.sval); PI.put(":=");
+asignacion : ID ASIGN expresion {
+if ( $1.sval == this.idParam ) {
+    if ( isPermited("write", $3.sval) )
+        $$.sval = $3.sval;
+}
+else {
+    if ( isPermited("noseusaelparametro", $3.sval) )
+       $$.sval = $3.sval;
+}
+ Token t=Analizador_Lexico.tablaSimbolos.get($1.sval); PI.put($1.sval); PI.put(":=");
 	if(t!=null){
 		if(t.declarada==false)
 			this.errores.add(new ErrorG("Error 34 : La variable "+$1.sval+" no esta declarada ", Analizador_Lexico.cantLN));
@@ -238,13 +248,13 @@ asignacion : ID ASIGN expresion { if ( isPermited($1.sval, $3.sval) ) $$.sval = 
 	//ESTECOMPILA| ID ASIGN {this.errores.add(new ErrorG("Error SIN NUMERO: Se esperaba una expresion del lado derecho de la asignacion", Analizador_Lexico.cantLN));}
 ;
 
-expresion : expresion '+' termino	{ if ( isPermited($1.sval, $2.sval) ) $$.sval = $2.sval; else         $$.sval = $1.sval ; PI.put("+"); }
-	| expresion '-' termino		{ if ( isPermited($1.sval, $2.sval) ) $$.sval = $2.sval; else         $$.sval = $1.sval ; PI.put("-"); }
+expresion : expresion '+' termino	{ if ( isPermited($1.sval, $3.sval) ) $$.sval = $3.sval; else         $$.sval = $1.sval ; PI.put("+"); }
+	| expresion '-' termino		{ if ( isPermited($1.sval, $3.sval) ) $$.sval = $3.sval; else         $$.sval = $1.sval ; PI.put("-"); }
 	| termino { $$.sval = $1.sval; }
 ;
 
-termino : termino '*' factor		{ if ( isPermited($1.sval, $2.sval) ) $$.sval = $2.sval; else         $$.sval = $1.sval ; PI.put("*"); }
-	| termino '/' factor		{ if ( isPermited($1.sval, $2.sval) ) $$.sval = $2.sval; else         $$.sval = $1.sval ; PI.put("/"); }
+termino : termino '*' factor		{ if ( isPermited($1.sval, $3.sval) ) $$.sval = $3.sval; else         $$.sval = $1.sval ; PI.put("*"); }
+	| termino '/' factor		{ if ( isPermited($1.sval, $3.sval) ) $$.sval = $3.sval; else         $$.sval = $1.sval ; PI.put("/"); }
 	| factor { $$.sval = $1.sval; }
 ;
 
@@ -253,7 +263,8 @@ factor : ID 				{ if ( idParam == $1.sval) $$.sval = "readonly"; else $$.sval = 
 	| SINGLE 			    { $$.sval = "noseusaelparametro"; PI.put($1.sval); }
 	| '-' SINGLE {	Token t=Analizador_Lexico.tablaSimbolos.get($2.sval);
 	t.lexema="-"+t.lexema; PI.put("-" + $1.sval);}
-	|ID parametros { if ( !isPermited(Analizador_Lexico.tablaSimbolos.get($1.sval).permisoFun, $2.sval) )
+	|ID parametros { System.out.println(Analizador_Lexico.tablaSimbolos.get($1.sval).permisoFun + " versus " + $2.sval);
+	                if ( !isPermited(Analizador_Lexico.tablaSimbolos.get($1.sval).permisoFun, $2.sval) )
 	                    new ErrorG("Error asignacion de permisos", Analizador_Lexico.cantLN);
                     else{
                         //System.out.println("Permiso aceptado");
@@ -356,6 +367,10 @@ public void registrarTipo(String listaVariables,String tipo){
 	}*/
 }
 public static boolean  isPermited(String permisoFuncion,String permisoInvocacion){
+    	if (permisoFucion.equals("noseusaelparametro"))
+    	    return false;
+    	if (permisoFuncion.equals
+
     	if(permisoFuncion.equals(permisoInvocacion))
     		return true;
     	if(permisoInvocacion.length()>5)
