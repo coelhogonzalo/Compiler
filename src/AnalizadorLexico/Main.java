@@ -18,8 +18,8 @@ public class Main {
         Parser.estructuras = new ArrayList<>();
         p.al = al;
         int unint = p.parsepublico();
-        //System.out.println("Tabla de simbolos:");
-        //System.out.println(Analizador_Lexico.tablaSimbolos);
+        System.out.println("Tabla de simbolos:");
+        System.out.println(Analizador_Lexico.tablaSimbolos);
         System.out.println("");
         System.out.println("Polaca inversa resultante:");
         p.PI.printContent();

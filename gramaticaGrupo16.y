@@ -73,6 +73,7 @@ Token t=Analizador_Lexico.tablaSimbolos.get($3.sval);
 			t.uso="parametro";
 			t.declarada=true;
 			t.ambito=this.ambitoActual;
+			t.tipo=$2.sval;
 		}
 		else
 			this.errores.add(new ErrorG("Error SIN NUMERO : El identificador '"+t.lexema+"' de tipo '"+t.uso+"' no puede ser redeclarado", Analizador_Lexico.cantLN));
