@@ -2,12 +2,14 @@ package AnalizadorLexico;
 
 public class Token {
 
+    private final int READONLY = 0;
+
     public String lexema;
     public Integer nro;
     public String tipo;
     public boolean declarada;
     public String uso;
-    public String permisoFun;
+    public int permisoFun;
     public String ambito;
 
     public Token(String lexema, Integer nro, String tipo) {
@@ -16,12 +18,12 @@ public class Token {
         this.nro = nro;
         this.tipo = tipo;
         this.declarada=false;
-        this.permisoFun = "noseusaelparametro";
+        this.permisoFun = READONLY;
         this.ambito = "Nulo";
         //this.ambito;//Todos los token arrancan con arroba para despues agregar @
     }
-    
-    
+
+
 
     public String toString(){
         if ( nro != Analizador_Lexico.TOKEN_ERROR )

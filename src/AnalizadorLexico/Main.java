@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import GeneracionAssembler.GeneradorAssembler;
 import Parser.Parser;
 
 
@@ -31,6 +32,8 @@ public class Main {
         if(!Error.huboErrores){
         	System.out.print(" y no se encontraron errores (PROCEED COMPILATION)");
         	//ACA EMA NOS GENERA UN TERRIBLE ASSEMBLER
+        	GeneradorAssembler gen=new GeneradorAssembler(p.PI);
+        	gen.generameAssemblydotexe();
         }
         else
         	System.out.print(" y se encontraron errores (ABORT COMPILATION)");
