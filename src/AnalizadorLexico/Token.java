@@ -8,6 +8,7 @@ public class Token {
     public boolean declarada;
     public String uso;
     public String permisoFun;
+    public String ambito;
 
     public Token(String lexema, Integer nro, String tipo) {
         super();
@@ -16,13 +17,15 @@ public class Token {
         this.tipo = tipo;
         this.declarada=false;
         this.permisoFun = "noseusaelparametro";
+        this.ambito = "Nulo";
+        //this.ambito;//Todos los token arrancan con arroba para despues agregar @
     }
     
     
 
     public String toString(){
         if ( nro != Analizador_Lexico.TOKEN_ERROR )
-            return "Lexema: '" + lexema + "'   Numero: " + nro + "   Tipo: " + tipo +"\r\n";
+            return "Lexema: '" + this.lexema + " DECLARADA?: "+this.declarada + " Tipo: " +this.tipo +" Ambito:"+this.ambito+"\r\n";
         else
             return "TOKEN ERROR\n";
     }

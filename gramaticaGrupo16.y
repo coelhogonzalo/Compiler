@@ -51,7 +51,7 @@ Parser.estructuras.add("Se detecto la declaracion de variables en la linea "+Ana
 	
 ;
 
-tipoFunID : tipo ID { this.idFun = $2.sval; Token t=Analizador_Lexico.tablaSimbolos.get($2.sval);
+tipoFunID : tipo ID { this.idFun = $2.sval; Token t=Analizador_Lexico.tablaSimbolos.get($2.sval); this.ambitoActual=this.ambitoActual+"@"+$2.sval;
 	if(t.declarada){
 		this.errores.add(new ErrorG("Error SIN NUMERO: El identificador '"+t.lexema+"' ,de uso '"+t.uso+"' ya esta declarado", Analizador_Lexico.cantLN));
 		PI.inicioFuncion($2.sval);
@@ -69,8 +69,13 @@ tipoFunID : tipo ID { this.idFun = $2.sval; Token t=Analizador_Lexico.tablaSimbo
 parametrosDef: '(' tipo ID ')' { PI.paramFun($3.sval);
 Token t=Analizador_Lexico.tablaSimbolos.get($3.sval);
 	if(t!=null){
-		t.uso="parametro";
-		t.declarada=true;
+		if(!t.declarada){
+			t.uso="parametro";
+			t.declarada=true;
+			t.ambito=this.ambitoActual;
+		}
+		else
+			this.errores.add(new ErrorG("Error SIN NUMERO : El identificador '"+t.lexema+"' de tipo '"+t.uso+"' no puede ser redeclarado", Analizador_Lexico.cantLN));
 	}
 	else
 		System.out.println("El token que quisiste recuperar es null (ndmpp)");
@@ -79,7 +84,7 @@ this.idParam = $3.sval; }
 	//ESTECOMPILA| tipo ID ')' {this.errores.add(new ErrorG("Error SIN NUMERO : Falta un ( antes del tipo del parametro", Analizador_Lexico.cantLN));}
 ;
 
-cuerpofuncion: '{' BSFuncion retorno '}' { $$.sval = $2.sval; }
+cuerpofuncion: '{' BSFuncion retorno '}' { $$.sval = $2.sval; this.ambitoActual=Analizador_Lexico.cortarAmbito(this.ambitoActual);}
 
 	//ESTECOMPILA| '{'  retorno '}' {this.errores.add(new ErrorG("Error 23: Se esperaba un bloque de sentencias en el cuerpo de la funcion", Analizador_Lexico.cantLN));}
 	//| '{' BS retorno
@@ -117,6 +122,7 @@ lista_variables : lista_variables ';' ID {Token t=Analizador_Lexico.tablaSimbolo
 		if(t.declarada==false&&t.uso!="parametro"){
 			t.declarada=true;
 			t.uso="variable";
+			t.ambito=this.ambitoActual;
 		}
 		else	
 			this.errores.add(new ErrorG("Error SIN NUMERO: Se redeclaro el identificador de uso "+t.uso+" :'"+t.lexema+"' ", Analizador_Lexico.cantLN));
@@ -129,6 +135,7 @@ lista_variables : lista_variables ';' ID {Token t=Analizador_Lexico.tablaSimbolo
 		if(t.declarada==false&&t.uso!="parametro"){
 			t.declarada=true;
 			t.uso="variable";
+			t.ambito=this.ambitoActual;
 		}
 		else 
 			this.errores.add(new ErrorG("Error SIN NUMERO: Se redeclaro el identificador de tipo "+t.uso+" :'"+t.lexema+"' ", Analizador_Lexico.cantLN));
@@ -227,6 +234,7 @@ operador_logico : '<' 		{ $$.sval = "<"; }
 ;
 
 asignacion : ID ASIGN expresion {
+
 if ( $1.sval == this.idParam ) {
     if ( isPermited("write", $3.sval) )
         $$.sval = $3.sval;
@@ -235,15 +243,19 @@ else {
     if ( isPermited("noseusaelparametro", $3.sval) )
        $$.sval = $3.sval;
 }
- Token t=Analizador_Lexico.tablaSimbolos.get($1.sval); PI.put($1.sval); PI.put(":=");
-	if(t!=null){
+	Token t=Analizador_Lexico.tablaSimbolos.get($1.sval);
+	if(t!=null){//Primero me fijo si esta declarada
 		if(t.declarada==false)
-			this.errores.add(new ErrorG("Error 34 : La variable "+$1.sval+" no esta declarada ", Analizador_Lexico.cantLN));
+			this.errores.add(new ErrorG("Error 35 : La variable "+$1.sval+" no esta declarada ", Analizador_Lexico.cantLN));
+		else{
+			t=Analizador_Lexico.getEntradaTS($1.sval,this.ambitoActual);
+			if(t==null)//Despues me fijo si esta en el ambito
+				this.errores.add(new ErrorG("Error 34 : El identificador "+$1.sval+" no esta en el ambito "+this.ambitoActual, Analizador_Lexico.cantLN));
+		}
 	}
 	else
-		System.out.println("El identificador "+$1.sval+" no se agrego a la tabla de simbolos (ndmpp)");
-	}
-	
+		System.out.println($1.sval+" No esta en la tabla de simbolos ndmpp ");
+}
 	//ESTECOMPILA| ID expresion {this.errores.add(new ErrorG("Error6: Falta el operador de asignacion", Analizador_Lexico.cantLN));}//Este creo que anda si no hay otro error de los que compilancon el que hace macaana
 	//ESTECOMPILA| ID ASIGN {this.errores.add(new ErrorG("Error SIN NUMERO: Se esperaba una expresion del lado derecho de la asignacion", Analizador_Lexico.cantLN));}
 ;
@@ -257,11 +269,25 @@ termino : termino '*' factor		{ if ( isPermited($1.sval, $3.sval) ) $$.sval = $3
 	| termino '/' factor		{ if ( isPermited($1.sval, $3.sval) ) $$.sval = $3.sval; else         $$.sval = $1.sval ; PI.put("/"); }
 	| factor { $$.sval = $1.sval; }
 ;
+//this.errores.add(new ErrorG("Error 34 : El identificador "+$1.sval+" no esta en el ambito "+this.ambitoActual, Analizador_Lexico.cantLN));
+factor : ID 				{ if ( idParam == $1.sval) $$.sval = "readonly"; else $$.sval = "noseusaelparametro"; PI.put($1.sval);
+	Token t=Analizador_Lexico.tablaSimbolos.get($1.sval);
+	if(t!=null){
+		if(t.declarada==false)//Primero me fijo si esta declarada
+			this.errores.add(new ErrorG("Error 34 : La variable "+$1.sval+" no esta declarada ", Analizador_Lexico.cantLN));
+		else{
+			t=Analizador_Lexico.getEntradaTS($1.sval,this.ambitoActual);
+			if(t==null)//Despues me fijo si esta en el ambito
+				this.errores.add(new ErrorG("Error 34 : El identificador "+$1.sval+" no esta en el ambito "+this.ambitoActual, Analizador_Lexico.cantLN));
+		}
+	}
+	else
+		System.out.println(" No esta en la tabla de simbolos ndmpp ");
+	}
 
-factor : ID 				{ if ( idParam == $1.sval) $$.sval = "readonly"; else $$.sval = "noseusaelparametro"; PI.put($1.sval); }
 	| USLINTEGER 			{ $$.sval = "noseusaelparametro"; PI.put($1.sval); }
 	| SINGLE 			    { $$.sval = "noseusaelparametro"; PI.put($1.sval); }
-	| '-' SINGLE {	Token t=Analizador_Lexico.tablaSimbolos.get($2.sval);
+	| '-' SINGLE {	Token t=Analizador_Lexico.tablaSimbolos.get($2.sval);//Este no es con ambito
 	t.lexema="-"+t.lexema; PI.put("-" + $1.sval);}
 	|ID parametros { System.out.println(Analizador_Lexico.tablaSimbolos.get($1.sval).permisoFun + " versus " + $2.sval);
 	                if ( !isPermited(Analizador_Lexico.tablaSimbolos.get($1.sval).permisoFun, $2.sval) )
@@ -282,13 +308,18 @@ factor : ID 				{ if ( idParam == $1.sval) $$.sval = "readonly"; else $$.sval = 
 ;
 
 parametros: '(' ID ';' lista_permisos ')' { $$.sval = $4.sval; PI.put($2.sval);
-Token t=Analizador_Lexico.tablaSimbolos.get($2.sval);
-	if(t!=null){
+	Token t=Analizador_Lexico.tablaSimbolos.get($2.sval);
+	if(t!=null){//Primero me fijo si esta declarada
 		if(t.declarada==false)
 			this.errores.add(new ErrorG("Error 35: La variable "+$2.sval+" no esta declarada ", Analizador_Lexico.cantLN));
+		else{
+			t=Analizador_Lexico.getEntradaTS($2.sval,this.ambitoActual);
+			if(t==null)//Despues me fijo si esta en el ambito
+				this.errores.add(new ErrorG("Error 34 : El identificador "+$2.sval+" no esta en el ambito "+this.ambitoActual, Analizador_Lexico.cantLN));
+		}
 	}
 	else
-		System.out.println("El identificador "+$2.sval+" no se agrego a la tabla de simbolos (ndmpp)");
+		System.out.println(" No esta en la tabla de simbolos ndmpp ");
 	}
 
 //ESTECOMPILA| ID ';' lista_permisos ')'  {this.errores.add(new ErrorG("Error 15: Se esperaba un (", Analizador_Lexico.cantLN));}
@@ -319,7 +350,8 @@ public static TokenValue ultimoTokenleido;
 public static ArrayList<String> estructuras;
 public String idFun;
 public String idParam;
-
+public String ambitoActual="@main";
+public String ultimaFuncion;
 
 public int yylex(){
 	Token t=null;
@@ -367,10 +399,6 @@ public void registrarTipo(String listaVariables,String tipo){
 	}*/
 }
 public static boolean  isPermited(String permisoFuncion,String permisoInvocacion){
-    	if (permisoFucion.equals("noseusaelparametro"))
-    	    return false;
-    	if (permisoFuncion.equals
-
     	if(permisoFuncion.equals(permisoInvocacion))
     		return true;
     	if(permisoInvocacion.length()>5)

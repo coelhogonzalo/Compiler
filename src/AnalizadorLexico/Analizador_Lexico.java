@@ -186,7 +186,36 @@ public class Analizador_Lexico {
         }
         return false;
     }
-
+    public static Token getEntradaTS(String lexema, String ambito){
+    	Token t=Analizador_Lexico.tablaSimbolos.get(lexema);
+    	if(t!=null){
+    		while(ambito.length()>0){
+    			//System.out.println(lexema+" El ambito en la ts: '"+t.ambito+"' . El ambito actual: '"+ambito+"'");
+    			if(t.ambito.equals(ambito))
+    				return t;
+    			ambito=cortarAmbito(ambito);
+    		}
+    	}
+    	return null;
+    }
+    public static String cortarAmbito(String ambito){//Recorta el ultimo ambito 
+    	String cortado=ambito;
+    	if(!cortado.isEmpty()){
+    		while(cortado.charAt(cortado.length()-1)!='@')
+    			cortado=cortado.substring(0, cortado.length()-1);
+    		cortado=cortado.substring(0, cortado.length()-1);//Saco el arroba
+    		return cortado;
+    	}
+    	return cortado;
+    	
+    }
+    /*
+    public static void testAmbito(String [] args){
+    	String ambito="@main@_Funcion";
+    	System.out.println(" asd '"+ambito+"'");
+    	System.out.println(" asd '"+cortarAmbito(ambito)+"'");
+    	System.out.println(" asd '"+cortarAmbito(cortarAmbito(ambito))+"'");
+    }*/
     /*public Token GetToken() {// Hay que revisarla y testearla
         StringBuilder buffer; //me parece que vamos a tener uqe hacer que sea null y que se inicialice en el while por el yacc
         if (cursor < fuente.length())
