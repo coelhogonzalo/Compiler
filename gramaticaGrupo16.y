@@ -20,13 +20,13 @@ import java.util.Arrays;
 program : BS
 ;
 
-BS : BS sentencia { }
-	| sentencia { }
+BS : BS sentencia
+	| sentencia
 
 ;
 
-sentencia : sentenciaCE { }
-	| sentenciaDEC { }
+sentencia : sentenciaCE
+	| sentenciaDEC
 	//| error ','// Esta la sacamos y si hay mas de 2 errores que ternmine la compilacion
 
 ;
@@ -47,7 +47,7 @@ Parser.estructuras.add("Se detecto la declaracion de variables en la linea "+Ana
 
 ;
 
-tipoFunID : tipo ID {
+tipoFunID : tipo ID { estoyEnFuncion = true;
                 idFun = $2.sval;
 
  Token t=Analizador_Lexico.tablaSimbolos.get($2.sval); this.ambitoActual=this.ambitoActual+"@"+$2.sval;
@@ -94,11 +94,11 @@ cuerpofuncion: '{' BSFuncion retorno '}' {
 	//| '{' BS retorno
 	//ESTECOMPILA|  BS retorno '}' {this.errores.add(new ErrorG("Error SIN NUMERO: Se esperaba un { al principio de la funcion", Analizador_Lexico.cantLN));}
 ;
-BSFuncion : BSFuncion sentenciaFuncion { }
-	| sentenciaFuncion { }
+BSFuncion : BSFuncion sentenciaFuncion
+	|
 ;
-sentenciaFuncion : sentenciaCE { }
-	| sentenciaDECFuncion { }
+sentenciaFuncion : sentenciaCE
+	| sentenciaDECFuncion
 ;
 sentenciaDECFuncion :  tipo lista_variables ',' { registrarTipo( $2.sval, $1.sval); //System.out.println($2.sval);
 Parser.estructuras.add("Se detecto la declaracion de variables en la linea "+Analizador_Lexico.cantLN+"\r\n");}
@@ -111,7 +111,7 @@ Parser.estructuras.add("Se detecto la declaracion de variables en la linea "+Ana
 	//| tipo ID parametrosDef {this.errores.add(new ErrorG("Error 28: Falta definir el cuerpo de la funcion", Analizador_Lexico.cantLN));} shift reduce
 ;
 
-retorno : RETURN expresioncparentesis {
+retorno : RETURN expresioncparentesis { estoyEnFuncion = false;
                 idFun = "None";
 PI.finFuncion(); }//el del return tengo qeu hacer lo que dijo anto
 	//ESTECOMPILA|	RETURN {this.errores.add(new ErrorG("Error 24: La funcion debe retornar un valor", Analizador_Lexico.cantLN));}
@@ -166,9 +166,7 @@ expresioncparentesis:'(' expresion ')'
 
 printeable : '(' CADENA ')' 		{ PI.put($2.sval); }
 		| '(' ID ')'	{
-		PI.put($2.sval); } {System.out.println("--------------------------------------------------------------------------------------------");
-		System.out.println("DEBUGUEANDO: esto es un separador");
-		System.out.println("--------------------------------------------------------------------------------------------");}
+		PI.put($2.sval); }
 	//ESTECOMPILA| '(' CADENA  {this.errores.add(new ErrorG("Error 21 : Falta un )", Analizador_Lexico.cantLN));}
 	//ESTECOMPILA|  CADENA ')' {this.errores.add(new ErrorG("Error 22 : Falta un (", Analizador_Lexico.cantLN));}
 ;
@@ -233,11 +231,14 @@ operador_logico : '<' 		{ $$.sval = "<"; }
 
 asignacion : ID ASIGN expresion {
     if ( $1.sval.equals(idParam) )
+        if ( Analizador_Lexico.tablaSimbolos.get(idFun).permisoFun == Ps )
+            Analizador_Lexico.tablaSimbolos.get(idFun).permisoFun = Wrps;
+        else
 	   if ( isPermited(Analizador_Lexico.tablaSimbolos.get(idFun).permisoFun, Wr) )
             Analizador_Lexico.tablaSimbolos.get(idFun).permisoFun = Wr;
 
 
-	Token t=Analizador_Lexico.tablaSimbolos.get($1.sval);
+	Token t=Analizador_Lexico.tablaSimbolos.get($1.sval); PI.put($1.sval); PI.put(":=");
 	if(t!=null){//Primero me fijo si esta declarada
 		if(t.declarada==false)
 			this.errores.add(new ErrorG("Error 35 : La variable "+$1.sval+" no esta declarada ", Analizador_Lexico.cantLN));
@@ -256,12 +257,12 @@ asignacion : ID ASIGN expresion {
 
 expresion : expresion '+' termino	{ PI.put("+"); }
 	| expresion '-' termino		{ PI.put("-"); }
-	| termino { }
+	| termino
 ;
 
 termino : termino '*' factor		{ PI.put("*"); }
 	| termino '/' factor		{ PI.put("/"); }
-	| factor { }
+	| factor
 ;
 //this.errores.add(new ErrorG("Error 34 : El identificador "+$1.sval+" no esta en el ambito "+this.ambitoActual, Analizador_Lexico.cantLN));
 factor : ID 				{ PI.put($1.sval);
@@ -284,15 +285,18 @@ factor : ID 				{ PI.put($1.sval);
 	| '-' SINGLE {	Token t=Analizador_Lexico.tablaSimbolos.get($2.sval);//Este no es con ambito
 	t.lexema="-"+t.lexema; PI.put("-" + $1.sval);}
 	|ID parametros {
-                    if ( $1.sval.equals(idFun) )
-	                 if ( isPermited(Analizador_Lexico.tablaSimbolos.get($1.sval).permisoFun, $2.ival) )
-                         Analizador_Lexico.tablaSimbolos.get($1.sval).permisoFun = $2.ival;
-
-                    System.out.println("Permiso de " + $1.sval + "\n" + Analizador_Lexico.tablaSimbolos.get($1.sval).permisoFun + "\n");
-                    System.out.println("idFun: " + idFun + " versus " + $1.sval + "\n idParam: " + idParam);
+                    if ( estoyEnFuncion ){
+                        System.out.println(idParam + " contra " + $2.sval);
+                        if ( idParam.equals($2.sval) ){
+                            System.out.println("entro");
+                                if ( isPermited(Analizador_Lexico.tablaSimbolos.get(idFun).permisoFun, $2.ival) )
+                                    Analizador_Lexico.tablaSimbolos.get(idFun).permisoFun = $2.ival;
+                       }
+                    }
+                    System.out.println("CantLN: " + Analizador_Lexico.cantLN);
                     System.out.println(Analizador_Lexico.tablaSimbolos.get($1.sval).permisoFun + " versus " + $2.ival);
 	                if ( !isPermited(Analizador_Lexico.tablaSimbolos.get($1.sval).permisoFun, $2.ival) )
-	                    new ErrorG("Error asignacion de permisos", Analizador_Lexico.cantLN);
+                        this.errores.add(new ErrorG("Error SIN NUMERO : La funcion "+$1.sval+" no puede ser invocada con ese permiso ", Analizador_Lexico.cantLN));
                     else{
                         //System.out.println("Permiso aceptado");
 					}
@@ -309,7 +313,7 @@ factor : ID 				{ PI.put($1.sval);
 ;
 
 parametros: '(' ID ';' lista_permisos ')' {
-                        $$.ival = $4.ival;
+                        $$.ival = $4.ival; $$.sval = $2.sval;
 
  PI.put($2.sval);
 	Token t=Analizador_Lexico.tablaSimbolos.get($2.sval);
@@ -359,6 +363,7 @@ public ArrayList<AnalizadorLexico.Error> errores;
 public static TokenValue ultimoTokenleido;
 public static ArrayList<String> estructuras;
 public String idFun;
+public boolean estoyEnFuncion = false;
 public String idParam;
 public String ambitoActual="@main";
 public String ultimaFuncion;
