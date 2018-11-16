@@ -168,11 +168,18 @@ __14. Declaraci�n de funciones con lista de permisos (si corresponde) con sent
 
 __Sin error
 single _diversion,
-single _fun1 ( single _param1) {
+single _funWRITE ( single _param1) {
 	if(0.2 < 0.3)
 		print ( ' dale que funcionas' ),
 	endif
 	_param1 := 0.2,
+	return ( 2.0 )
+}
+single _funWRITEPASS ( single _param1) {
+	if(0.2 < 0.3)
+		print ( ' dale que funcionas' ),
+	endif
+	_param1 := _funWRITE(_param1; write ),
 	return ( 2.0 )
 }
 
@@ -185,7 +192,7 @@ single _testAmbito ( single _paramTest) {
 _declaradaenfuncion := 0.2,
 __single _fun2 ( write; single _diversion; uslinteger _id) {
 __	print ( ' dale que funcionas' ),
-__	if(0.2 < 0.3)
+__	if(0.2 == 0.3)
 __		print ( ' dale que funcionas' ),
 __	endif
 __	return ( 2.0 
@@ -195,13 +202,17 @@ __}
 __15. Llamado de funciones como sentencia ejecutable.
 
 __Sin error
-_var1 := _fun1 (_diversion; write ),
+_var1 := _funWRITE (_diversion; write ),
 
 __Con error
-_var1 := _fun1 (_diversion; readonly ),__invalido
-_var1 := _fun1 (_diversion; pass ),__invalido
-_var1 := _fun1 (_diversion; write ),__Valido
-_var1 := _fun1 (_diversion; write;pass ),__Valido
+_var1 := _funWRITE (_diversion; readonly ),__invalido
+_var1 := _funWRITE (_diversion; pass ),__invalido
+_var1 := _funWRITE (_diversion; write ),__Valido
+_var1 := _funWRITE (_diversion; write;pass ),__Valido
+_var1 := _funWRITEPASS (_diversion; readonly ),__invalido
+_var1 := _funWRITEPASS (_diversion; pass ),__invalido
+_var1 := _funWRITEPASS (_diversion; write ),__invalido
+_var1 := _funWRITEPASS (_diversion; write;pass ),__Valido
 ___fun ( write; single _diversion; uslinteger _id)
 
 

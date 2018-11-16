@@ -224,7 +224,7 @@ operador_logico : '<' 		{ $$.sval = "<"; }
 	| '>'				    { $$.sval = ">"; }
 	| MENORIGUAL			{ $$.sval = "<="; }
 	| MAYORIGUAL			{ $$.sval = ">="; }
-	| IGUALIGUAL			{ $$.sval = "=="; }
+	| IGUALIGUAL			{ $$.sval = "="; }
 	| DISTINTO			    { $$.sval = "!="; }
 
 ;
@@ -287,16 +287,17 @@ factor : ID 				{ PI.put($1.sval);
 	|ID parametros {
                     if ( estoyEnFuncion ){
                         System.out.println(idParam + " contra " + $2.sval);
-                        if ( idParam.equals($2.sval) ){
-                            System.out.println("entro");
-                                if ( isPermited(Analizador_Lexico.tablaSimbolos.get(idFun).permisoFun, $2.ival) )
-                                    Analizador_Lexico.tablaSimbolos.get(idFun).permisoFun = $2.ival;
-                       }
+                        if ( idParam.equals($2.sval) )
+                            if ( Analizador_Lexico.tablaSimbolos.get(idFun).permisoFun == Rd )
+                                Analizador_Lexico.tablaSimbolos.get(idFun).permisoFun = Ps;
+                            else if ( Analizador_Lexico.tablaSimbolos.get(idFun).permisoFun == Wr )
+                                    Analizador_Lexico.tablaSimbolos.get(idFun).permisoFun = Wrps;
+
                     }
-                    System.out.println("CantLN: " + Analizador_Lexico.cantLN);
-                    System.out.println(Analizador_Lexico.tablaSimbolos.get($1.sval).permisoFun + " versus " + $2.ival);
+                    System.out.println("\n idFun " + idFun + "\n" + "CantLN: " + Analizador_Lexico.cantLN);
+                    System.out.println(Analizador_Lexico.tablaSimbolos.get($1.sval).permisoFun + " y pase " + $2.ival);
 	                if ( !isPermited(Analizador_Lexico.tablaSimbolos.get($1.sval).permisoFun, $2.ival) )
-                        this.errores.add(new ErrorG("Error SIN NUMERO : La funcion "+$1.sval+" no puede ser invocada con ese permiso ", Analizador_Lexico.cantLN));
+                        this.errores.add(new ErrorG("Error SIN NUMERO : La funcion "+$1.sval+" no puede ser invocada con " + $2.ival, Analizador_Lexico.cantLN));
                     else{
                         //System.out.println("Permiso aceptado");
 					}

@@ -2,10 +2,13 @@ package GeneracionAssembler;
 
 
 import java.util.List;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Stack;
 
 import AnalizadorLexico.Analizador_Lexico;
+import AnalizadorLexico.FileManager;
 import AnalizadorLexico.Token;
 import GeneracionCodigoIntermedio.Polaca_Inversa;
 
@@ -21,6 +24,7 @@ public class GeneradorAssembler {
     private List<Integer> saltitos = new ArrayList<Integer>();
 	StringBuilder signo = new StringBuilder();
 	StringBuilder aux_parametro = new StringBuilder();
+	StringBuilder aux_param_declarada = new StringBuilder();
 	StringBuilder fin = new StringBuilder("\n");
     
     //CONSTRUCTOR
@@ -57,45 +61,46 @@ public class GeneradorAssembler {
 			
     	
     		pilaVar.push(PI.getPI().get(i));   //SACO ELEMENTOS DE LA POLACA
-		
+
 		
 			if(pilaVar.peek().toString().equals("inicio_funcion")){ //ME FIJO SI EMPIEZA UNA FUNCION PORQUE ESCRIBE EN OTRO LADO
 				pilaVar.pop();
 				StringBuilder nom_fun = pilaVar.pop();
-				StringBuilder aux_param_declarada = pilaVar.pop();
+				aux_param_declarada = pilaVar.pop();
 				funciones.append("@FUNCTION_"+nom_fun+"\n");
-				funciones.append("MOV EAX, "+aux_parametro+"/n"+"MOV "+aux_param_declarada+", EAX"); //asigno el valor del parametro real al de la funcion
+				//funciones.append("MOV EAX, "+aux_parametro+"/n"+"MOV "+aux_param_declarada+", EAX"); //asigno el valor del parametro real al de la funcion
 				estaEnFuncion = true; //HAGO QUE EMPIEZE A ESCRIBIR EN LA PARTE DE FUNCIONES
 			}
+			else{
 			
-		
-			if(pilaVar.peek().toString().equals("return")){ //LEE EL RETURN DE UNA FUNCION
-				pilaVar.pop();
-				StringBuilder retorno = pilaVar.pop();
-				Token t = null; 
-				if(Analizador_Lexico.tablaSimbolos.get(retorno.toString()).tipo.equals("uslinteger")){
-						funciones.append("MOV EAX, " +retorno + "\n" + "MOV @aux_fun, EAX" +"\n" +"RET" +"\n \n");
-						t = new Token("@aux_fun",Analizador_Lexico.TOKEN_UL,"uslinteger");
-				}
-				
-				if(Analizador_Lexico.tablaSimbolos.get(retorno.toString()).tipo.equals("single")){
-						funciones.append("FLD "+retorno+ "\n" + "FSTP @aux_fun"+"\n" +"RET" +"\n \n");
-						t = new Token(retorno.toString(),Analizador_Lexico.TOKEN_FLOAT,"single");
-				}
-				
-				estaEnFuncion = false;
-				StringBuilder aux_fun= new StringBuilder(retorno);
-				Analizador_Lexico.tablaSimbolos.put(t.lexema,t);
-				pilaVar.push(aux_fun);		//SETEA ENFUNCION A FALSE PARA QUE VUELVA A ESCRIBIR EN CODIGO
-	    	}
-		
-			
-		if(!estaEnFuncion)
-			generarCodigoAssembler(codigo);
-		else
-			generarCodigoAssembler(funciones);
-    		
-		}
+				if((pilaVar.peek().toString()).equals("return")){ //LEE EL RETURN DE UNA FUNCION
+					pilaVar.pop();
+					StringBuilder retorno = pilaVar.pop();
+					Token t = null; 
+						if(Analizador_Lexico.tablaSimbolos.get(retorno.toString()).tipo.equals("uslinteger")){
+								funciones.append("MOV EAX, " +retorno + "\n" + "MOV @aux_fun, EAX" +"\n" +"RET" +"\n \n");
+								t = new Token("@aux_fun",Analizador_Lexico.TOKEN_UL,"uslinteger");
+						}
+						
+						if(Analizador_Lexico.tablaSimbolos.get(retorno.toString()).tipo.equals("single")){
+								funciones.append("FLD "+retorno+ "\n" + "FSTP @aux_fun"+"\n" +"RET" +"\n \n");
+								t = new Token(retorno.toString(),Analizador_Lexico.TOKEN_FLOAT,"single");
+						}
+					
+					estaEnFuncion = false;
+					StringBuilder aux_fun= new StringBuilder(retorno);
+					Analizador_Lexico.tablaSimbolos.put(t.lexema,t);
+					pilaVar.push(aux_fun);		//SETEA ENFUNCION A FALSE PARA QUE VUELVA A ESCRIBIR EN CODIGO
+		    	}
+			   else{
+					if(!estaEnFuncion)
+						generarCodigoAssembler(codigo);
+					else
+						generarCodigoAssembler(funciones);
+			    		
+					}
+    		}
+    	}
 	}		
 			
 			
@@ -108,7 +113,7 @@ public void generarCodigoAssembler(StringBuilder escritura){
 		StringBuilder asignacion = desapilar();
 		Token t = null;
 		if(Analizador_Lexico.tablaSimbolos.get(aAsignar.toString()).tipo.equals("uslinteger")){
-			escritura.append("MOV EAX, "+asignacion+"\n"+"MOV +"+aAsignar+", EAX"+"\n" ); //ver si va lo de mov @aux0, EAX despues de esto
+			escritura.append("MOV EAX, "+asignacion+"\n"+"MOV "+aAsignar+", EAX"+"\n" ); //ver si va lo de mov @aux0, EAX despues de esto
 			t = new Token("@aux"+contador,Analizador_Lexico.TOKEN_UL,"uslinteger");
 			Analizador_Lexico.tablaSimbolos.put(t.lexema,t);
 			StringBuilder aux= new StringBuilder("@aux"+contador);
@@ -117,7 +122,7 @@ public void generarCodigoAssembler(StringBuilder escritura){
 		}
 		else{
 			if(Analizador_Lexico.tablaSimbolos.get(aAsignar.toString()).tipo.equals("single")){
-					escritura.append("FLD"+aAsignar+"\n"+"FSTP @aux"+contador); //creo que seria FLD asignacion + FSTP aAsignar
+					escritura.append("FLD"+aAsignar+"\n"+"FSTP @aux"+contador+"\n"); //creo que seria FLD asignacion + FSTP aAsignar
 					t = new Token("@aux"+contador,Analizador_Lexico.TOKEN_FLOAT,"single");
 					Analizador_Lexico.tablaSimbolos.put(t.lexema,t);
 					StringBuilder aux= new StringBuilder("@aux"+contador);
@@ -139,7 +144,8 @@ public void generarCodigoAssembler(StringBuilder escritura){
 		pilaVar.pop(); //SACO EL CALL
 		StringBuilder fun_llamada = pilaVar.pop();
 		aux_parametro = pilaVar.pop(); //asigno el valor del parametro
-		codigo.append("CALL @FUNCTION_"+fun_llamada+"\n");
+		escritura.append("MOV EAX, "+aux_parametro+"\n"+"MOV "+aux_param_declarada+", EAX"+"\n"); //asigno el valor del parametro real al de la funcion
+		escritura.append("CALL @FUNCTION_"+fun_llamada+"\n");
 		StringBuilder aux= new StringBuilder("@aux"+contador);
 		Token t = new Token("@aux"+contador,Analizador_Lexico.TOKEN_FLOAT,"single");			//VER QUE ONDA
 		Analizador_Lexico.tablaSimbolos.put(t.lexema,t);
@@ -154,7 +160,7 @@ public void generarCodigoAssembler(StringBuilder escritura){
 		StringBuilder segundoComparado = desapilar();
 		//AMBOS INTEGER
 		if((Analizador_Lexico.tablaSimbolos.get(primerComparado.toString()).tipo.equals("uslinteger")) && (Analizador_Lexico.tablaSimbolos.get(segundoComparado.toString()).tipo.equals("uslinteger")))
-			escritura.append("MOV EAX, "+primerComparado+"\n"+"MOV EBX, "+segundoComparado+"\n"+"CMP EAX,EBX");
+			escritura.append("MOV EAX, "+primerComparado+"\n"+"MOV EBX, "+segundoComparado+"\n"+"CMP EAX,EBX"+"\n");
 		//AMBOS FLOAT 
 		if((Analizador_Lexico.tablaSimbolos.get(primerComparado.toString()).tipo.equals("single")) && ((Analizador_Lexico.tablaSimbolos.get(segundoComparado.toString()).tipo.equals("single")))){
 			escritura.append("FLD "+primerComparado+"\n"+"FLD "+segundoComparado+"\n"+"FCOM"+"\n"+"FSTSW @aux"+contador+"\n"+"MOV EAX, @aux"+contador+"\n"+"SAHF");
@@ -175,6 +181,7 @@ public void generarCodigoAssembler(StringBuilder escritura){
 	if(pilaVar.peek().toString().equals("B")){
 		pilaVar.pop(); //SACO EL B
 		StringBuilder label = pilaVar.pop();
+		System.out.println("mabel: " +label);
 		if(Integer.parseInt(label.substring(5,label.length()))>=PI.getPI().size()) //VERIFICO, SI NO CUMPLE LLEVA AL FINAL //ACA CREO ES 5 NO 6
 			label =new StringBuilder("@LABEL_END"+"\n");
 		
@@ -218,9 +225,9 @@ public void generarCodigoAssembler(StringBuilder escritura){
 		else{
 			StringBuilder variable = pilaVar.pop();
 			if(Analizador_Lexico.tablaSimbolos.get(variable.toString()).tipo.equals("single"))
-				escritura.append("invoke printf, cfm$(%.20Lf\n), "+variable+"\n");
+				escritura.append("invoke printf, cfm$(%.20Lf\\n), "+variable+"\n");
 			if(Analizador_Lexico.tablaSimbolos.get(variable.toString()).tipo.equals("uslinteger"))
-				escritura.append("invoke printf, cfm$(%.%llu\n), "+variable+"\n");
+				escritura.append("invoke printf, cfm$(%.%llu\\n), "+variable+"\n");
 		}
 	}
     			
@@ -229,7 +236,10 @@ public void generarCodigoAssembler(StringBuilder escritura){
 		StringBuilder operador = desapilar(); //PARA SACAR EL OPERANDO
 		StringBuilder primerOperando = desapilar();
 		StringBuilder segundoOperando = desapilar();
+		System.out.println("first: " + Analizador_Lexico.tablaSimbolos.get(primerOperando.toString()));
+		System.out.println("first: " + Analizador_Lexico.tablaSimbolos.get(segundoOperando.toString()));
 
+		System.out.println(Analizador_Lexico.tablaSimbolos);
 		if((Analizador_Lexico.tablaSimbolos.get(primerOperando.toString()).tipo.equals("uslinteger")) && ((Analizador_Lexico.tablaSimbolos.get(segundoOperando.toString()).tipo.equals("uslinteger"))))
 			generarCodigoInteger(operador ,primerOperando,segundoOperando,escritura);
 		if((Analizador_Lexico.tablaSimbolos.get(primerOperando.toString()).tipo.equals("single")) && ((Analizador_Lexico.tablaSimbolos.get(segundoOperando.toString()).tipo.equals("single"))))
@@ -248,25 +258,27 @@ public void generarCodigoInteger(StringBuilder operador,StringBuilder primerOper
     	case "+" :  escritura.append("MOV EAX,"+primerOperando+"\n"+"ADD EAX, "+segundoOperando+"\n"+"MOV "+"@aux"+contador+", EAX"+"\n");
     				aux= new StringBuilder("@aux"+contador);
     				pilaVar.push(aux);  				
-    				contador++;
-    	
-    	case"-" : escritura.append("MOV EAX,"+segundoOperando+"\n"+"CMP EAX"+primerOperando+"\n"+"JL @LABEL_RESUL_NEG"+"\n"+"SUB EAX"+primerOperando+"\n"+ "MOV "+"@aux"+contador+", EAX"+"\n");
+    				
+    	break;
+    	case"-" : escritura.append("MOV EAX,"+segundoOperando+"\n"+"CMP EAX, "+primerOperando+"\n"+"JL @LABEL_RESUL_NEG"+"\n"+"SUB EAX, "+primerOperando+"\n"+ "MOV "+"@aux"+contador+", EAX"+"\n");
   				  aux= new StringBuilder("@aux"+contador);
   				  pilaVar.push(aux);
-		 		  contador++;
-    	
-    	case"*": escritura.append("MOV EAX,"+primerOperando+"\n"+"MUL EAX"+segundoOperando+"\n"+ "JO @LABEL_OVF"+"\n"+ "MOV "+"@aux"+contador+", EAX"+"\n");
+		 		 
+    	break;
+    	case"*": escritura.append("MOV EAX,"+primerOperando+"\n"+"MUL EAX, "+segundoOperando+"\n"+ "JO @LABEL_OVF"+"\n"+ "MOV "+"@aux"+contador+", EAX"+"\n");
  				 aux= new StringBuilder("@aux"+contador);
  				 pilaVar.push(aux);
-				 contador++;
+		break;		
  //EL JUMP ZERO FUNCIONA BIEN ACA?
-    	case"/" : escritura.append("MOV EAX,"+segundoOperando+"\n"+"MOV EBX,"+primerOperando+"\n"+"CMP EBX, 0.0"+"\n"+"JZ @LABEL_ZERO"+"DIV EAX"+primerOperando+"\n"+ "MOV "+"@aux"+contador+", EAX"+"\n");
+    	case"/" : escritura.append("MOV EAX,"+segundoOperando+"\n"+"MOV EBX,"+primerOperando+"\n"+"CMP EBX, 0.0"+"\n"+"JZ @LABEL_ZERO"+"\n"+"DIV EAX, "+primerOperando+"\n"+ "MOV "+"@aux"+contador+", EAX"+"\n");
  				  aux= new StringBuilder("@aux"+contador);
  				  pilaVar.push(aux);
-		 		  contador++;
+	
+		 break;
     	}
 		Token t = new Token("@aux"+contador,Analizador_Lexico.TOKEN_UL,"uslinteger");
 		Analizador_Lexico.tablaSimbolos.put(t.lexema,t);
+		contador++;
     }
     	
 public void generarCodigoSingle(StringBuilder operador,StringBuilder primerOperando, StringBuilder segundoOperando, StringBuilder escritura){ //para los dos single
@@ -277,21 +289,23 @@ public void generarCodigoSingle(StringBuilder operador,StringBuilder primerOpera
 						aux= new StringBuilder("@aux"+contador);
 						pilaVar.push(aux);
 						contador++;
-			
+			break;
 			case"-" : escritura.append("FLD "+primerOperando+"\n"+"FLD "+segundoOperando+"\n"+"FCOM"+"\n"+"JB @LABEL_RESUL_NEG"+"\n"+ "FSUB"+"\n"+"FSTP "+"@aux"+contador+"\n");
 					  aux= new StringBuilder("@aux"+contador);
 					  pilaVar.push(aux);
 					  contador++;
-			
+			break;
 			case"*": escritura.append("FLD "+primerOperando+"\n"+"FLD "+segundoOperando+"\n"+ "FMUL"+"\n"+"FSTP "+"@aux"+contador+"\n"+"FLD cte_max_rango"+"\n"+"FLD @aux"+contador+"FCOM"+"\n"+"FSTSW AX"+"\n"+"SAHF"+"\n"+"JA @LABEL_OVF"+"\n");
 					 aux= new StringBuilder("@aux"+contador);
 					 pilaVar.push(aux);		
 					 contador++;
+			break;		 
 //DICE QUE PARA EL FCOM TIENE QUE SER NUMERO REAL, VER!!!
 			case"/" :escritura.append("FLD "+primerOperando+"\n"+"FLD "+segundoOperando+"\n"+"FCOM 0"+"\n"+"JE @LABEL_ZERO"+ "FDIV"+"\n"+"FSTP "+"@aux"+contador+"\n");
 					 aux= new StringBuilder("@aux"+contador);
 					 pilaVar.push(aux);
 					 contador++;
+			break;
 			}
 			Token t = new Token("@aux"+contador,Analizador_Lexico.TOKEN_FLOAT,"single");
 			Analizador_Lexico.tablaSimbolos.put(t.lexema,t);
@@ -349,7 +363,7 @@ public void generarCodigoSingle(StringBuilder operador,StringBuilder primerOpera
     	return pilaVar.push(s);
     }
     
-    public void generameAssemblydotexe(){
+    public void generameAssemblydotexe() throws IOException{
     	generarEncabezado();
     	guardarSaltos();
     	leer();
@@ -361,6 +375,7 @@ public void generarCodigoSingle(StringBuilder operador,StringBuilder primerOpera
     	generarFin();
     	inicio.append(fin);
     	System.out.println(inicio);
+    	FileManager.write(inicio.toString(), new File("prueba.asm"));
     }
     
 

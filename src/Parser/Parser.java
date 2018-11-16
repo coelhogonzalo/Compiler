@@ -408,7 +408,7 @@ public class Parser
             "lista_permisos :",
     };
 
-//#line 353 "g16.y"
+//#line 354 "g16.y"
 
     private static final int Rd = 0;
     private static final int Wr = 1;
@@ -859,7 +859,7 @@ public class Parser
                 break;
                 case 42:
 //#line 227 "g16.y"
-                { yyval.sval = "=="; }
+                { yyval.sval = "="; }
                 break;
                 case 43:
 //#line 228 "g16.y"
@@ -941,16 +941,17 @@ public class Parser
                 {
                     if ( estoyEnFuncion ){
                         System.out.println(idParam + " contra " + val_peek(0).sval);
-                        if ( idParam.equals(val_peek(0).sval) ){
-                            System.out.println("entro");
-                            if ( isPermited(Analizador_Lexico.tablaSimbolos.get(idFun).permisoFun, val_peek(0).ival) )
-                                Analizador_Lexico.tablaSimbolos.get(idFun).permisoFun = val_peek(0).ival;
-                        }
+                        if ( idParam.equals(val_peek(0).sval) )
+                            if ( Analizador_Lexico.tablaSimbolos.get(idFun).permisoFun == Rd )
+                                Analizador_Lexico.tablaSimbolos.get(idFun).permisoFun = Ps;
+                            else if ( Analizador_Lexico.tablaSimbolos.get(idFun).permisoFun == Wr )
+                                Analizador_Lexico.tablaSimbolos.get(idFun).permisoFun = Wrps;
+
                     }
-                    System.out.println("CantLN: " + Analizador_Lexico.cantLN);
-                    System.out.println(Analizador_Lexico.tablaSimbolos.get(val_peek(1).sval).permisoFun + " versus " + val_peek(0).ival);
+                    System.out.println("\n idFun " + idFun + "\n" + "CantLN: " + Analizador_Lexico.cantLN);
+                    System.out.println(Analizador_Lexico.tablaSimbolos.get(val_peek(1).sval).permisoFun + " y pase " + val_peek(0).ival);
                     if ( !isPermited(Analizador_Lexico.tablaSimbolos.get(val_peek(1).sval).permisoFun, val_peek(0).ival) )
-                        this.errores.add(new ErrorG("Error SIN NUMERO : La funcion "+val_peek(1).sval+" no puede ser invocada con ese permiso ", Analizador_Lexico.cantLN));
+                        this.errores.add(new ErrorG("Error SIN NUMERO : La funcion "+val_peek(1).sval+" no puede ser invocada con " + val_peek(0).ival, Analizador_Lexico.cantLN));
                     else{
                         /*System.out.println("Permiso aceptado");*/
                     }
@@ -966,7 +967,7 @@ public class Parser
                         System.out.println("El identificador "+val_peek(1).sval+" no se agrego a la tabla de simbolos (El identificador es una funcion) (ndmpp)"); }
                 break;
                 case 56:
-//#line 315 "g16.y"
+//#line 316 "g16.y"
                 {
                     yyval.ival = val_peek(1).ival; yyval.sval = val_peek(3).sval;
 
@@ -986,22 +987,22 @@ public class Parser
                 }
                 break;
                 case 59:
-//#line 342 "g16.y"
+//#line 343 "g16.y"
                 { yyval.ival = Rd; }
                 break;
                 case 60:
-//#line 343 "g16.y"
+//#line 344 "g16.y"
                 { yyval.ival = Wr; }
                 break;
                 case 61:
-//#line 344 "g16.y"
+//#line 345 "g16.y"
                 { yyval.ival = Ps; }
                 break;
                 case 62:
-//#line 345 "g16.y"
+//#line 346 "g16.y"
                 { yyval.ival = Wrps; }
                 break;
-//#line 928 "Parser.java"
+//#line 929 "Parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
             }//switch
             //#### Now let's reduce... ####
