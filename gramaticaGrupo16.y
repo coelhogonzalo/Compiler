@@ -224,7 +224,7 @@ operador_logico : '<' 		{ $$.sval = "<"; }
 	| '>'				    { $$.sval = ">"; }
 	| MENORIGUAL			{ $$.sval = "<="; }
 	| MAYORIGUAL			{ $$.sval = ">="; }
-	| IGUALIGUAL			{ $$.sval = "="; }
+	| '='					{ $$.sval = "="; }
 	| DISTINTO			    { $$.sval = "!="; }
 
 ;

@@ -11,7 +11,7 @@ import Parser.Parser;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        File f = new File("EjemplosTP3y4.txt");
+        File f = new File("prueba.txt");
         Analizador_Lexico al = new Analizador_Lexico(f);
         Parser p = new Parser(false);
         p.errores = al.getErrores();

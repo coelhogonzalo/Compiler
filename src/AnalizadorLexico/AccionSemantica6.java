@@ -14,6 +14,7 @@ public class AccionSemantica6 implements AccionSemantica {
         if (((flotante < 3.40282347E38) && (flotante > 1.17549435E-38)) || (flotante == 0)){
         	String lexema=buffer.toString();
         	unToken=new Token(lexema, Analizador_Lexico.TOKEN_FLOAT,"single");
+        	unToken.uso="constante";
             Analizador_Lexico.tablaSimbolos.put(lexema, unToken);
         }
         else {
@@ -23,7 +24,8 @@ public class AccionSemantica6 implements AccionSemantica {
             String lexema=buffer.toString();
             unToken=new Token(lexema, Analizador_Lexico.TOKEN_FLOAT,"single");
             Analizador_Lexico.errores.add(e);
-            Analizador_Lexico.tablaSimbolos.put(buffer.toString(), unToken);
+            unToken.uso="constante";
+            Analizador_Lexico.tablaSimbolos.put(lexema, unToken);
         }
         return unToken;
     }
