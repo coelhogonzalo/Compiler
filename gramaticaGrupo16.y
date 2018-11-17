@@ -104,7 +104,7 @@ sentenciaDECFuncion :  tipo lista_variables ',' { registrarTipo( $2.sval, $1.sva
 Parser.estructuras.add("Se detecto la declaracion de variables en la linea "+Analizador_Lexico.cantLN+"\r\n");}
 	//ESTECOMPILA| lista_variables ',' {this.errores.add(new ErrorG("Error 33: Falta definir el tipo de las variables", Analizador_Lexico.cantLN));}
 	//| tipo lista_variables {this.errores.add(new ErrorG("Error 32: Se esperaba una ,", Analizador_Lexico.cantLN));} shift reduce
-	| tipoFunID parametrosDef cuerpofuncion { this.errores.add(new ErrorG("Error SIN NUMERO: Se declar� una funcion dentro de otra funcion", Analizador_Lexico.cantLN));}
+	| tipoFunID parametrosDef cuerpofuncion { this.errores.add(new ErrorG("Error SIN NUMERO: Se declarar una funcion dentro de otra funcion", Analizador_Lexico.cantLN));}
 	//ESTECOMPILA| tipo  parametrosDef cuerpofuncion {this.errores.add(new ErrorG("Error 30: Falta definir el nombre de la funcion", Analizador_Lexico.cantLN));}
 	//ESTECOMPILA| ID parametrosDef cuerpofuncion {this.errores.add(new ErrorG("Error 31: Falta definir el tipo de la funcion", Analizador_Lexico.cantLN));}
 	//ESTECOMPILA| tipo ID  cuerpofuncion {this.errores.add(new ErrorG("Error 29: Falta definir los parametros de la funcion", Analizador_Lexico.cantLN));}
@@ -230,13 +230,14 @@ operador_logico : '<' 		{ $$.sval = "<"; }
 ;
 
 asignacion : ID ASIGN expresion {
+    if ( estoyEnFuncion ){
     if ( $1.sval.equals(idParam) )
         if ( Analizador_Lexico.tablaSimbolos.get(idFun).permisoFun == Ps )
             Analizador_Lexico.tablaSimbolos.get(idFun).permisoFun = Wrps;
         else
 	   if ( isPermited(Analizador_Lexico.tablaSimbolos.get(idFun).permisoFun, Wr) )
             Analizador_Lexico.tablaSimbolos.get(idFun).permisoFun = Wr;
-
+    }
 
 	Token t=Analizador_Lexico.tablaSimbolos.get($1.sval); PI.put($1.sval); PI.put(":=");
 	if(t!=null){//Primero me fijo si esta declarada

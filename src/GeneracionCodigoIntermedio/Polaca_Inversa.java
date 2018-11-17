@@ -42,6 +42,7 @@ public class Polaca_Inversa {
     
     public void bifurcacion() {
         pila.add(PI.size());
+        System.out.println("La bifurcacion apilo "+PI.size());
         PI.add(new StringBuilder("WHERE"));
         PI.add(new StringBuilder("B"));
     }
@@ -92,6 +93,7 @@ public class Polaca_Inversa {
     public void desapilar() {
         int pop = pila.pop();
         StringBuilder v = PI.get(pop);
+        System.out.println("Desapile esto "+v.toString());
         v.setLength(0);
         v.append("Label" + PI.size());
         //PI.add(new StringBuilder("Label" + pop));

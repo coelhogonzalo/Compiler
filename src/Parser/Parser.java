@@ -753,7 +753,7 @@ Parser.estructuras.add("Se detecto la declaracion de variables en la linea "+Ana
 break;
 case 16:
 //#line 107 "gramatica.y"
-{ this.errores.add(new ErrorG("Error SIN NUMERO: Se declar� una funcion dentro de otra funcion", Analizador_Lexico.cantLN));}
+{ this.errores.add(new ErrorG("Error SIN NUMERO: Se declara una funcion dentro de otra funcion", Analizador_Lexico.cantLN));}
 break;
 case 17:
 //#line 114 "gramatica.y"
@@ -870,13 +870,13 @@ break;
 case 44:
 //#line 232 "gramatica.y"
 {
-    if ( val_peek(2).sval.equals(idParam) )
-        if ( Analizador_Lexico.tablaSimbolos.get(idFun).permisoFun == Ps )
-            Analizador_Lexico.tablaSimbolos.get(idFun).permisoFun = Wrps;
-        else
-	   if ( isPermited(Analizador_Lexico.tablaSimbolos.get(idFun).permisoFun, Wr) )
-            Analizador_Lexico.tablaSimbolos.get(idFun).permisoFun = Wr;
-
+	if ( estoyEnFuncion ) {
+		if (val_peek(2).sval.equals(idParam))
+			if (Analizador_Lexico.tablaSimbolos.get(idFun).permisoFun == Ps)
+				Analizador_Lexico.tablaSimbolos.get(idFun).permisoFun = Wrps;
+			else if (isPermited(Analizador_Lexico.tablaSimbolos.get(idFun).permisoFun, Wr))
+				Analizador_Lexico.tablaSimbolos.get(idFun).permisoFun = Wr;
+	}
 
 	Token t=Analizador_Lexico.tablaSimbolos.get(val_peek(2).sval); PI.put(val_peek(2).sval); PI.put(":=");
 	if(t!=null){/*Primero me fijo si esta declarada*/
