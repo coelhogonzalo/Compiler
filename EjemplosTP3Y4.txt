@@ -46,7 +46,7 @@ __print ('cadenita')
 __4.Sentencia IF sin bloque ELSE con una sola sentencia.
 
 __Sin error
-if ( 0.2 < 0.3 ) 
+if (0.2=0.3) 
 	print ( ' probando ' ),
 endif
 
@@ -67,7 +67,7 @@ __endif
 __5.Sentencia IF sin bloque ELSE con un bloque de sentencias
 
 __Sin error
-if ( 0.2 < 0.3 ){
+if ( _var1 = _var2 ){
 	print ( ' probando' ),
 	print ( ' probando parte dos' ),
 }

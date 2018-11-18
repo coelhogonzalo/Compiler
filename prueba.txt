@@ -1,25 +1,6 @@
-
-
-single _fun1( single _var6){
-	single _var103,
-	_var103 := 21,
-	return ( _var6 + 2)
-}
-single _fun2( single _var3){
-	single _var101,
-	_var101 := _fun1(_var101; write;pass),
-	return ( _var3 + 2)
-}
-single _fun3( single _var4){
-	single _var102,
-	_var102 := _fun2(_var4 ;pass),
-	return ( _var4 + 2)
+single _fun1( single _param){
+	single _local1,
+	_local1 := 21,
+	return ( _param + 0.2)
 }
 
-
-single _var2,
-single _var1,
-_var1 := _fun1(_var2 ;readonly),
-_var2 := _fun2(_var2 ;write;pass),
-_var2 := _fun3(_var2 ;pass),
-_var2 := _fun1(_var2 ;pass),

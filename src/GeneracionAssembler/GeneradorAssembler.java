@@ -88,6 +88,8 @@ public class GeneradorAssembler {
 			else{
 			
 				if((pilaVar.peek().toString()).equals("return")){ //LEE EL RETURN DE UNA FUNCION
+					System.out.println(" la pila :");
+					System.out.println(pilaVar.toString());
 					pilaVar.pop();
 					StringBuilder retorno = pilaVar.pop();
 					System.out.println("Retorno "+retorno);
@@ -242,7 +244,7 @@ public void generarCodigoAssembler(StringBuilder escritura){
 							StringBuilder operador = desapilar(); //PARA SACAR EL OPERANDO
 							StringBuilder primerOperando = desapilar();
 							StringBuilder segundoOperando = desapilar();
-							System.out.println("Voy a operar '"+primerOperando+"' con '"+segundoOperando+"'");
+							//System.out.println("Voy a operar '"+primerOperando+"' con '"+segundoOperando+"'");
 							if((Analizador_Lexico.tablaSimbolos.get(primerOperando.toString()).tipo.equals("uslinteger")) && ((Analizador_Lexico.tablaSimbolos.get(segundoOperando.toString()).tipo.equals("uslinteger"))))
 								generarCodigoInteger(operador ,primerOperando,segundoOperando,escritura);
 							if((Analizador_Lexico.tablaSimbolos.get(primerOperando.toString()).tipo.equals("single")) && ((Analizador_Lexico.tablaSimbolos.get(segundoOperando.toString()).tipo.equals("single"))))
@@ -390,7 +392,7 @@ public void generarCodigoSingle(StringBuilder operador,StringBuilder primerOpera
     	inicio.append(fin);
     	System.out.println(inicio);
     	FileManager.write(inicio.toString(), new File("prueba.asm"));
-    	System.out.println("Genere assembler");
+    	
 
     }
     

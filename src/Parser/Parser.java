@@ -947,7 +947,7 @@ case 55:
 //#line 292 "gramatica.y"
 {
                     if ( estoyEnFuncion ){
-                        System.out.println(idParam + " contra " + val_peek(0).sval);
+                        /*System.out.println(idParam + " contra " + $2.sval);*/
                         if ( idParam.equals(val_peek(0).sval) )
                             if ( Analizador_Lexico.tablaSimbolos.get(idFun).permisoFun == Rd )
                                 Analizador_Lexico.tablaSimbolos.get(idFun).permisoFun = Ps;
@@ -955,8 +955,8 @@ case 55:
                                     Analizador_Lexico.tablaSimbolos.get(idFun).permisoFun = Wrps;
 
                     }
-                    System.out.println("\n idFun " + idFun + "\n" + "CantLN: " + Analizador_Lexico.cantLN);
-                    System.out.println(Analizador_Lexico.tablaSimbolos.get(val_peek(1).sval).permisoFun + " y pase " + val_peek(0).ival);
+                    /*System.out.println("\n idFun " + idFun + "\n" + "CantLN: " + Analizador_Lexico.cantLN);*/
+                    /*System.out.println(Analizador_Lexico.tablaSimbolos.get($1.sval).permisoFun + " y pase " + $2.ival);*/
 	                if ( !isPermited(Analizador_Lexico.tablaSimbolos.get(val_peek(1).sval).permisoFun, val_peek(0).ival) )
                         this.errores.add(new ErrorG("Error SIN NUMERO : La funcion "+val_peek(1).sval+" no puede ser invocada con " + val_peek(0).ival, Analizador_Lexico.cantLN));
                     else{

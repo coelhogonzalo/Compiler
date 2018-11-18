@@ -11,7 +11,7 @@ import Parser.Parser;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        File f = new File("EjemplosTP3Y4.txt");
+        File f = new File("prueba.txt");
         Analizador_Lexico al = new Analizador_Lexico(f);
         Parser p = new Parser(false);
         p.errores = al.getErrores();
@@ -30,8 +30,8 @@ public class Main {
         if(!Error.huboErrores){
         	System.out.print(" y no se encontraron errores (PROCEED COMPILATION)");
         	//ACA EMA NOS GENERA UN TERRIBLE ASSEMBLER
-        	System.out.println("Tabla de simbolos:");
-            System.out.println(Analizador_Lexico.tablaSimbolos);
+        	//System.out.println("Tabla de simbolos:");
+            //System.out.println(Analizador_Lexico.tablaSimbolos);
         	GeneradorAssembler gen=new GeneradorAssembler(p.PI);
         	gen.generameAssemblydotexe();
         	System.out.println("");
