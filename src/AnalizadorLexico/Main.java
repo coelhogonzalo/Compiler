@@ -11,15 +11,14 @@ import Parser.Parser;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        File f = new File("prueba.txt");
+        File f = new File("EjemplosTP3Y4.txt");
         Analizador_Lexico al = new Analizador_Lexico(f);
         Parser p = new Parser(false);
         p.errores = al.getErrores();
         Parser.estructuras = new ArrayList<>();
         p.al = al;
         int unint = p.parsepublico();
-        //System.out.println("Tabla de simbolos:");
-        //System.out.println(Analizador_Lexico.tablaSimbolos);
+        
         System.out.println("");
         System.out.println("Polaca inversa resultante:");
         p.PI.printContent();
@@ -31,8 +30,10 @@ public class Main {
         if(!Error.huboErrores){
         	System.out.print(" y no se encontraron errores (PROCEED COMPILATION)");
         	//ACA EMA NOS GENERA UN TERRIBLE ASSEMBLER
-        	//GeneradorAssembler gen=new GeneradorAssembler(p.PI);
-        	//gen.generameAssemblydotexe();
+        	System.out.println("Tabla de simbolos:");
+            System.out.println(Analizador_Lexico.tablaSimbolos);
+        	GeneradorAssembler gen=new GeneradorAssembler(p.PI);
+        	gen.generameAssemblydotexe();
         	System.out.println("");
         	System.out.println("WIIII ESTOY GENERANDO ASSEMBLER!");
         }

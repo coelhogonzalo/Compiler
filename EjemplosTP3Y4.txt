@@ -19,8 +19,8 @@ uslinteger _var1;_var2;_var3,
 single _single1;_single2;_single3,
 
 __Con error (REDECLARACION DE VARIABLES)
-uslinteger _var4;_var2;_var4,
-single _var2;_single4;_single5,
+__uslinteger _var4;_var2;_var4,
+__single _var2;_single4;_single5,
 __uslinteger _var1._var2;_var3,
 __single _var1._var2;_var3,
 __single _var1._var2;_var3
@@ -175,21 +175,21 @@ single _funWRITE ( single _param1) {
 	_param1 := 0.2,
 	return ( 2.0 )
 }
-single _funWRITEPASS ( single _param1) {
+single _funWRITEPASS ( single _param2) {
 	if(0.2 < 0.3)
 		print ( ' dale que funcionas' ),
 	endif
-	_param1 := _funWRITE(_param1; write ),
+	_param2 := _funWRITE(_param2; write ),
 	return ( 2.0 )
 }
 
 __Con error UTILIZACION DE VARIABLE LOCAL A FUNCION FUERA DE SU AMBITO
-single _testAmbito ( single _paramTest) {
-	single _declaradaenfuncion,
-	print ( ' dale que funcionas' ),
-	return ( 2.0 )
-}
-_declaradaenfuncion := 0.2,
+__single _testAmbito ( single _paramTest) {
+__	single _declaradaenfuncion,
+__	print ( ' dale que funcionas' ),
+__	return ( 2.0 )
+__}
+__declaradaenfuncion := 0.2,
 __single _fun2 ( write; single _diversion; uslinteger _id) {
 __	print ( ' dale que funcionas' ),
 __	if(0.2 == 0.3)
@@ -205,22 +205,22 @@ __Sin error
 _var1 := _funWRITE (_diversion; write ),
 
 __Con error
-_var1 := _funWRITE (_diversion; readonly ),__invalido
-_var1 := _funWRITE (_diversion; pass ),__invalido
-_var1 := _funWRITE (_diversion; write ),__Valido
-_var1 := _funWRITE (_diversion; write;pass ),__Valido
-_var1 := _funWRITEPASS (_diversion; readonly ),__invalido
-_var1 := _funWRITEPASS (_diversion; pass ),__invalido
-_var1 := _funWRITEPASS (_diversion; write ),__invalido
-_var1 := _funWRITEPASS (_diversion; write;pass ),__Valido
+__var1 := _funWRITE (_diversion; readonly ),__invalido
+__var1 := _funWRITE (_diversion; pass ),__invalido
+__var1 := _funWRITE (_diversion; write ),__Valido
+__var1 := _funWRITE (_diversion; write;pass ),__Valido
+__var1 := _funWRITEPASS (_diversion; readonly ),__invalido
+__var1 := _funWRITEPASS (_diversion; pass ),__invalido
+__var1 := _funWRITEPASS (_diversion; write ),__invalido
+__var1 := _funWRITEPASS (_diversion; write;pass ),__Valido
 ___fun ( write; single _diversion; uslinteger _id)
 
 
 __16.Expresiones con numeros negativos
 
 __Sin error
-_var1 := -0.2 - 0.6,
+_var1 := - 0.2 - - 0.6,
 
 __Con error VARIABLE SIN DECLARAR
-_nodeclarada := -0.2 - 0.6,
+__nodeclarada := -0.2 - 0.6,
 ___a := -0.2 - 0..6
