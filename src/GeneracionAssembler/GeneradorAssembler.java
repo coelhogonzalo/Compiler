@@ -105,11 +105,11 @@ public class GeneradorAssembler {
 			else{
 			
 				if((pilaVar.peek().toString()).equals("return")){ //LEE EL RETURN DE UNA FUNCION
-					System.out.println(" la pila :");
-					System.out.println(pilaVar.toString());
+					//System.out.println(" la pila :");
+					//System.out.println(pilaVar.toString());
 					pilaVar.pop();
 					StringBuilder retorno = pilaVar.pop();
-					System.out.println("Retorno "+retorno);
+					//System.out.println("Retorno "+retorno);
 					Token t = null; 
 						if(Analizador_Lexico.tablaSimbolos.get(retorno.toString()).tipo.equals("uslinteger")){
 							StringBuilder elOriginalPapa = new StringBuilder(retorno.toString());
@@ -119,6 +119,7 @@ public class GeneradorAssembler {
 				    		funciones.append("MOV EAX, " +retorno + "\r\n" + "MOV @aux_fun, EAX" +"\r\n" +"RET" +"\r\n \r\n");
 							t = new Token("@aux_fun",Analizador_Lexico.TOKEN_UL,"uslinteger"); //VER
 							t.setUso(Analizador_Lexico.tablaSimbolos.get(elOriginalPapa.toString()).uso); //no se me ocurria como volver el token a _ul asique cree una copia, que mal Emanuel
+							//System.out.println(elOriginalPapa+" y el uso que le quedo a '"+t.lexema+"' es: "+t.uso);
 						}
 						
 						if(Analizador_Lexico.tablaSimbolos.get(retorno.toString()).tipo.equals("single")){
@@ -157,17 +158,20 @@ public void generarCodigoAssembler(StringBuilder escritura){
 		pilaVar.pop(); //SACO EL :=
 		StringBuilder aAsignar = pilaVar.pop();
 		StringBuilder asignacion = pilaVar.pop();
+		//System.out.println("Tengo que asignar a "+aAsignar + " el valor "+asignacion);
+		//System.out.println(Analizador_Lexico.tablaSimbolos);
 		if((Analizador_Lexico.tablaSimbolos.get(aAsignar.toString()).tipo.equals("uslinteger"))&&(Analizador_Lexico.tablaSimbolos.get(asignacion.toString()).tipo.equals("uslinteger"))){
     		if(Analizador_Lexico.tablaSimbolos.get(asignacion.toString()).uso!=null){
 				if(Analizador_Lexico.tablaSimbolos.get(asignacion.toString()).uso.equals("constante")){
 	    			asignacion = new StringBuilder(asignacion.substring(0, asignacion.length()-3));
-	    		}	
-				escritura.append("MOV EAX, "+asignacion+"\r\n"+"MOV "+aAsignar+", EAX"+"\r\n" ); //ver si va lo de mov @aux0, EAX despues de esto
+	    		}
+				
 		
     		}
+    		escritura.append("MOV EAX, "+asignacion+"\r\n"+"MOV "+aAsignar+", EAX"+"\r\n" ); //ver si va lo de mov @aux0, EAX despues de esto
 		}	
 		else{
-			System.out.println("A asignar: "+aAsignar+"  asignacion: "+asignacion.toString());
+			//System.out.println("A asignar: "+aAsignar+"  asignacion: "+asignacion.toString());
 			if((Analizador_Lexico.tablaSimbolos.get(aAsignar.toString()).tipo.equals("single"))&&(Analizador_Lexico.tablaSimbolos.get(asignacion.toString()).tipo.equals("single"))){
 				if(flotantes.contains(asignacion.toString()))
 					 asignacion = new StringBuilder("_"+asignacion.toString().replace(".", "_"));
@@ -197,7 +201,7 @@ public void generarCodigoAssembler(StringBuilder escritura){
 				signo = pilaVar.pop();
 				 primerComparado = pilaVar.pop();
 				 segundoComparado = pilaVar.pop();
-				 System.out.println("Voy a comparar '"+primerComparado+"' con '"+segundoComparado+"'");
+				 //System.out.println("Voy a comparar '"+primerComparado+"' con '"+segundoComparado+"'");
 				//AMBOS INTEGER
 				if((Analizador_Lexico.tablaSimbolos.get(primerComparado.toString()).tipo.equals("uslinteger")) && (Analizador_Lexico.tablaSimbolos.get(segundoComparado.toString()).tipo.equals("uslinteger"))){
 		    		if(Analizador_Lexico.tablaSimbolos.get(primerComparado.toString()).uso.equals("constante")){
@@ -233,7 +237,7 @@ public void generarCodigoAssembler(StringBuilder escritura){
 			if(pilaVar.peek().toString().equals("B")){
 				pilaVar.pop(); //SACO EL B
 				StringBuilder label = pilaVar.pop();
-				System.out.println("el label es: "+label);
+				//System.out.println("el label es: "+label);
 				if(Integer.parseInt(label.substring(5,label.length()))>=PI.getPI().size()) //VERIFICO, SI NO CUMPLE LLEVA AL FINAL //ACA CREO ES 5 NO 6
 					label =new StringBuilder("@LABEL_END"+"\r\n");
 				
@@ -289,7 +293,7 @@ public void generarCodigoAssembler(StringBuilder escritura){
 							if(Analizador_Lexico.tablaSimbolos.get(variable.toString()).tipo.equals("single"))
 								escritura.append("invoke printf, cfm$(\"%.20Lf\\n\"), "+variable+"\r\n");
 							if(Analizador_Lexico.tablaSimbolos.get(variable.toString()).tipo.equals("uslinteger"))
-								escritura.append("invoke printf, cfm$(\"%.%llu\\n\"), "+variable+"\r\n");
+								escritura.append("invoke printf, cfm$(\"%. %llu\\n\"), "+variable+"\r\n");
 						}
 					}
 					else{
@@ -298,7 +302,7 @@ public void generarCodigoAssembler(StringBuilder escritura){
 							StringBuilder operador = pilaVar.pop(); //PARA SACAR EL OPERANDO
 							StringBuilder primerOperando = pilaVar.pop();
 							StringBuilder segundoOperando = pilaVar.pop();
-							//System.out.println("Voy a operar '"+primerOperando+"' con '"+segundoOperando+"'");
+							System.out.println("Voy a operar '"+primerOperando+"' con '"+segundoOperando+"'");
 							
 							if((Analizador_Lexico.tablaSimbolos.get(primerOperando.toString()).tipo.equals("uslinteger")) && ((Analizador_Lexico.tablaSimbolos.get(segundoOperando.toString()).tipo.equals("uslinteger")))){
 					    		if(Analizador_Lexico.tablaSimbolos.get(primerOperando.toString()).uso.equals("constante")){
@@ -470,6 +474,7 @@ public void generarCodigoSingle(StringBuilder operador,StringBuilder primerOpera
     	generarDeclaracion();
     	inicio.append(declaracion);
     	inicio.append(codigo);
+    	inicio.append("JMP @LABEL_END");
     	inicio.append(funciones);    	
     	generarMensajitosDeControl();
     	generarFin();
