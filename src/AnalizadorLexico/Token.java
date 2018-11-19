@@ -24,7 +24,10 @@ public class Token {
     }
 
 
-
+    public void setUso(String uso){
+    	this.uso=uso;
+    }
+    
     public String toString(){
         if ( nro != Analizador_Lexico.TOKEN_ERROR )
             return "Lexema: '" + this.lexema + "' dec: "+this.declarada + " Tipo: " +this.tipo +" Ambito:"+this.ambito+"\r\n";
