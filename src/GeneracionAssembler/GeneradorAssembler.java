@@ -98,7 +98,7 @@ public class GeneradorAssembler {
 				pilaVar.pop();
 				StringBuilder nom_fun = pilaVar.pop();
 				aux_param_declarada = pilaVar.pop();
-				funciones.append("@FUNCTION_"+nom_fun+":"+"\r\n");
+				funciones.append("FUNCTION_"+nom_fun+":"+"\r\n");
 				funciones.append("MOV EAX, @aux_param"+"\r\n"+"MOV "+aux_param_declarada+", EAX"+"\r\n"); //asigno el valor del parametro real al de la funcion
 				estaEnFuncion = true; //HAGO QUE EMPIEZE A ESCRIBIR EN LA PARTE DE FUNCIONES
 			}
@@ -285,10 +285,11 @@ public void generarCodigoAssembler(StringBuilder escritura){
 						}
 						else{
 							StringBuilder variable = pilaVar.pop();
+							System.out.println("Quiero printear esta: "+variable);
 							if(Analizador_Lexico.tablaSimbolos.get(variable.toString()).tipo.equals("single"))
-								escritura.append("invoke printf, cfm$(%.20Lf\\r\n), "+variable+"\r\n");
+								escritura.append("invoke printf, cfm$(\"%.20Lf\\n\"), "+variable+"\r\n");
 							if(Analizador_Lexico.tablaSimbolos.get(variable.toString()).tipo.equals("uslinteger"))
-								escritura.append("invoke printf, cfm$(%.%llu\\r\n), "+variable+"\r\n");
+								escritura.append("invoke printf, cfm$(\"%.%llu\\n\"), "+variable+"\r\n");
 						}
 					}
 					else{
