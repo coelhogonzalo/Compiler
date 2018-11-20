@@ -27,7 +27,6 @@ BS : BS sentencia
 
 sentencia : sentenciaCE
 	| sentenciaDEC
-	//| error ','// Esta la sacamos y si hay mas de 2 errores que ternmine la compilacion
 ;
 
 
@@ -37,10 +36,7 @@ Parser.estructuras.add("Se detecto la declaracion de variables en la linea "+Ana
 	Parser.estructuras.add("Se detecto la declaracion de una funcion en la linea "+Analizador_Lexico.cantLN+"\r\n");}
 
 	| lista_variables ',' {this.errores.add(new ErrorG("Error 001: Falta definir el tipo de las variables", Analizador_Lexico.cantLN));}
-	//shift reduce| tipo lista_variables {this.errores.add(new ErrorG("Error NO ANDA: Se esperaba una ,", Analizador_Lexico.cantLN));} shift reduce
-	
 	| tipoFunID cuerpofuncion {this.errores.add(new ErrorG("Error 004: Falta definir los parametros de la funcion", Analizador_Lexico.cantLN));}
-	//shift reduce| tipo ID parametrosDef {this.errores.add(new ErrorG("Error SIN NUMERO: Falta definir el cuerpo de la funcion", Analizador_Lexico.cantLN));} shift reduce
 
 ;
 
@@ -78,7 +74,7 @@ Token t=Analizador_Lexico.tablaSimbolos.get($3.sval);
 			t.tipo=$2.sval;
 		}
 		else
-			this.errores.add(new ErrorG("Error SIN NUMERO : El identificador '"+t.lexema+"' de tipo '"+t.uso+"' no puede ser redeclarado", Analizador_Lexico.cantLN));
+			this.errores.add(new ErrorG("Error 009 : El identificador '"+t.lexema+"' de tipo '"+t.uso+"' no puede ser redeclarado", Analizador_Lexico.cantLN));
 	}
 	else
 		System.out.println("El token que quisiste recuperar es null (ndmpp)"); }
@@ -92,10 +88,6 @@ cuerpofuncion: '{' BSFuncion retorno '}' {
 
     this.ambitoActual=Analizador_Lexico.cortarAmbito(this.ambitoActual);}
 
-	//SHIFT REDUCE| '{'  retorno '}' {this.errores.add(new ErrorG("Error 23: Se esperaba un bloque de sentencias en el cuerpo de la funcion", Analizador_Lexico.cantLN));}
-	//SHIFT REDUCE| '{' BS retorno
-	//SHIFT REDUCE|  BS retorno '}' {this.errores.add(new ErrorG("Error SIN NUMERO: Se esperaba un { al principio de la funcion", Analizador_Lexico.cantLN));}
-	
 ;
 BSFuncion : BSFuncion sentenciaFuncion
 	|
@@ -114,7 +106,7 @@ retorno : RETURN expresioncparentesis { estoyEnFuncion = false;
                 idFun = "None";
  }
 	|	RETURN {this.errores.add(new ErrorG("Error 008: La funcion debe retornar un valor", Analizador_Lexico.cantLN));}
-	|	expresioncparentesis {this.errores.add(new ErrorG("Error 009: Se esperaba un return", Analizador_Lexico.cantLN));}
+	//ME ARRUINA LA DE LA COMA|	expresioncparentesis {this.errores.add(new ErrorG("Error 009: Se esperaba un return", Analizador_Lexico.cantLN));}
 ;
 
 lista_variables : lista_variables ';' ID {Token t=Analizador_Lexico.tablaSimbolos.get($3.sval);
@@ -149,8 +141,6 @@ lista_variables : lista_variables ';' ID {Token t=Analizador_Lexico.tablaSimbolo
 BCE : '{' BCE2 '}'
 	| sentenciaCE
 
-	//ESTECOMPILA| BCE2 '}' {this.errores.add(new ErrorG("Error SIN NUMERO: Se esperaba un { al principio del bloque de sentencias", Analizador_Lexico.cantLN));}
-	//ESTECOMPILA| '{' BCE2  {this.errores.add(new ErrorG("Error SIN NUMERO: Se esperaba un } al final del bloque de sentencias", Analizador_Lexico.cantLN));}
 ;
 
 BCE2 :  BCE2 sentenciaCE
@@ -159,7 +149,6 @@ BCE2 :  BCE2 sentenciaCE
 
 expresioncparentesis:'(' expresion ')'
 	|'(' expresion  {this.errores.add(new ErrorG("Error 010: Se esperaba un )", Analizador_Lexico.cantLN));}
-	//SHIFT REDUCE| expresion ')' {this.errores.add(new ErrorG("Error 011: Se esperaba un (", Analizador_Lexico.cantLN));}
 	|'('  ')' {this.errores.add(new ErrorG("Error 011: Se esperaba una expresion", Analizador_Lexico.cantLN));}
 ;
 
@@ -174,23 +163,24 @@ sentenciaCE : PRINT printeable ',' { Parser.estructuras.add("Se detecto un print
 	| asignacion ',' { Parser.estructuras.add("Se detecto una asignacion en  la linea "+Analizador_Lexico.cantLN+"\r\n");}
 	| ifcond BCE ENDIF { Parser.estructuras.add("Se detecto un if en la linea "+Analizador_Lexico.cantLN+"\r\n"); PI.desapilar(); }
 	| ifcond BCE elsecond BCE ENDIF { Parser.estructuras.add("Se detecto un if en la linea "+Analizador_Lexico.cantLN+"\r\n"); PI.desapilar();}
-	| whilecond BCE { Parser.estructuras.add("Se detecto un while en la linea "+Analizador_Lexico.cantLN+"\r\n"); PI.saltoIncond(); PI.desapilar(); }
+	| whilecond BCE  { Parser.estructuras.add("Se detecto un while en la linea "+Analizador_Lexico.cantLN+"\r\n"); PI.saltoIncond(); PI.desapilar(); }
+	
+	
 
 	|ifcond  ENDIF{this.errores.add(new ErrorG("Error 015: Se esperaba un bloque de sentencias en la rama del if", Analizador_Lexico.cantLN));}
 	| ifcond  elsecond BCE ENDIF  {this.errores.add(new ErrorG("Error 015: Se esperaba un bloque de sentencias en la rama del if", Analizador_Lexico.cantLN));}
 	| ifcond BCE elsecond  ENDIF {this.errores.add(new ErrorG("Error 016: Se esperaba un bloque de sentencias en la rama del else", Analizador_Lexico.cantLN));}
 	| ifcond  elsecond  ENDIF{this.errores.add(new ErrorG("Error 017: Se esperaba un bloque de sentencias en la rama del if y del else", Analizador_Lexico.cantLN));}
 
-	//| asignacion  {this.errores.add(new ErrorG("Error 014: Se esperaba un ,", Analizador_Lexico.cantLN));} //SHIFT REDUCE
-	| PRINT printeable {this.errores.add(new ErrorG("Error 014: Se esperaba un ,", Analizador_Lexico.cantLN));}//SHIFT REDUCE
-
+	| PRINT printeable {this.errores.add(new ErrorG("Error 014: Se esperaba un ,", Analizador_Lexico.cantLN));}
+	| asignacion  {this.errores.add(new ErrorG("Error 014: Se esperaba un ,", Analizador_Lexico.cantLN));}
 ;
 
 ifcond : IF condicioncparentesis  { PI.bifurcacion(); }
 
 ;
 
-elsecond : ELSE  { PI.desapilarElse(); PI.bifurcacionElse(); } //ver este si lo hace bien
+elsecond : ELSE  { PI.desapilarElse(); PI.bifurcacionElse(); }
 
 ;
 
@@ -214,8 +204,6 @@ condicioncparentesis : '(' condicion ')'
 
 
 condicion : expresion operador_logico expresion { PI.put($2.sval); }
-
-//| expresion operador_logico  {this.errores.add(new ErrorG("Error1: Falta la expresion del lado derecho", Analizador_Lexico.cantLN));}//SHIFT REDUCE con y sin el token error
 | operador_logico expresion  {this.errores.add(new ErrorG("Error 021: Se esperaba un operador logico valido", Analizador_Lexico.cantLN));}
 
 ;
@@ -242,7 +230,7 @@ asignacion : ID ASIGN expresion {
 	Token t=Analizador_Lexico.tablaSimbolos.get($1.sval); PI.put($1.sval); PI.put(":=");
 	if(t!=null){//Primero me fijo si esta declarada
 		if(t.declarada==false)
-			this.errores.add(new ErrorG("Error 35 : La variable "+$1.sval+" no esta declarada ", Analizador_Lexico.cantLN));
+			this.errores.add(new ErrorG("Error 033 : La variable "+$1.sval+" no esta declarada ", Analizador_Lexico.cantLN));
 		else{
 			t=Analizador_Lexico.getEntradaTS($1.sval,this.ambitoActual);
 			if(t==null)//Despues me fijo si esta en el ambito
@@ -253,7 +241,6 @@ asignacion : ID ASIGN expresion {
 		System.out.println($1.sval+" No esta en la tabla de simbolos ndmpp ");
 }
 	| ID expresion {this.errores.add(new ErrorG("Error 022: Falta el operador de asignacion", Analizador_Lexico.cantLN));}//Este creo que anda si no hay otro error de los que compilancon el que hace macaana
-	| ID ASIGN {this.errores.add(new ErrorG("Error 023: Se esperaba una expresion del lado derecho de la asignacion", Analizador_Lexico.cantLN));}
 ;
 
 expresion : expresion '+' termino	{ PI.put("+"); }
@@ -265,7 +252,7 @@ termino : termino '*' factor		{ PI.put("*"); }
 	| termino '/' factor		{ PI.put("/"); }
 	| factor
 ;
-//this.errores.add(new ErrorG("Error 34 : El identificador "+$1.sval+" no esta en el ambito "+this.ambitoActual, Analizador_Lexico.cantLN));
+
 factor : ID 				{ PI.put($1.sval);
 	Token t=Analizador_Lexico.tablaSimbolos.get($1.sval);
 	if(t!=null){

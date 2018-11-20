@@ -5,10 +5,10 @@ single   single _param002) {
 	_param002 := 0.2,
 	return ( 2.0 )
 }
-__ERROR 003 y ERROR 005 Y ERROR 007 y ERROR 009
+__ERROR 003 y ERROR 005 Y ERROR 007 y 9
 _funWRITE  ( single _param003 {
 	_param003 := 0.2,
-	 ( 2.0 )
+	return ( 2.0 )
 }
 __ERROR 004 y ERROR 007, ERROR 008
 single _funWRITE   {
@@ -33,7 +33,10 @@ __ERROR 012
 __ERROR 013
 	print 'error13 ' ),
 __ERROR 014
+single _glob,
 	print ('error 14')
+	_glob :=0.2
+	
 __ERROR 015 y ERROR 20
 if _1global001 =  4_ul )
 	
@@ -54,7 +57,6 @@ else
 endif
 
 __ERROR 022 y 023
-single _glob,
 _glob 0.3,
 __ERROR 030
 __ERROR 011 
@@ -66,3 +68,8 @@ __ERROR 031 Y ERROR 032 y ERROR 033
 _glob := _funPrueba(_glob;readonly ,,
 _glob := _funPrueba(_glob readonly),,
 _glob := _funPrueba(_glob;write pass) ,,
+
+
+
+
+
