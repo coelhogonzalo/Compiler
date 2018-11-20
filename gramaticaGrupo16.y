@@ -7,6 +7,7 @@ import AnalizadorLexico.TokenValue;
 import java.util.ArrayList;
 import GeneracionCodigoIntermedio.Polaca_Inversa;
 import java.util.Arrays;
+import java.util.HashMap;
 %}
 %token ID CADENA USLINTEGER SINGLE IF ELSE ENDIF WHILE READONLY WRITE PASS MAYORIGUAL MENORIGUAL IGUALIGUAL DISTINTO ASIGN RETURN PRINT SINGLEPR USLINTEGERPR INVALIDO
 
@@ -32,7 +33,7 @@ sentencia : sentenciaCE
 
 sentenciaDEC :  tipo lista_variables ',' { registrarTipo( $2.sval, $1.sval); //System.out.println($2.sval);
 Parser.estructuras.add("Se detecto la declaracion de variables en la linea "+Analizador_Lexico.cantLN+"\r\n");}
-	| tipoFunID parametrosDef cuerpofuncion {
+	| tipoFunID parametrosDef cuerpofuncion { parametrosFunciones.put($1.sval,$2.sval);
 	Parser.estructuras.add("Se detecto la declaracion de una funcion en la linea "+Analizador_Lexico.cantLN+"\r\n");}
 
 	| lista_variables ',' {this.errores.add(new ErrorG("Error 001: Falta definir el tipo de las variables", Analizador_Lexico.cantLN));}
@@ -40,7 +41,7 @@ Parser.estructuras.add("Se detecto la declaracion de variables en la linea "+Ana
 
 ;
 
-tipoFunID : tipo ID { estoyEnFuncion = true;
+tipoFunID : tipo ID { estoyEnFuncion = true; $$=$2;//Le paso el nombre de la funcion para arriba
                 idFun = $2.sval;
  Token t=Analizador_Lexico.tablaSimbolos.get($2.sval); 
 	if(t.declarada){
@@ -62,9 +63,9 @@ tipoFunID : tipo ID { estoyEnFuncion = true;
 	this.errores.add(new ErrorG("Error 003: Falta definir el tipo de la funcion", Analizador_Lexico.cantLN));}
 ;
 
-parametrosDef: '(' tipo ID ')' {
+parametrosDef: '(' tipo ID ')' { $$=$2;//Le paso el tipo del parametro para arriba
                 idParam = $3.sval;
-PI.paramFun($3.sval);
+PI.paramFun($3.sval); 
 Token t=Analizador_Lexico.tablaSimbolos.get($3.sval);
 	if(t!=null){
 		if(!t.declarada){
@@ -102,7 +103,7 @@ Parser.estructuras.add("Se detecto la declaracion de variables en la linea "+Ana
 	| tipoFunID parametrosDef cuerpofuncion { this.errores.add(new ErrorG("Error 007: Se declaro una funcion dentro de otra funcion", Analizador_Lexico.cantLN));}
 ;
 
-retorno : RETURN expresioncparentesis { estoyEnFuncion = false;
+retorno : RETURN expresioncparentesis { estoyEnFuncion = false; PI.put("return");
                 idFun = "None";
  }
 	|	RETURN {this.errores.add(new ErrorG("Error 008: La funcion debe retornar un valor", Analizador_Lexico.cantLN));}
@@ -218,6 +219,9 @@ operador_logico : '<' 		{ $$.sval = "<"; }
 ;
 
 asignacion : ID ASIGN expresion {
+	System.out.println("El tipo de ID :'"+Analizador_Lexico.tablaSimbolos.get($1.sval).tipo+"' y el tipo de la expresion:'"+$3.sval+"'");
+	if(!$3.sval.equals(Analizador_Lexico.tablaSimbolos.get($1.sval).tipo))
+		this.errores.add(new ErrorG("Error 035 : El tipo de la variable "+$1.sval+" no coincide con el de la expresion", Analizador_Lexico.cantLN));
     if ( estoyEnFuncion ){
     if ( $1.sval.equals(idParam) )
         if ( Analizador_Lexico.tablaSimbolos.get(idFun).permisoFun == Ps )
@@ -243,19 +247,20 @@ asignacion : ID ASIGN expresion {
 	| ID expresion {this.errores.add(new ErrorG("Error 022: Falta el operador de asignacion", Analizador_Lexico.cantLN));}//Este creo que anda si no hay otro error de los que compilancon el que hace macaana
 ;
 
-expresion : expresion '+' termino	{ PI.put("+"); }
-	| expresion '-' termino		{ PI.put("-"); }
-	| termino
+expresion : expresion '+' termino	{ PI.put("+"); }//$$.sval=$3.sval;
+	| expresion '-' termino		{ PI.put("-"); }//$$.sval=$3.sval;
+	| termino{$$.sval=$1.sval;}
 ;
 
-termino : termino '*' factor		{ PI.put("*"); }
-	| termino '/' factor		{ PI.put("/"); }
-	| factor
+termino : termino '*' factor		{ PI.put("*"); }//$$.sval=$3.sval;
+	| termino '/' factor		{ PI.put("/"); }//$$.sval=$3.sval;
+	| factor {$$.sval=$1.sval;}
 ;
 
-factor : ID 				{ PI.put($1.sval);
+factor : ID 				{ PI.put($1.sval);  
 	Token t=Analizador_Lexico.tablaSimbolos.get($1.sval);
 	if(t!=null){
+		$$.sval=t.tipo;
 		if(t.declarada==false)//Primero me fijo si esta declarada
 			this.errores.add(new ErrorG("Error 024 : La variable "+$1.sval+" no esta declarada ", Analizador_Lexico.cantLN));
 		else{
@@ -268,13 +273,13 @@ factor : ID 				{ PI.put($1.sval);
 		System.out.println(" No esta en la tabla de simbolos ndmpp ");
 	}
 
-	| USLINTEGER 			{ PI.put($1.sval); }
-	| SINGLE 			    { PI.put($1.sval); }
-	| '-' SINGLE {	Token t=Analizador_Lexico.tablaSimbolos.get($2.sval);
+	| USLINTEGER 			{ PI.put($1.sval); $$.sval=Analizador_Lexico.tablaSimbolos.get($1.sval).tipo; }
+	| SINGLE 			    { PI.put($1.sval); $$.sval=Analizador_Lexico.tablaSimbolos.get($1.sval).tipo; }
+	| '-' SINGLE {	Token t=Analizador_Lexico.tablaSimbolos.get($2.sval); 
 	//Analizador_Lexico.tablaSimbolos.remove($2.sval); Lo saque porque puede borrar otra instancia positiva de un single
 	t.lexema="-"+t.lexema; PI.put("-" + $2.sval);
-	Analizador_Lexico.tablaSimbolos.put(t.lexema,t);}
-	|ID parametros ','{
+	Analizador_Lexico.tablaSimbolos.put(t.lexema,t);	$$.sval=t.tipo;}
+	|ID parametros ','{ $$.sval=Analizador_Lexico.tablaSimbolos.get($1.sval).tipo;
                     if ( estoyEnFuncion ){
                         //System.out.println(idParam + " contra " + $2.sval);
                         if ( idParam.equals($2.sval) )
@@ -288,7 +293,9 @@ factor : ID 				{ PI.put($1.sval);
                     //System.out.println(Analizador_Lexico.tablaSimbolos.get($1.sval).permisoFun + " y pase " + $2.ival);
 	                if ( !isPermited(Analizador_Lexico.tablaSimbolos.get($1.sval).permisoFun, $2.ival) )
                         this.errores.add(new ErrorG("Error 026 : La funcion "+$1.sval+" no puede ser invocada con " + $2.ival, Analizador_Lexico.cantLN));
-                  
+					String tipoParametro=Analizador_Lexico.tablaSimbolos.get($2.sval).tipo;
+					if(!tipoParametro.equals(parametrosFunciones.get($1.sval)))
+						this.errores.add(new ErrorG("Error 034 : La funcion "+$1.sval+" no puede ser invocada con un parametro de tipo '"+tipoParametro+"' ", Analizador_Lexico.cantLN));
 					
 	PI.jumpToFun($1.sval); Token t=Analizador_Lexico.tablaSimbolos.get($1.sval);
 	if(t!=null){
@@ -357,6 +364,7 @@ public boolean estoyEnFuncion = false;
 public String idParam;
 public String ambitoActual="@main";
 public String ultimaFuncion;
+private HashMap<String,String> parametrosFunciones=new HashMap<>();
 
 public int yylex(){
 	Token t=null;

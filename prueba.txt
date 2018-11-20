@@ -1,6 +1,7 @@
-single _fun1( single _param){
-	single _local1,
-	_local1 := 21,
-	return ( _param + 0.2)
-}
-
+single _var1,
+_var1:= 0.2,
+	if(0.2 < 0.3)
+		print ( _var1 ),
+	else
+		print ( ' RAAMA ELSE' ),
+	endif

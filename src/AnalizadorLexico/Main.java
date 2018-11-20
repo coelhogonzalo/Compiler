@@ -11,7 +11,8 @@ import Parser.Parser;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        File f = new File("prueba.txt");
+    	String fileName="prueba.txt";
+        File f = new File(fileName);
         Analizador_Lexico al = new Analizador_Lexico(f);
         Parser p = new Parser(false);
         p.errores = al.getErrores();
@@ -33,7 +34,9 @@ public class Main {
         	//System.out.println("Tabla de simbolos:");
             //System.out.println(Analizador_Lexico.tablaSimbolos);
         	GeneradorAssembler gen=new GeneradorAssembler(p.PI);
-        	gen.generameAssemblydotexe();
+        	String fileNameOutput=removeExtension(fileName);
+        	System.out.println("Voy a generar un .asm en: "+fileNameOutput);
+        	gen.generameAssemblydotexe(fileNameOutput);
         	System.out.println("");
         	System.out.println("WIIII ESTOY GENERANDO ASSEMBLER!");
         }
@@ -48,5 +51,15 @@ public class Main {
         FileManager.write(Parser.estructuras.toString(), estructurasOut);
         Error.huboErrores=false;
     }
-
+    private static String removeExtension(String fileName){
+    	String cortado=fileName;
+    	if(!cortado.isEmpty()){
+    		while(cortado.charAt(cortado.length()-1)!='.')
+    			cortado=cortado.substring(0, cortado.length()-1);
+    		cortado=cortado.substring(0, cortado.length()-1);//Saco el arroba
+    		return cortado;
+    	}
+    	return cortado;
+    }
+    	
 }

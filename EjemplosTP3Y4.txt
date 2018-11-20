@@ -135,8 +135,8 @@ __endif
 __8.Sentencia de control asignada como tema particular
 
 __Sin error
-while ( 0.2+5.2 < 0.3-3.2 )
-	print ( ' dale que funcionas' ),
+while ( 0.4 > 0.5 )
+	print ( 'Soy el elegido' ),
 
 __Con error
 __while ( 0.2+5.2 < 0.3-3.2 
@@ -179,7 +179,7 @@ single _funWRITEPASS ( single _param2) {
 	if(0.2 < 0.3)
 		print ( ' dale que funcionas' ),
 	endif
-	_param2 := _funWRITE(_param2; write ),
+	_param2 := _funWRITE(_param2; write ),,
 	return ( 2.0 )
 }
 
@@ -202,7 +202,8 @@ __}
 __15. Llamado de funciones como sentencia ejecutable.
 
 __Sin error
-_var1 := _funWRITE (_diversion; write ),
+single _varsingle2,
+_varsingle2 := _funWRITE (_diversion; write ),,
 
 __Con error
 __var1 := _funWRITE (_diversion; readonly ),__invalido
@@ -219,7 +220,7 @@ ___fun ( write; single _diversion; uslinteger _id)
 __16.Expresiones con numeros negativos
 
 __Sin error
-_var1 := - 0.2 - - 0.6,
+_varsingle2 := - 0.2 - -0.6,
 
 __Con error VARIABLE SIN DECLARAR
 __nodeclarada := -0.2 - 0.6,

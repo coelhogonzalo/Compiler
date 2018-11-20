@@ -174,7 +174,10 @@ public void generarCodigoAssembler(StringBuilder escritura){
 			//System.out.println("A asignar: "+aAsignar+"  asignacion: "+asignacion.toString());
 			if((Analizador_Lexico.tablaSimbolos.get(aAsignar.toString()).tipo.equals("single"))&&(Analizador_Lexico.tablaSimbolos.get(asignacion.toString()).tipo.equals("single"))){
 				if(flotantes.contains(asignacion.toString()))
-					 asignacion = new StringBuilder("_"+asignacion.toString().replace(".", "_"));
+					if(asignacion.toString().contains("-"))
+						asignacion = new StringBuilder("_neg"+asignacion.toString().replace(".", "_").substring(1,asignacion.toString().length()));	
+					else
+						asignacion = new StringBuilder("_"+asignacion.toString().replace(".", "_"));
 				escritura.append("FLD "+asignacion+"\r\n"+"FSTP "+ aAsignar+"\r\n");
 			}
 			else 
@@ -218,10 +221,18 @@ public void generarCodigoAssembler(StringBuilder escritura){
 				else{
 					//AMBOS FLOAT 
 					if((Analizador_Lexico.tablaSimbolos.get(primerComparado.toString()).tipo.equals("single")) && ((Analizador_Lexico.tablaSimbolos.get(segundoComparado.toString()).tipo.equals("single")))){
-						if(flotantes.contains(primerComparado.toString()))
-							primerComparado=new StringBuilder("_"+primerComparado.toString().replace(".", "_"));
-						if(flotantes.contains(segundoComparado.toString()))
-							segundoComparado=new StringBuilder("_"+segundoComparado.toString().replace(".", "_"));
+						if(flotantes.contains(primerComparado.toString())){
+							if(primerComparado.toString().contains("-"))
+								primerComparado = new StringBuilder("_neg"+primerComparado.toString().replace(".", "_").substring(1,primerComparado.toString().length()));	
+							else
+								primerComparado=new StringBuilder("_"+primerComparado.toString().replace(".", "_"));
+						}
+						if(flotantes.contains(segundoComparado.toString())){
+							if(segundoComparado.toString().contains("-"))
+								segundoComparado = new StringBuilder("_neg"+segundoComparado.toString().replace(".", "_").substring(1,segundoComparado.toString().length()));	
+							else
+								segundoComparado=new StringBuilder("_"+segundoComparado.toString().replace(".", "_"));
+						}
 						escritura.append("FLD "+primerComparado+"\r\n"+"FLD "+segundoComparado+"\r\n"+"FCOM"+"\r\n"+"FSTSW AX"+"\r\n"+"SAHF"+"\r\n");
 					}
 					else{
@@ -300,9 +311,9 @@ public void generarCodigoAssembler(StringBuilder escritura){
 							StringBuilder variable = pilaVar.pop();
 							System.out.println("Quiero printear esta: "+variable);
 							if(Analizador_Lexico.tablaSimbolos.get(variable.toString()).tipo.equals("single"))
-								escritura.append("invoke printf, cfm$(\"%.20Lf\\n\"), "+variable+"\r\n");
+								escritura.append("invoke MessageBox,NULL,addr print_single,addr "+"print_single,MB_OK"+"\r\n");
 							if(Analizador_Lexico.tablaSimbolos.get(variable.toString()).tipo.equals("uslinteger"))
-								escritura.append("invoke printf, cfm$(\"%. %llu\\n\"), "+variable+"\r\n");
+								escritura.append("invoke printf, cfm$(\"%d\\n\"), "+variable+"\r\n");
 						}
 					}
 					else{
@@ -324,19 +335,39 @@ public void generarCodigoAssembler(StringBuilder escritura){
 							}
 							else{
 								if((Analizador_Lexico.tablaSimbolos.get(primerOperando.toString()).tipo.equals("single")) && ((Analizador_Lexico.tablaSimbolos.get(segundoOperando.toString()).tipo.equals("single")))){
-									if(flotantes.contains(primerOperando.toString()))
-										primerOperando=new StringBuilder("_"+primerOperando.toString().replace(".", "_"));
-									if(flotantes.contains(segundoOperando.toString()))
-										segundoOperando=new StringBuilder("_"+segundoOperando.toString().replace(".", "_"));
+									if(flotantes.contains(primerOperando.toString())){
+										if(primerOperando.toString().contains("-"))
+											primerOperando = new StringBuilder("_neg"+primerOperando.toString().replace(".", "_").substring(1,primerOperando.toString().length()));	
+										else
+											primerOperando=new StringBuilder("_"+primerOperando.toString().replace(".", "_"));
+									}
+									if(flotantes.contains(segundoOperando.toString())){
+										if(segundoOperando.toString().contains("-"))
+											segundoOperando = new StringBuilder("_neg"+segundoOperando.toString().replace(".", "_").substring(1,segundoOperando.toString().length()));	
+										else
+											segundoOperando=new StringBuilder("_"+segundoOperando.toString().replace(".", "_"));
+									}
 							
 									generarCodigoSingle(operador,primerOperando,segundoOperando,escritura);
 							}
 								else{
-									if((Analizador_Lexico.tablaSimbolos.get(primerOperando.toString()).tipo.equals("uslinteger")) && ((Analizador_Lexico.tablaSimbolos.get(segundoOperando.toString()).tipo.equals("single"))))
+									if((Analizador_Lexico.tablaSimbolos.get(primerOperando.toString()).tipo.equals("uslinteger")) && ((Analizador_Lexico.tablaSimbolos.get(segundoOperando.toString()).tipo.equals("single")))){
 										escritura.append("JMP @LABEL_TIPOS_DISTINTOS"+"\r\n");
+										StringBuilder aux= new StringBuilder("@auxDistintosTipos"+contador);
+										pilaVar.push(aux);  
+										Token t = new Token("@auxDistintosTipos"+contador,Analizador_Lexico.TOKEN_UL,"uslinteger");
+										t.setUso("variable");
+										Analizador_Lexico.tablaSimbolos.put(t.lexema,t);
+								}
 									else{
 										if((Analizador_Lexico.tablaSimbolos.get(primerOperando.toString()).tipo.equals("single")) && ((Analizador_Lexico.tablaSimbolos.get(segundoOperando.toString()).tipo.equals("uslinteger"))))
 											escritura.append("JMP @LABEL_TIPOS_DISTINTOS"+"\r\n");
+											StringBuilder aux= new StringBuilder("@auxDistintosTipos"+contador);
+											pilaVar.push(aux);  
+											Token t = new Token("@auxDistintosTipos"+contador,Analizador_Lexico.TOKEN_UL,"single");
+											t.setUso("variable");
+											Analizador_Lexico.tablaSimbolos.put(t.lexema,t);
+									 }
 									}
 								}
 							}
@@ -347,7 +378,7 @@ public void generarCodigoAssembler(StringBuilder escritura){
 		}
 	}
 	}
-}
+
 		
 public void generarCodigoInteger(StringBuilder operador,StringBuilder primerOperando, StringBuilder segundoOperando, StringBuilder escritura){ //para los dos integer
     	String op = operador.toString();
@@ -368,7 +399,7 @@ public void generarCodigoInteger(StringBuilder operador,StringBuilder primerOper
  				 pilaVar.push(aux);
 		break;		
 
-    	case"/" : escritura.append("MOV EAX,"+segundoOperando+"\r\n"+"MOV EBX,"+primerOperando+"\r\n"+"CMP EBX, 0"+"\r\n"+"JZ @LABEL_ZERO"+"\r\n"+"DIV "+primerOperando+"\r\n"+ "MOV "+"@aux"+contador+", EAX"+"\r\n");
+    	case"/" : escritura.append("MOV EDX, 0"+"\r\n"+"MOV EAX,"+segundoOperando+"\r\n"+"MOV EBX,"+primerOperando+"\r\n"+"CMP EBX, 0"+"\r\n"+"JZ @LABEL_ZERO"+"\r\n"+"DIV EBX"+"\r\n"+ "MOV "+"@aux"+contador+", EAX"+"\r\n");
  				  aux= new StringBuilder("@aux"+contador);
  				  pilaVar.push(aux);
 	
@@ -389,7 +420,7 @@ public void generarCodigoSingle(StringBuilder operador,StringBuilder primerOpera
 						pilaVar.push(aux);
 					
 			break;
-			case"-" : escritura.append("FLD "+primerOperando+"\r\n"+"FLD "+segundoOperando+"\r\n"+"FCOM"+"\r\n"+"FSTSW AX"+"\r\n"+"SAHF"+"\r\n"+"\r\n"+"JB @LABEL_RESUL_NEG"+"\r\n"+ "FSUB"+"\r\n"+"FSTP "+"@aux"+contador+"\r\n");
+			case"-" : escritura.append("FLD "+primerOperando+"\r\n"+"FLD "+segundoOperando+"\r\n"+ "FSUB"+"\r\n"+"FSTP "+"@aux"+contador+"\r\n");
 					  aux= new StringBuilder("@aux"+contador);
 					  pilaVar.push(aux);
 					  
@@ -421,12 +452,14 @@ public void generarCodigoSingle(StringBuilder operador,StringBuilder primerOpera
 
     public void generarDeclaracion(){
 
-    	declaracion.append("mensaje_overflow db \"Hubo overflow uwu\", 0 "+"\r\n");
-    	declaracion.append("mensaje_zero db \"El divisor es 0 huehuehue\", 0 "+"\r\n");
-    	declaracion.append("mensaje_resultadoNeg db \"Me dio negativo xD\", 0 "+"\r\n");
-    	declaracion.append("mensaje_tipos db \"Son diferentes tipos maquina\", 0 "+"\r\n");
+    	declaracion.append("mensaje_overflow db \"La operacion aritmetica genero overflow\", 0 "+"\r\n");
+    	declaracion.append("mensaje_zero db \"Division por cero\", 0 "+"\r\n");
+    	declaracion.append("mensaje_resultadoNeg db \"El resultado es negativo\", 0 "+"\r\n");
+    	declaracion.append("mensaje_tipos db \"Se esta operando con tipos diferentes\", 0 "+"\r\n");
+    	declaracion.append("print_single  db \"Solo se pueden printear variables de tipo uslinteger\", 0 "+"\r\n");
     	declaracion.append("zero  dd 0.0"+"\r\n");
         declaracion.append("cte_max_rango  dd 3.40282347E+38"+"\r\n");
+        
     	
     	for(int k=0; k<mensajes.size(); k++)
     		declaracion.append("msj"+k+" db \""+mensajes.get(k).substring(1, mensajes.get(k).length()-1)+"\", 0"+"\n");
@@ -446,7 +479,10 @@ public void generarCodigoSingle(StringBuilder operador,StringBuilder primerOpera
         declaracion.append(".const "+"\r\n");
         for(int uwu=0; uwu<flotantes.size(); uwu++){
         	String aVerSiAhoraTenesGanasDeAndar = flotantes.get(uwu).toString().replace(".", "_");
-        	declaracion.append("_"+aVerSiAhoraTenesGanasDeAndar+" dd "+ flotantes.get(uwu)+"\n");
+        	if(flotantes.get(uwu).toString().contains("-"))
+        		declaracion.append("_neg"+aVerSiAhoraTenesGanasDeAndar.substring(1,aVerSiAhoraTenesGanasDeAndar.length())+" dd "+ flotantes.get(uwu)+"\n");
+        	else
+        		declaracion.append("_"+aVerSiAhoraTenesGanasDeAndar+" dd "+ flotantes.get(uwu)+"\n");
         }
     	declaracion.append(".code"+"\r\n"+"start: ");
     }
@@ -480,7 +516,7 @@ public void generarCodigoSingle(StringBuilder operador,StringBuilder primerOpera
     	return pilaVar.push(s);
     }
     
-    public void generameAssemblydotexe() throws IOException{
+    public void generameAssemblydotexe(String fileName) throws IOException{
     	generarEncabezado();
     	guardarSaltos();
     	leer();
@@ -492,11 +528,12 @@ public void generarCodigoSingle(StringBuilder operador,StringBuilder primerOpera
     	generarMensajitosDeControl();
     	generarFin();
     	inicio.append(fin);
-    	//System.out.println(inicio);
-    	FileManager.write(inicio.toString(), new File("prueba.asm"));
+    	System.out.println(inicio);
+    	FileManager.write(inicio.toString(), new File(fileName+".asm"));
     	
 
     }
     
 
 }
+
