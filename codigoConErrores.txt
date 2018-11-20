@@ -1,0 +1,68 @@
+__ERROR 001
+_global1;_global2;_global3,
+__ERROR 002 Y ERROR 006
+single   single _param002) {
+	_param002 := 0.2,
+	return ( 2.0 )
+}
+__ERROR 003 y ERROR 005 Y ERROR 007 y ERROR 009
+_funWRITE  ( single _param003 {
+	_param003 := 0.2,
+	 ( 2.0 )
+}
+__ERROR 004 y ERROR 007, ERROR 008
+single _funWRITE   {
+single _INSIDE  ( single _inside002 ) {
+	_inside002 := 0.2,
+		return 
+}
+	return ( 2.0 )
+}
+__ERROR 010 
+single _fun2(single _parametro2){
+	print ( 'cadenita' ),
+	return ( 2.0 
+}
+__ERROR 011 
+single _fun3(single _parametro3){
+	print ( 'cadenita' ),
+	return (  )
+}
+__ERROR 012
+	print( 'error 12' ,
+__ERROR 013
+	print 'error13 ' ),
+__ERROR 014
+	print ('error 14')
+__ERROR 015 y ERROR 20
+if _1global001 =  4_ul )
+	
+endif      __El endif se esta comiendo el caracter siguiente
+
+__ERROR 016 Y ERROR 19 y ERROR 21
+if(  =  4_ul 
+	print( 'MAIN ELSE' ),
+else
+	
+endif
+
+__ERROR 017 Y ERROR 18
+if(  )
+
+else
+	
+endif
+
+__ERROR 022 y 023
+single _glob,
+_glob 0.3,
+__ERROR 030
+__ERROR 011 
+single _funPrueba(single _parametroPrueba){
+	print ( 'cadenita' ),
+	return ( 2.0 )
+}
+__ERROR 031 Y ERROR 032 y ERROR 033
+_glob := _funPrueba(_glob;readonly ,,
+_glob := _funPrueba(_glob readonly),,
+_glob := _funPrueba(_glob;write pass) ,,
