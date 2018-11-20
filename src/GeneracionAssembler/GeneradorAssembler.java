@@ -266,7 +266,7 @@ public void generarCodigoAssembler(StringBuilder escritura){
 			    			if(!Analizador_Lexico.tablaSimbolos.get(primerComparado.toString()).uso.equals("variable"))
 			    				primerComparado = new StringBuilder(primerComparado.toString()+"_ul");
 							if(Analizador_Lexico.tablaSimbolos.get(primerComparado.toString()).tipo.equals("uslinteger")){
-								System.out.println("entro segundo if"+primerComparado);
+								//System.out.println("entro segundo if"+primerComparado);
 								
 								if(signo.toString().equals("<"))
 									escritura.append("JGE "+label+"\r\n");
@@ -309,7 +309,7 @@ public void generarCodigoAssembler(StringBuilder escritura){
 						}
 						else{
 							StringBuilder variable = pilaVar.pop();
-							System.out.println("Quiero printear esta: "+variable);
+							//System.out.println("Quiero printear esta: "+variable);
 							if(Analizador_Lexico.tablaSimbolos.get(variable.toString()).tipo.equals("single"))
 								escritura.append("invoke MessageBox,NULL,addr print_single,addr "+"print_single,MB_OK"+"\r\n");
 							if(Analizador_Lexico.tablaSimbolos.get(variable.toString()).tipo.equals("uslinteger"))
@@ -322,7 +322,7 @@ public void generarCodigoAssembler(StringBuilder escritura){
 							StringBuilder operador = pilaVar.pop(); //PARA SACAR EL OPERANDO
 							StringBuilder primerOperando = pilaVar.pop();
 							StringBuilder segundoOperando = pilaVar.pop();
-							System.out.println("Voy a operar '"+primerOperando+"' con '"+segundoOperando+"'");
+							//System.out.println("Voy a operar '"+primerOperando+"' con '"+segundoOperando+"'");
 							
 							if((Analizador_Lexico.tablaSimbolos.get(primerOperando.toString()).tipo.equals("uslinteger")) && ((Analizador_Lexico.tablaSimbolos.get(segundoOperando.toString()).tipo.equals("uslinteger")))){
 					    		if(Analizador_Lexico.tablaSimbolos.get(primerOperando.toString()).uso.equals("constante")){
@@ -528,6 +528,7 @@ public void generarCodigoSingle(StringBuilder operador,StringBuilder primerOpera
     	generarMensajitosDeControl();
     	generarFin();
     	inicio.append(fin);
+    	System.out.println("Assembler generado:");
     	System.out.println(inicio);
     	FileManager.write(inicio.toString(), new File(fileName+".asm"));
     	

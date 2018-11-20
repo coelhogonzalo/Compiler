@@ -949,7 +949,7 @@ case 27:
 break;
 case 33:
 //#line 152 "gramatica.y"
-{this.errores.add(new ErrorG("Error 010: Se esperaba un )", Analizador_Lexico.cantLN));}
+{this.errores.add(new ErrorG("Error 010: Se esperaba un ) en la expresion retornada", Analizador_Lexico.cantLN));}
 break;
 case 34:
 //#line 153 "gramatica.y"
@@ -966,11 +966,11 @@ case 36:
 break;
 case 37:
 //#line 159 "gramatica.y"
-{this.errores.add(new ErrorG("Error 012 : Falta un )", Analizador_Lexico.cantLN));}
+{this.errores.add(new ErrorG("Error 012 : Falta un ) despues de la cadena a imprimir", Analizador_Lexico.cantLN));}
 break;
 case 38:
 //#line 160 "gramatica.y"
-{this.errores.add(new ErrorG("Error 013 : Falta un (", Analizador_Lexico.cantLN));}
+{this.errores.add(new ErrorG("Error 013 : Falta un ( antes de la cadena a imprimir", Analizador_Lexico.cantLN));}
 break;
 case 39:
 //#line 163 "gramatica.y"
@@ -1010,11 +1010,11 @@ case 47:
 break;
 case 48:
 //#line 176 "gramatica.y"
-{this.errores.add(new ErrorG("Error 014: Se esperaba un ,", Analizador_Lexico.cantLN));}
+{this.errores.add(new ErrorG("Error 014: Se esperaba un , al final de la sentencia", Analizador_Lexico.cantLN));}
 break;
 case 49:
 //#line 177 "gramatica.y"
-{this.errores.add(new ErrorG("Error 014: Se esperaba un ,", Analizador_Lexico.cantLN));}
+{this.errores.add(new ErrorG("Error 014: Se esperaba un , al final de la sentencia", Analizador_Lexico.cantLN));}
 break;
 case 50:
 //#line 180 "gramatica.y"
@@ -1050,7 +1050,7 @@ case 58:
 break;
 case 59:
 //#line 208 "gramatica.y"
-{this.errores.add(new ErrorG("Error 021: Se esperaba un operador logico valido", Analizador_Lexico.cantLN));}
+{this.errores.add(new ErrorG("Error 021: Se esperaba un operador logico valido en la condicion", Analizador_Lexico.cantLN));}
 break;
 case 60:
 //#line 212 "gramatica.y"
@@ -1079,9 +1079,9 @@ break;
 case 66:
 //#line 221 "gramatica.y"
 {
-	System.out.println("El tipo de ID :'"+Analizador_Lexico.tablaSimbolos.get(val_peek(2).sval).tipo+"' y el tipo de la expresion:'"+val_peek(0).sval+"'");
+	/*System.out.println("El tipo de ID :'"+Analizador_Lexico.tablaSimbolos.get($1.sval).tipo+"' y el tipo de la expresion:'"+$3.sval+"'");*/
 	if(!val_peek(0).sval.equals(Analizador_Lexico.tablaSimbolos.get(val_peek(2).sval).tipo))
-		this.errores.add(new ErrorG("Error 035 : El tipo de la variable "+val_peek(2).sval+" no coincide con el de la expresion", Analizador_Lexico.cantLN));
+		this.errores.add(new ErrorG("Error 23 : El tipo de la variable "+val_peek(2).sval+" no coincide con el de la expresion", Analizador_Lexico.cantLN));
     if ( estoyEnFuncion ){
     if ( val_peek(2).sval.equals(idParam) )
         if ( Analizador_Lexico.tablaSimbolos.get(idFun).permisoFun == Ps )
@@ -1184,7 +1184,7 @@ case 78:
                         this.errores.add(new ErrorG("Error 026 : La funcion "+val_peek(2).sval+" no puede ser invocada con " + val_peek(1).ival, Analizador_Lexico.cantLN));
 					String tipoParametro=Analizador_Lexico.tablaSimbolos.get(val_peek(1).sval).tipo;
 					if(!tipoParametro.equals(parametrosFunciones.get(val_peek(2).sval)))
-						this.errores.add(new ErrorG("Error 034 : La funcion "+val_peek(2).sval+" no puede ser invocada con un parametro de tipo '"+tipoParametro+"' ", Analizador_Lexico.cantLN));
+						this.errores.add(new ErrorG("Error 030 : La funcion "+val_peek(2).sval+" no puede ser invocada con un parametro de tipo '"+tipoParametro+"' ", Analizador_Lexico.cantLN));
 					
 	PI.jumpToFun(val_peek(2).sval); Token t=Analizador_Lexico.tablaSimbolos.get(val_peek(2).sval);
 	if(t!=null){
@@ -1210,7 +1210,7 @@ case 79:
 		else{
 			t=Analizador_Lexico.getEntradaTS(val_peek(3).sval,this.ambitoActual);
 			if(t==null)/*Despues me fijo si esta en el ambito*/
-				this.errores.add(new ErrorG("Error 030 : El identificador "+val_peek(3).sval+" no esta en el ambito "+this.ambitoActual, Analizador_Lexico.cantLN));
+				this.errores.add(new ErrorG("Error 025 : El identificador "+val_peek(3).sval+" no esta en el ambito "+this.ambitoActual, Analizador_Lexico.cantLN));
 		}
 	}
 	else
@@ -1219,11 +1219,11 @@ case 79:
 break;
 case 80:
 //#line 331 "gramatica.y"
-{this.errores.add(new ErrorG("Error 031: Se esperaba un )", Analizador_Lexico.cantLN));}
+{this.errores.add(new ErrorG("Error 031: Se esperaba un ) al final de la invocacion", Analizador_Lexico.cantLN));}
 break;
 case 81:
 //#line 332 "gramatica.y"
-{this.errores.add(new ErrorG("Error 032: Se esperaba un ;", Analizador_Lexico.cantLN));}
+{this.errores.add(new ErrorG("Error 032: Se esperaba un ; entre el parametro y los permisos", Analizador_Lexico.cantLN));}
 break;
 case 84:
 //#line 339 "gramatica.y"

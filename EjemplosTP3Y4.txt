@@ -5,10 +5,8 @@ uslinteger _varuslinteger,
 single _varsingle,
 
 __Con error
-__usinteger _varuslinteger,
-__uslinteger _,
-__uslinteger, _varuslinteger,
-__single _id
+uslinteger varuslinteger,
+single id,
 
 
 
@@ -21,9 +19,7 @@ single _single1;_single2;_single3,
 __Con error (REDECLARACION DE VARIABLES)
 __uslinteger _var4;_var2;_var4,
 __single _var2;_single4;_single5,
-__uslinteger _var1._var2;_var3,
-__single _var1._var2;_var3,
-__single _var1._var2;_var3
+
 
 
 
@@ -37,9 +33,9 @@ mas de un ren-
 glon' ),
 
 __Con error
-__print ( 'esto esta mal )',
-__print ( esto tambi'en' ),
-__print ( ' y esto tambien ),
+__print ( 'esto esta mal' ,
+__print  'esto tambien' ),
+__print ( ' y esto tambien' )
 __print ('cadenita')
 
 
@@ -72,17 +68,6 @@ if ( _var1 = _var2 ){
 	print ( ' probando parte dos' ),
 }
 endif
-
-__Con error
-__if ( 0.2 < 0.3 ){
-__	print ( ' dale que funcionas' ),
-__	print ( ' dale que funcionas parte dos: la venganza del print' ),
-__endif
-
-__if ( 0.2 < 0.3 ){
-__	print ( ' dale que funcionas' )
-__	print ( ' dale que funcionas parte dos la venganza del print' )
-__endif
 
 __6.Sentencia IF con bloque ELSE
 
@@ -135,7 +120,7 @@ __endif
 __8.Sentencia de control asignada como tema particular
 
 __Sin error
-while ( 0.4 > 0.5 )
+while ( 0.6 < 0.5 )
 	print ( 'Soy el elegido' ),
 
 __Con error
@@ -164,7 +149,7 @@ __	endif
 
 
 
-__14. Declaraci�n de funciones con lista de permisos (si corresponde) con sentencias de control dentro.
+__14. Declaracion de funciones con lista de permisos (si corresponde) con sentencias de control dentro.
 
 __Sin error
 single _diversion,
@@ -190,13 +175,6 @@ __	print ( ' dale que funcionas' ),
 __	return ( 2.0 )
 __}
 __declaradaenfuncion := 0.2,
-__single _fun2 ( write; single _diversion; uslinteger _id) {
-__	print ( ' dale que funcionas' ),
-__	if(0.2 == 0.3)
-__		print ( ' dale que funcionas' ),
-__	endif
-__	return ( 2.0 
-__}
 
 
 __15. Llamado de funciones como sentencia ejecutable.
@@ -206,15 +184,16 @@ single _varsingle2,
 _varsingle2 := _funWRITE (_diversion; write ),,
 
 __Con error
-__var1 := _funWRITE (_diversion; readonly ),__invalido
-__var1 := _funWRITE (_diversion; pass ),__invalido
-__var1 := _funWRITE (_diversion; write ),__Valido
-__var1 := _funWRITE (_diversion; write;pass ),__Valido
-__var1 := _funWRITEPASS (_diversion; readonly ),__invalido
-__var1 := _funWRITEPASS (_diversion; pass ),__invalido
-__var1 := _funWRITEPASS (_diversion; write ),__invalido
-__var1 := _funWRITEPASS (_diversion; write;pass ),__Valido
-___fun ( write; single _diversion; uslinteger _id)
+
+__varsingle2 := _funWRITE (_diversion; readonly ),,   __invalido
+__varsingle2 := _funWRITE (_diversion; pass ),,  __invalido
+__varsingle2 := _funWRITE (_diversion; write ),,   __Valido
+__varsingle2 := _funWRITE (_diversion; write;pass ),,   __Valido
+__varsingle2 := _funWRITEPASS (_diversion; readonly ),,   __invalido
+__varsingle2 := _funWRITEPASS (_diversion; pass ),,   __invalido
+__varsingle2 := _funWRITEPASS (_diversion; write ),,   __invalido
+__varsingle2 := _funWRITEPASS (_diversion; write;pass ),,   __Valido
+
 
 
 __16.Expresiones con numeros negativos
@@ -223,5 +202,49 @@ __Sin error
 _varsingle2 := - 0.2 - -0.6,
 
 __Con error VARIABLE SIN DECLARAR
-__nodeclarada := -0.2 - 0.6,
-___a := -0.2 - 0..6
+
+__ _nodeclarada := -0.2 - 0.6,
+
+
+__ERRORES EN EJECUCION
+
+single _unavar1,
+single _unavar2,
+single _unavar3,
+
+_unavar1 := 0.0,
+_unavar2 := 34.0,
+_unavar3 := _unavar2 / _unavar1,
+
+single _unavar4,
+single _unavar5,
+single _unavar6,
+
+_unavar4:= 3.40282347F38,      __rango maximo de float
+_unavar5:= 5.0,
+_unavar6 := _unavar4 * _unavar5,
+
+uslinteger _lin1,
+uslinteger _lin2,
+uslinteger _lin3,
+
+_lin1 := 0,
+_lin2 := 34,
+_lin3 := _lin2 / _lin1,
+
+uslinteger _lin4,
+uslinteger _lin5,
+uslinteger _lin6,
+
+_lin4:= 4294967295_ul, __acaponele el rango maximo de int
+_lin5:= 5,
+_lin6 := _lin5 * _lin4,
+
+
+uslinteger _lin7,
+uslinteger _lin8,
+uslinteger _lin9,
+
+_lin7 := 56,
+_lin8 := 34,
+_lin9 := _lin8 - _lin7,
