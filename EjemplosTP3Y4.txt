@@ -5,8 +5,8 @@ uslinteger _varuslinteger,
 single _varsingle,
 
 __Con error
-uslinteger varuslinteger,
-single id,
+__uslinteger varuslinteger,
+__single id,
 
 
 

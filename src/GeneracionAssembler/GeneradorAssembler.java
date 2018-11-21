@@ -204,10 +204,10 @@ public void generarCodigoAssembler(StringBuilder escritura){
 		else{	
 			//PARA COMPARACIONES	
 			if(pilaVar.peek().toString().equals("<")||pilaVar.peek().toString().equals(">")||pilaVar.peek().toString().equals("=")||pilaVar.peek().toString().equals("!=")){
-				 signo = pilaVar.pop();
-				 primerComparado = pilaVar.pop();
-				 segundoComparado = pilaVar.pop();
-			
+				signo = pilaVar.pop();
+				primerComparado = pilaVar.pop();
+				segundoComparado = pilaVar.pop();
+				//System.out.println("Voy a comparar :'"+primerComparado+"' con: '"+segundoComparado+"'");
 				//AMBOS INTEGER
 				if((Analizador_Lexico.tablaSimbolos.get(primerComparado.toString()).tipo.equals("uslinteger")) && (Analizador_Lexico.tablaSimbolos.get(segundoComparado.toString()).tipo.equals("uslinteger"))){
 		    		if(Analizador_Lexico.tablaSimbolos.get(primerComparado.toString()).uso.equals("constante")){
@@ -251,21 +251,24 @@ public void generarCodigoAssembler(StringBuilder escritura){
 			if(pilaVar.peek().toString().equals("B")){
 				pilaVar.pop(); //SACO EL B
 				StringBuilder label = pilaVar.pop();
-
+				System.out.println("Entre al primer if");
 				if(Integer.parseInt(label.substring(5,label.length()))>=PI.getPI().size()) //VERIFICO, SI NO CUMPLE LLEVA AL FINAL //ACA CREO ES 5 NO 6
 					label =new StringBuilder("@LABEL_END"+"\r\n");
 				
 				if(signo.toString().equals("="))
 						escritura.append("JNE "+label+"\r\n");
-				else{	
+				else{System.out.println("Entre al segundo if");	
 					if(signo.toString().equals("!="))
 							escritura.append("JE "+label+"\r\n");
 					else{
+						System.out.println("Entre al tercer if");
+						System.out.println("El valor del comparado es: "+primerComparado);
 			    		if(!(primerComparado.toString().contains("_ul"))&&(!flotantes.contains(primerComparado.toString().substring(1, primerComparado.length()).replace("_", ".")))){
-							
-			    			if(!Analizador_Lexico.tablaSimbolos.get(primerComparado.toString()).uso.equals("variable"))
+			    			System.out.println("Entre al cuarto MALLLL if");
+			    			if(!((Analizador_Lexico.tablaSimbolos.get(primerComparado.toString())!=null)&&(Analizador_Lexico.tablaSimbolos.get(primerComparado.toString()).uso.equals("variable"))))
 			    				primerComparado = new StringBuilder(primerComparado.toString()+"_ul");
-							if(Analizador_Lexico.tablaSimbolos.get(primerComparado.toString()).tipo.equals("uslinteger")){
+							
+			    			if(Analizador_Lexico.tablaSimbolos.get(primerComparado.toString()).tipo.equals("uslinteger")){
 								//System.out.println("entro segundo if"+primerComparado);
 								
 								if(signo.toString().equals("<"))
@@ -276,10 +279,14 @@ public void generarCodigoAssembler(StringBuilder escritura){
 							}
 			    		}
 			    		else{ //FLOAT
-							
-							if(flotantes.contains(primerComparado.toString().substring(1, primerComparado.length()).replace("_", ".")))
+			    			System.out.println("Entre al cuarto if bien");
+							if(flotantes.contains(primerComparado.toString().substring(1, primerComparado.length()).replace("_", "."))){
 								primerComparado = new StringBuilder(primerComparado.toString().substring(1, primerComparado.length()).replace("_", "."));
+								
+							}
+							System.out.println("El primer comparando: "+primerComparado.toString());
 							if(Analizador_Lexico.tablaSimbolos.get(primerComparado.toString()).tipo.equals("single")){
+							
 								if(signo.toString().equals("<"))
 									escritura.append("JAE "+label+"\r\n"); //PORQUE NO SE
 									
@@ -420,7 +427,7 @@ public void generarCodigoSingle(StringBuilder operador,StringBuilder primerOpera
 						pilaVar.push(aux);
 					
 			break;
-			case"-" : escritura.append("FLD "+primerOperando+"\r\n"+"FLD "+segundoOperando+"\r\n"+ "FSUB"+"\r\n"+"FSTP "+"@aux"+contador+"\r\n");
+			case"-" : escritura.append("FLD "+segundoOperando+"\r\n"+"FLD "+primerOperando+"\r\n"+ "FSUB"+"\r\n"+"FSTP "+"@aux"+contador+"\r\n");
 					  aux= new StringBuilder("@aux"+contador);
 					  pilaVar.push(aux);
 					  
@@ -437,9 +444,11 @@ public void generarCodigoSingle(StringBuilder operador,StringBuilder primerOpera
 					
 			break;
 			}
+			
 			Token t = new Token("@aux"+contador,Analizador_Lexico.TOKEN_FLOAT,"single");
 			t.setUso("variable");
 			Analizador_Lexico.tablaSimbolos.put(t.lexema,t);
+			flotantes.add(t.lexema);
 			contador++;
 }
    
