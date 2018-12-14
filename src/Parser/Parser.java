@@ -527,7 +527,7 @@ final static String yyrule[] = {
 "lista_permisos : WRITE PASS",
 };
 
-//#line 349 "gramatica.y"
+//#line 356 "gramatica.y"
 
 private static final int Rd = 0;
 private static final int Wr = 1;
@@ -545,6 +545,7 @@ public String idParam;
 public String ambitoActual="@main";
 public String ultimaFuncion;
 private HashMap<String,String> parametrosFunciones=new HashMap<>();
+private String[] permisos ={"read","write","pass","write;pass"};
 
 public int yylex(){
 	Token t=null;
@@ -649,7 +650,7 @@ public static boolean isPermited(int permisoFuncion, int permisoInvocacion){
     	System.out.println("Testing con noseusaelparametro en la funcion:");
     	System.out.println();
     }
-//#line 581 "Parser.java"
+//#line 582 "Parser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -1004,11 +1005,11 @@ case 47:
 break;
 case 48:
 //#line 175 "gramatica.y"
-{this.errores.add(new ErrorG("Error 014: Se esperaba un ,", Analizador_Lexico.cantLN));}
+{this.errores.add(new ErrorG("Error 014: Se esperaba una coma al final", Analizador_Lexico.cantLN));}
 break;
 case 49:
 //#line 176 "gramatica.y"
-{this.errores.add(new ErrorG("Error 014: Se esperaba un ,", Analizador_Lexico.cantLN));}
+{this.errores.add(new ErrorG("Error 014: Se esperaba una coma al final ", Analizador_Lexico.cantLN));}
 break;
 case 50:
 //#line 179 "gramatica.y"
@@ -1175,7 +1176,12 @@ case 78:
                     /*System.out.println("\n idFun " + idFun + "\n" + "CantLN: " + Analizador_Lexico.cantLN);*/
                     /*System.out.println(Analizador_Lexico.tablaSimbolos.get($1.sval).permisoFun + " y pase " + $2.ival);*/
 	                if ( !isPermited(Analizador_Lexico.tablaSimbolos.get(val_peek(2).sval).permisoFun, val_peek(1).ival) )
-                        this.errores.add(new ErrorG("Error 026 : La funcion "+val_peek(2).sval+" no puede ser invocada con " + val_peek(1).ival, Analizador_Lexico.cantLN));
+                        this.errores.add(new ErrorG("Error 026 : La funcion "+val_peek(2).sval+" no puede ser invocada con el permiso " + permisos[val_peek(1).ival], Analizador_Lexico.cantLN));
+					System.out.println();
+					System.out.println();
+					System.out.println(val_peek(1).sval+"");
+					System.out.println();
+					System.out.println();
 					String tipoParametro=Analizador_Lexico.tablaSimbolos.get(val_peek(1).sval).tipo;
 					if(!tipoParametro.equals(parametrosFunciones.get(val_peek(2).sval)))
 						this.errores.add(new ErrorG("Error 034 : La funcion "+val_peek(2).sval+" no puede ser invocada con un parametro de tipo '"+tipoParametro+"' ", Analizador_Lexico.cantLN));
@@ -1192,9 +1198,11 @@ case 78:
 		System.out.println("El identificador "+val_peek(2).sval+" no se agrego a la tabla de simbolos (El identificador es una funcion) (ndmpp)"); }
 break;
 case 79:
-//#line 311 "gramatica.y"
+//#line 316 "gramatica.y"
 {
                         yyval.ival = val_peek(1).ival; yyval.sval = val_peek(3).sval;
+						System.out.println(val_peek(3).sval+"acasads");
+						
 
  PI.put(val_peek(3).sval);
 	Token t=Analizador_Lexico.tablaSimbolos.get(val_peek(3).sval);
@@ -1212,34 +1220,34 @@ case 79:
 	}
 break;
 case 80:
-//#line 330 "gramatica.y"
+//#line 337 "gramatica.y"
 {this.errores.add(new ErrorG("Error 031: Se esperaba un )", Analizador_Lexico.cantLN));}
 break;
 case 81:
-//#line 331 "gramatica.y"
+//#line 338 "gramatica.y"
 {this.errores.add(new ErrorG("Error 032: Se esperaba un ;", Analizador_Lexico.cantLN));}
 break;
 case 84:
-//#line 338 "gramatica.y"
+//#line 345 "gramatica.y"
 { yyval.ival = Rd; }
 break;
 case 85:
-//#line 339 "gramatica.y"
+//#line 346 "gramatica.y"
 { yyval.ival = Wr; }
 break;
 case 86:
-//#line 340 "gramatica.y"
+//#line 347 "gramatica.y"
 { yyval.ival = Ps; }
 break;
 case 87:
-//#line 341 "gramatica.y"
+//#line 348 "gramatica.y"
 { yyval.ival = Wrps; }
 break;
 case 89:
-//#line 344 "gramatica.y"
+//#line 351 "gramatica.y"
 {this.errores.add(new ErrorG("Error 033: Se esperaba un ; entre los permisos", Analizador_Lexico.cantLN));}
 break;
-//#line 1166 "Parser.java"
+//#line 1174 "Parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

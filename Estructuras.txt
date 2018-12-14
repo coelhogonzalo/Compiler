@@ -1,6 +1,21 @@
-[Se detecto la declaracion de variables en la linea 1
-, Se detecto una asignacion en  la linea 3
-, Se detecto una asignacion en  la linea 4
-, Se detecto un if en la linea 6
-, Se detecto la declaracion de variables en la linea 8
-]
+Se detecto la declaracion de variables en la linea 1
+
+ Se detecto una asignacion en  la linea 3
+
+ Se detecto la declaracion de una funcion en la linea 5
+
+ Se detecto una asignacion en  la linea 8
+
+ Se detecto una asignacion en  la linea 10
+
+ Se detecto una asignacion en  la linea 14
+
+ Se detecto una asignacion en  la linea 16
+
+ Se detecto un if en la linea 18
+
+ Se detecto un if en la linea 19
+
+ Se detecto la declaracion de variables en la linea 23
+
+ Se detecto una asignacion en  la linea 24

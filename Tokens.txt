@@ -1,24 +1,140 @@
-[Lexema: 'single' dec: false Tipo: String Ambito:Nulo
-, Lexema: '_var1' dec: true Tipo: single Ambito:@main
-, Lexema: ',' dec: false Tipo: Caracter Ambito:Nulo
-, Lexema: 'if' dec: false Tipo: String Ambito:Nulo
-, Lexema: '(' dec: false Tipo: Caracter Ambito:Nulo
-, Lexema: '0.2' dec: false Tipo: single Ambito:Nulo
-, Lexema: '=' dec: false Tipo: Caracter Ambito:Nulo
-, Lexema: '0.3' dec: false Tipo: single Ambito:Nulo
-, Lexema: ')' dec: false Tipo: Caracter Ambito:Nulo
-, Lexema: '{' dec: false Tipo: Caracter Ambito:Nulo
-, Lexema: '_var1' dec: true Tipo: single Ambito:@main
-, Lexema: ':=' dec: false Tipo: Operador Ambito:Nulo
-, Lexema: '0.2' dec: false Tipo: single Ambito:Nulo
-, Lexema: ',' dec: false Tipo: Caracter Ambito:Nulo
-, Lexema: '_var1' dec: true Tipo: single Ambito:@main
-, Lexema: ':=' dec: false Tipo: Operador Ambito:Nulo
-, Lexema: '0.3' dec: false Tipo: single Ambito:Nulo
-, Lexema: ',' dec: false Tipo: Caracter Ambito:Nulo
-, Lexema: '}' dec: false Tipo: Caracter Ambito:Nulo
-, Lexema: 'endif' dec: false Tipo: String Ambito:Nulo
-, Lexema: 'single' dec: false Tipo: String Ambito:Nulo
-, Lexema: '_var2' dec: true Tipo: single Ambito:@main
-, Lexema: ',' dec: false Tipo: Caracter Ambito:Nulo
-]
+Lexema: 'single' dec: false Tipo: String Ambito:Nulo
+
+ Lexema: '_var1' dec: true Tipo: single Ambito:@main
+
+ Lexema: '
+' dec: false Tipo: Caracter Ambito:Nulo
+
+ Lexema: 'single' dec: false Tipo: String Ambito:Nulo
+
+ Lexema: '_funcion1' dec: true Tipo: single Ambito:@main
+
+ Lexema: '(' dec: false Tipo: Caracter Ambito:Nulo
+
+ Lexema: 'single' dec: false Tipo: String Ambito:Nulo
+
+ Lexema: '_param1' dec: true Tipo: single Ambito:@main@_funcion1
+
+ Lexema: ')' dec: false Tipo: Caracter Ambito:Nulo
+
+ Lexema: '{' dec: false Tipo: Caracter Ambito:Nulo
+
+ Lexema: '_param1' dec: true Tipo: single Ambito:@main@_funcion1
+
+ Lexema: ':=' dec: false Tipo: Operador Ambito:Nulo
+
+ Lexema: '0.2' dec: false Tipo: single Ambito:Nulo
+
+ Lexema: '
+' dec: false Tipo: Caracter Ambito:Nulo
+
+ Lexema: 'return' dec: false Tipo: String Ambito:Nulo
+
+ Lexema: '(' dec: false Tipo: Caracter Ambito:Nulo
+
+ Lexema: '_param1' dec: true Tipo: single Ambito:@main@_funcion1
+
+ Lexema: ')' dec: false Tipo: Caracter Ambito:Nulo
+
+ Lexema: '}' dec: false Tipo: Caracter Ambito:Nulo
+
+ Lexema: 'if' dec: false Tipo: String Ambito:Nulo
+
+ Lexema: '(' dec: false Tipo: Caracter Ambito:Nulo
+
+ Lexema: '0.2' dec: false Tipo: single Ambito:Nulo
+
+ Lexema: '=' dec: false Tipo: Caracter Ambito:Nulo
+
+ Lexema: '0.2' dec: false Tipo: single Ambito:Nulo
+
+ Lexema: ')' dec: false Tipo: Caracter Ambito:Nulo
+
+ Lexema: '{' dec: false Tipo: Caracter Ambito:Nulo
+
+ Lexema: '_var1' dec: true Tipo: single Ambito:@main
+
+ Lexema: ':=' dec: false Tipo: Operador Ambito:Nulo
+
+ Lexema: '0.2' dec: false Tipo: single Ambito:Nulo
+
+ Lexema: '
+' dec: false Tipo: Caracter Ambito:Nulo
+
+ Lexema: '_var1' dec: true Tipo: single Ambito:@main
+
+ Lexema: ':=' dec: false Tipo: Operador Ambito:Nulo
+
+ Lexema: '0.3' dec: false Tipo: single Ambito:Nulo
+
+ Lexema: '
+' dec: false Tipo: Caracter Ambito:Nulo
+
+ Lexema: 'if' dec: false Tipo: String Ambito:Nulo
+
+ Lexema: '(' dec: false Tipo: Caracter Ambito:Nulo
+
+ Lexema: '0.2' dec: false Tipo: single Ambito:Nulo
+
+ Lexema: '=' dec: false Tipo: Caracter Ambito:Nulo
+
+ Lexema: '0.2' dec: false Tipo: single Ambito:Nulo
+
+ Lexema: ')' dec: false Tipo: Caracter Ambito:Nulo
+
+ Lexema: '{' dec: false Tipo: Caracter Ambito:Nulo
+
+ Lexema: '_var1' dec: true Tipo: single Ambito:@main
+
+ Lexema: ':=' dec: false Tipo: Operador Ambito:Nulo
+
+ Lexema: '0.2' dec: false Tipo: single Ambito:Nulo
+
+ Lexema: '
+' dec: false Tipo: Caracter Ambito:Nulo
+
+ Lexema: '_var1' dec: true Tipo: single Ambito:@main
+
+ Lexema: ':=' dec: false Tipo: Operador Ambito:Nulo
+
+ Lexema: '0.3' dec: false Tipo: single Ambito:Nulo
+
+ Lexema: '
+' dec: false Tipo: Caracter Ambito:Nulo
+
+ Lexema: '}' dec: false Tipo: Caracter Ambito:Nulo
+
+ Lexema: 'endif' dec: false Tipo: String Ambito:Nulo
+
+ Lexema: '}' dec: false Tipo: Caracter Ambito:Nulo
+
+ Lexema: 'endif' dec: false Tipo: String Ambito:Nulo
+
+ Lexema: 'single' dec: false Tipo: String Ambito:Nulo
+
+ Lexema: '_var2' dec: true Tipo: single Ambito:@main
+
+ Lexema: '
+' dec: false Tipo: Caracter Ambito:Nulo
+
+ Lexema: '_var2' dec: true Tipo: single Ambito:@main
+
+ Lexema: ':=' dec: false Tipo: Operador Ambito:Nulo
+
+ Lexema: '_funcion1' dec: true Tipo: single Ambito:@main
+
+ Lexema: '(' dec: false Tipo: Caracter Ambito:Nulo
+
+ Lexema: '_var1' dec: true Tipo: single Ambito:@main
+
+ Lexema: ';' dec: false Tipo: Caracter Ambito:Nulo
+
+ Lexema: 'write' dec: false Tipo: String Ambito:Nulo
+
+ Lexema: ')' dec: false Tipo: Caracter Ambito:Nulo
+
+ Lexema: '
+' dec: false Tipo: Caracter Ambito:Nulo
+
+ Lexema: '
+' dec: false Tipo: Caracter Ambito:Nulo

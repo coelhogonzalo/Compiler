@@ -3,9 +3,8 @@ package Parser;
 import java.io.IOException;
 import AnalizadorLexico.Analizador_Lexico;
 import AnalizadorLexico.Token;
-import AnalizadorLexico.TokenValue;
 import java.util.ArrayList;
-import GeneracionCodigoIntermedio.Polaca_Inversa;
+import GeneracionCodigoIntermedio.PolacaInversa;
 import java.util.Arrays;
 import java.util.HashMap;
 %}
@@ -173,8 +172,8 @@ sentenciaCE : PRINT printeable ',' { Parser.estructuras.add("Se detecto un print
 	| ifcond BCE elsecond  ENDIF {this.errores.add(new ErrorG("Error 016: Se esperaba un bloque de sentencias en la rama del else", Analizador_Lexico.cantLN));}
 	| ifcond  elsecond  ENDIF{this.errores.add(new ErrorG("Error 017: Se esperaba un bloque de sentencias en la rama del if y del else", Analizador_Lexico.cantLN));}
 
-	| PRINT printeable {this.errores.add(new ErrorG("Error 014: Se esperaba un ,", Analizador_Lexico.cantLN));}
-	| asignacion  {this.errores.add(new ErrorG("Error 014: Se esperaba un ,", Analizador_Lexico.cantLN));}
+	| PRINT printeable {this.errores.add(new ErrorG("Error 014: Se esperaba una coma al final", Analizador_Lexico.cantLN));}
+	| asignacion  {this.errores.add(new ErrorG("Error 014: Se esperaba una coma al final", Analizador_Lexico.cantLN));}
 ;
 
 ifcond : IF condicioncparentesis  { PI.bifurcacion(); }
@@ -292,7 +291,12 @@ factor : ID 				{ PI.put($1.sval);
                     //System.out.println("\n idFun " + idFun + "\n" + "CantLN: " + Analizador_Lexico.cantLN);
                     //System.out.println(Analizador_Lexico.tablaSimbolos.get($1.sval).permisoFun + " y pase " + $2.ival);
 	                if ( !isPermited(Analizador_Lexico.tablaSimbolos.get($1.sval).permisoFun, $2.ival) )
-                        this.errores.add(new ErrorG("Error 026 : La funcion "+$1.sval+" no puede ser invocada con " + $2.ival, Analizador_Lexico.cantLN));
+                        this.errores.add(new ErrorG("Error 026 : La funcion "+$1.sval+" no puede ser invocada con el permiso " + permisos[$2.ival], Analizador_Lexico.cantLN));
+					System.out.println();
+					System.out.println();
+					System.out.println($2.sval+"");
+					System.out.println();
+					System.out.println();
 					String tipoParametro=Analizador_Lexico.tablaSimbolos.get($2.sval).tipo;
 					if(!tipoParametro.equals(parametrosFunciones.get($1.sval)))
 						this.errores.add(new ErrorG("Error 034 : La funcion "+$1.sval+" no puede ser invocada con un parametro de tipo '"+tipoParametro+"' ", Analizador_Lexico.cantLN));
@@ -311,6 +315,8 @@ factor : ID 				{ PI.put($1.sval);
 
 parametros: '(' ID ';' lista_permisos ')' {
                         $$.ival = $4.ival; $$.sval = $2.sval;
+						System.out.println($2.sval+"acasads");
+						
 
  PI.put($2.sval);
 	Token t=Analizador_Lexico.tablaSimbolos.get($2.sval);
@@ -354,10 +360,9 @@ private static final int Ps = 2;
 private static final int Wrps = 3;
 
 
-public Polaca_Inversa PI = new Polaca_Inversa();
+public PolacaInversa PI = new PolacaInversa();
 public Analizador_Lexico al;
 public ArrayList<AnalizadorLexico.Error> errores;
-public static TokenValue ultimoTokenleido;
 public static ArrayList<String> estructuras;
 public String idFun;
 public boolean estoyEnFuncion = false;
@@ -365,6 +370,7 @@ public String idParam;
 public String ambitoActual="@main";
 public String ultimaFuncion;
 private HashMap<String,String> parametrosFunciones=new HashMap<>();
+private String[] permisos ={"read","write","pass","write;pass"};
 
 public int yylex(){
 	Token t=null;
@@ -373,13 +379,9 @@ public int yylex(){
 	} catch (IOException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
-		System.out.println("IOException  en el metodo getToken");
 	}
 	if(t!=null){
 		yylval = new ParserVal(t.lexema);
-		TokenValue tv = new TokenValue (t.lexema, Analizador_Lexico.cantLN);
-		ultimoTokenleido=tv;
-		//System.out.println("leyo : "+t.lexema+" 	Numero de token: "+t.nro);
 		return t.nro;
 	}
 	return 0;
@@ -425,9 +427,9 @@ public static boolean isPermited(int permisoFuncion, int permisoInvocacion){
     }
 
     public static void main(String [] args) {
-    	System.out.println("");
+    	System.out.println();
     	System.out.println("Testing con readonly en la funcion:");
-    	System.out.println("");
+    	System.out.println();
     	if(isPermited(Parser.Rd,Parser.Rd))
     		System.out.println("Recibi un readonly y la funcion tenia un readonly, lo acepte");
     	if(isPermited(Parser.Rd,Parser.Ps))
@@ -436,9 +438,9 @@ public static boolean isPermited(int permisoFuncion, int permisoInvocacion){
     		System.out.println("Recibi un write y la funcion tenia readonly, lo acepte");
     	if(isPermited(Parser.Rd,Parser.Wrps))
     		System.out.println("Recibi un write;pass y la funcion tenia readonly, lo acepte");
-    	System.out.println("");
+    	System.out.println();
     	System.out.println("Testing con pass en la funcion:");
-    	System.out.println("");
+    	System.out.println();
     	if(isPermited(Parser.Ps,Parser.Ps))
     		System.out.println("Recibi un pass y la funcion tenia un pass, lo acepte");
     	if(!isPermited(Parser.Ps,Parser.Rd))
@@ -447,9 +449,9 @@ public static boolean isPermited(int permisoFuncion, int permisoInvocacion){
     		System.out.println("Recibi un write y la funcion tenia pass, RECHAZADO");
     	if(isPermited(Parser.Ps,Parser.Wrps))
     		System.out.println("Recibi un write;pass y la funcion tenia pass, lo acepte");
-    	System.out.println("");
+    	System.out.println();
     	System.out.println("Testing con write en la funcion:");
-    	System.out.println("");
+    	System.out.println();
     	if(isPermited(Parser.Wr,Parser.Wr))
     		System.out.println("Recibi un write y la funcion tenia write, lo acepte");
     	if(!isPermited(Parser.Wr,Parser.Ps))
@@ -458,9 +460,9 @@ public static boolean isPermited(int permisoFuncion, int permisoInvocacion){
     		System.out.println("Recibi un readonly y la funcion tenia write, RECHAZADO");
     	if(isPermited(Parser.Wr,Parser.Wrps))
     		System.out.println("Recibi un write;pass y la funcion tenia write, lo acepte");
-    	System.out.println("");
+    	System.out.println();
     	System.out.println("Testing con write;pass en la funcion:");
-    	System.out.println("");
+    	System.out.println();
     	if(!isPermited(Parser.Wrps,Parser.Wr))
     		System.out.println("Recibi un write y la funcion tenia write;pass, RECHAZADO");
     	if(!isPermited(Parser.Wrps,Parser.Ps))
@@ -469,7 +471,7 @@ public static boolean isPermited(int permisoFuncion, int permisoInvocacion){
     		System.out.println("Recibi un readonly y la funcion tenia write;pass, RECHAZADO");
     	if(isPermited(Parser.Wrps,Parser.Wrps))
     		System.out.println("Recibi un write;pass y la funcion tenia write;pass, lo acepte");
-    	System.out.println("");
+    	System.out.println();
     	System.out.println("Testing con noseusaelparametro en la funcion:");
-    	System.out.println("");
+    	System.out.println();
     }

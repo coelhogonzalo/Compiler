@@ -26,6 +26,8 @@ public class Main {
 	        System.out.println();
 	        System.out.println("Polaca inversa resultante:");
 	        p.PI.printContent();
+	        File polacaFile = new File("Polaca.txt");
+	        FileManager.write(p.PI.getPI().toString(), polacaFile);
 	        System.out.println();
 	        if (unint == 0)
 	            System.out.print("ACCEPT, se reconocio la gramatica");
@@ -51,7 +53,7 @@ public class Main {
 	        }
 	        else
 	        	System.out.print(" y se encontraron errores (ABORT COMPILATION)");
-	        if(genereAssembler==false){
+	        if(true){
 		        File fErroresOut = new File("Errores.txt");
 		        FileManager.write(Analizador_Lexico.errores.toString(), fErroresOut);
 		        File fTokensOut = new File("Tokens.txt");

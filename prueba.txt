@@ -1,9 +1,24 @@
-single _var1,
-if (0.2 = 0.3){
-_var1:= 0.2,
-_var1:= 0.3,
+single_var1,
+single _funcion1 (single _param1){
+	_param1:=0.2,
+	return (_param1)
 }
-endif
+if(0.2 = 0.2){
+
+_var1:= 0.2,
+
+_var1:= 0.3,
+
+if(0.2 = 0.2){
+
+_var1:= 0.2,
+
+_var1:= 0.3,
+
+} endif     
+}  endif
+
+
 
 single _var2,
-
+_var2 := _funcion1(_var1 ; write ) ,,

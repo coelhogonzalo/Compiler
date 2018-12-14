@@ -25,11 +25,21 @@ public class FileManager {
         		return null;
         }
     }
-
+    public static void write(String entry, File f) throws IOException {
+        f.delete();
+        entry = entry.replace(",", System.lineSeparator());
+        entry = entry.replace("[", "");
+        entry = entry.replace("]", "");
+        BufferedWriter writer = new BufferedWriter(new FileWriter(f, true));
+        writer.write(entry);
+        writer.close();
+    }
+    /*
     public static void write(String entry, File f) throws IOException {
         f.delete();
         BufferedWriter writer = new BufferedWriter(new FileWriter(f, true));
         writer.write(entry);
         writer.close();
     }
+    */
 }
