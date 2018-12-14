@@ -136,9 +136,9 @@ __	print ( ' dale que funcionas' ),
 __9.Sentencia de control asignada con IF anidado
 
 __Sin error
-while ( 0.2+5.2 < 0.3-3.2 )
-	if ( 0.2+5.2 < 0.3-3.2 )
-		print ( ' dale que funcionas ' ),
+while ( 5.2 < 0.3  )
+	if ( 5.2  < 0.3  )
+		print ( ' No voy a printear esto ' ),
 	endif
 
 __Con error

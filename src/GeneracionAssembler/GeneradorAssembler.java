@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.lang.reflect.GenericArrayType;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Stack;
@@ -15,11 +16,11 @@ import java.util.Stack;
 import AnalizadorLexico.Analizador_Lexico;
 import AnalizadorLexico.FileManager;
 import AnalizadorLexico.Token;
-import GeneracionCodigoIntermedio.Polaca_Inversa;
+import GeneracionCodigoIntermedio.PolacaInversa;
 
 public class GeneradorAssembler {
     private Stack<StringBuilder> pilaVar = new Stack<StringBuilder>();
-    private Polaca_Inversa PI = null;
+    private PolacaInversa PI = null;
     private StringBuilder codigo = new StringBuilder("\r\n");
     private StringBuilder inicio = new StringBuilder();
     private int contador = 0;
@@ -40,7 +41,7 @@ public class GeneradorAssembler {
     private List<String>flotantes = new ArrayList<String>();
     
     //CONSTRUCTOR
-    public GeneradorAssembler(Polaca_Inversa PI){
+    public GeneradorAssembler(PolacaInversa PI){
     	this.PI=PI;
     }
     
@@ -49,8 +50,9 @@ public class GeneradorAssembler {
     //if(Analizador_Lexico.tablaSimbolos.get(PI.getPI().get(i)).tipo.equals("uslinteger")
     
     public void guardarSaltos(){
-    	for(int i=0; i<PI.getPI().size(); i++){
-    		String buscado = PI.getPI().get(i).toString();
+    	ArrayList<StringBuilder> polaca=PI.getPI();
+    	for(int i=0; i<polaca.size(); i++){
+    		String buscado = polaca.get(i).toString();
     		if(buscado.contains("Label")){
     			int numero = Integer.parseInt(buscado.substring(5,buscado.length()));
     			if(!saltitos.contains(numero))
@@ -62,7 +64,8 @@ public class GeneradorAssembler {
     
     //LEO DE LA POLACA
     public void leer(){
-    	for(int i=0; i<PI.getPI().size(); i++){ //ESCRIBO LOS LABEL CUANDO LLEGUE A LA POSICION TAL
+    	ArrayList<StringBuilder> polaca=PI.getPI();
+    	for(int i=0; i<polaca.size(); i++){ //ESCRIBO LOS LABEL CUANDO LLEGUE A LA POSICION TAL
     		
     		if(saltitos.contains(i)){
 				if(!estaEnFuncion)
@@ -71,27 +74,27 @@ public class GeneradorAssembler {
 					funciones.append("Label"+i+":"+"\r\n");
     		}
 			
-    		if(PI.getPI().get(i).charAt(0) == '_'){ //para identificar variables
+    		if(polaca.get(i).charAt(0) == '_'){ //para identificar variables
     			if(!variables.contains(PI.getPI().get(i).toString())){
     				variables.add(PI.getPI().get(i).toString());
     			}
     		}
     		
-    		if(PI.getPI().get(i).charAt(0) == '\''){ //para hacer variables de las cadenas
+    		if(polaca.get(i).charAt(0) == '\''){ //para hacer variables de las cadenas
     			//if(!mensajes.contains(PI.getPI().get(i).toString())){
     				mensajes.add(PI.getPI().get(i).toString());
     			//}
     		}
 
-    		if(PI.getPI().get(i).toString().contains(".")){
-	    		if(Analizador_Lexico.tablaSimbolos.get((PI.getPI().get(i)).toString()).tipo.equals("single")&&(PI.getPI().get(i).toString().charAt(0) != '_')){ //para hacer constantes de los float
-	    			if(!flotantes.contains(PI.getPI().get(i).toString())){
-	    				flotantes.add(PI.getPI().get(i).toString());
+    		if(polaca.get(i).toString().contains(".")){
+	    		if(Analizador_Lexico.tablaSimbolos.get((polaca.get(i)).toString()).tipo.equals("single")&&(polaca.get(i).toString().charAt(0) != '_')){ //para hacer constantes de los float
+	    			if(!flotantes.contains(polaca.get(i).toString())){
+	    				flotantes.add(polaca.get(i).toString());
 	    			}
 	    		}
     		}
     		
-    		pilaVar.push(PI.getPI().get(i));   //SACO ELEMENTOS DE LA POLACA
+    		pilaVar.push(polaca.get(i));   //SACO ELEMENTOS DE LA POLACA
     		
 		
 			if(pilaVar.peek().toString().equals("inicio_funcion")){ //ME FIJO SI EMPIEZA UNA FUNCION PORQUE ESCRIBE EN OTRO LADO
@@ -105,11 +108,8 @@ public class GeneradorAssembler {
 			else{
 			
 				if((pilaVar.peek().toString()).equals("return")){ //LEE EL RETURN DE UNA FUNCION
-					//System.out.println(" la pila :");
-					//System.out.println(pilaVar.toString());
 					pilaVar.pop();
 					StringBuilder retorno = pilaVar.pop();
-					//System.out.println("Retorno "+retorno);
 					Token t = null; 
 						if(Analizador_Lexico.tablaSimbolos.get(retorno.toString()).tipo.equals("uslinteger")){
 							StringBuilder elOriginalPapa = new StringBuilder(retorno.toString());
@@ -119,7 +119,6 @@ public class GeneradorAssembler {
 				    		funciones.append("MOV EAX, " +retorno + "\r\n" + "MOV @aux_fun, EAX" +"\r\n" +"RET" +"\r\n \r\n");
 							t = new Token("@aux_fun",Analizador_Lexico.TOKEN_UL,"uslinteger"); //VER
 							t.setUso(Analizador_Lexico.tablaSimbolos.get(elOriginalPapa.toString()).uso); //no se me ocurria como volver el token a _ul asique cree una copia, que mal Emanuel
-							//System.out.println(elOriginalPapa+" y el uso que le quedo a '"+t.lexema+"' es: "+t.uso);
 						}
 						
 						if(Analizador_Lexico.tablaSimbolos.get(retorno.toString()).tipo.equals("single")){
@@ -152,14 +151,12 @@ public class GeneradorAssembler {
 			
 			
 public void generarCodigoAssembler(StringBuilder escritura){
-	
+	ArrayList<StringBuilder> polaca=PI.getPI();
 	//ASIGNACIONES	
 	if(pilaVar.peek().toString().equals(":=")){ 
 		pilaVar.pop(); //SACO EL :=
 		StringBuilder aAsignar = pilaVar.pop();
 		StringBuilder asignacion = pilaVar.pop();
-		//System.out.println("Tengo que asignar a "+aAsignar + " el valor "+asignacion);
-		//System.out.println(Analizador_Lexico.tablaSimbolos);
 		if((Analizador_Lexico.tablaSimbolos.get(aAsignar.toString()).tipo.equals("uslinteger"))&&(Analizador_Lexico.tablaSimbolos.get(asignacion.toString()).tipo.equals("uslinteger"))){
     		if(Analizador_Lexico.tablaSimbolos.get(asignacion.toString()).uso!=null){
 				if(Analizador_Lexico.tablaSimbolos.get(asignacion.toString()).uso.equals("constante")){
@@ -171,7 +168,6 @@ public void generarCodigoAssembler(StringBuilder escritura){
     		escritura.append("MOV EAX, "+asignacion+"\r\n"+"MOV "+aAsignar+", EAX"+"\r\n" ); //ver si va lo de mov @aux0, EAX despues de esto
 		}	
 		else{
-			//System.out.println("A asignar: "+aAsignar+"  asignacion: "+asignacion.toString());
 			if((Analizador_Lexico.tablaSimbolos.get(aAsignar.toString()).tipo.equals("single"))&&(Analizador_Lexico.tablaSimbolos.get(asignacion.toString()).tipo.equals("single"))){
 				if(flotantes.contains(asignacion.toString()))
 					if(asignacion.toString().contains("-"))
@@ -207,7 +203,6 @@ public void generarCodigoAssembler(StringBuilder escritura){
 				signo = pilaVar.pop();
 				primerComparado = pilaVar.pop();
 				segundoComparado = pilaVar.pop();
-				//System.out.println("Voy a comparar :'"+primerComparado+"' con: '"+segundoComparado+"'");
 				//AMBOS INTEGER
 				if((Analizador_Lexico.tablaSimbolos.get(primerComparado.toString()).tipo.equals("uslinteger")) && (Analizador_Lexico.tablaSimbolos.get(segundoComparado.toString()).tipo.equals("uslinteger"))){
 		    		if(Analizador_Lexico.tablaSimbolos.get(primerComparado.toString()).uso.equals("constante")){
@@ -251,25 +246,20 @@ public void generarCodigoAssembler(StringBuilder escritura){
 			if(pilaVar.peek().toString().equals("B")){
 				pilaVar.pop(); //SACO EL B
 				StringBuilder label = pilaVar.pop();
-				System.out.println("Entre al primer if");
-				if(Integer.parseInt(label.substring(5,label.length()))>=PI.getPI().size()) //VERIFICO, SI NO CUMPLE LLEVA AL FINAL //ACA CREO ES 5 NO 6
+				if(Integer.parseInt(label.substring(5,label.length()))>=polaca.size()) //VERIFICO, SI NO CUMPLE LLEVA AL FINAL //ACA CREO ES 5 NO 6
 					label =new StringBuilder("@LABEL_END"+"\r\n");
 				
 				if(signo.toString().equals("="))
 						escritura.append("JNE "+label+"\r\n");
-				else{System.out.println("Entre al segundo if");	
+				else{
 					if(signo.toString().equals("!="))
 							escritura.append("JE "+label+"\r\n");
 					else{
-						System.out.println("Entre al tercer if");
-						System.out.println("El valor del comparado es: "+primerComparado);
 			    		if(!(primerComparado.toString().contains("_ul"))&&(!flotantes.contains(primerComparado.toString().substring(1, primerComparado.length()).replace("_", ".")))){
-			    			System.out.println("Entre al cuarto MALLLL if");
 			    			if(!((Analizador_Lexico.tablaSimbolos.get(primerComparado.toString())!=null)&&(Analizador_Lexico.tablaSimbolos.get(primerComparado.toString()).uso.equals("variable"))))
 			    				primerComparado = new StringBuilder(primerComparado.toString()+"_ul");
 							
 			    			if(Analizador_Lexico.tablaSimbolos.get(primerComparado.toString()).tipo.equals("uslinteger")){
-								//System.out.println("entro segundo if"+primerComparado);
 								
 								if(signo.toString().equals("<"))
 									escritura.append("JGE "+label+"\r\n");
@@ -279,12 +269,10 @@ public void generarCodigoAssembler(StringBuilder escritura){
 							}
 			    		}
 			    		else{ //FLOAT
-			    			System.out.println("Entre al cuarto if bien");
 							if(flotantes.contains(primerComparado.toString().substring(1, primerComparado.length()).replace("_", "."))){
 								primerComparado = new StringBuilder(primerComparado.toString().substring(1, primerComparado.length()).replace("_", "."));
 								
 							}
-							System.out.println("El primer comparando: "+primerComparado.toString());
 							if(Analizador_Lexico.tablaSimbolos.get(primerComparado.toString()).tipo.equals("single")){
 							
 								if(signo.toString().equals("<"))
@@ -301,7 +289,7 @@ public void generarCodigoAssembler(StringBuilder escritura){
 				if(pilaVar.peek().toString().equals("BT")){
 					pilaVar.pop(); //SACO EL BT
 					StringBuilder label = pilaVar.pop();
-					if(Integer.parseInt(label.substring(5,label.length()))>=PI.getPI().size()) //VERIFICO SI ESTO LLEVA AL FINAL
+					if(Integer.parseInt(label.substring(5,label.length()))>=polaca.size()) //VERIFICO SI ESTO LLEVA AL FINAL
 						label =new StringBuilder("@LABEL_END"+"\r\n");
 					escritura.append("JMP "+label+"\r\n");
 				}	
@@ -316,7 +304,6 @@ public void generarCodigoAssembler(StringBuilder escritura){
 						}
 						else{
 							StringBuilder variable = pilaVar.pop();
-							//System.out.println("Quiero printear esta: "+variable);
 							if(Analizador_Lexico.tablaSimbolos.get(variable.toString()).tipo.equals("single"))
 								escritura.append("invoke MessageBox,NULL,addr print_single,addr "+"print_single,MB_OK"+"\r\n");
 							if(Analizador_Lexico.tablaSimbolos.get(variable.toString()).tipo.equals("uslinteger"))
@@ -329,7 +316,6 @@ public void generarCodigoAssembler(StringBuilder escritura){
 							StringBuilder operador = pilaVar.pop(); //PARA SACAR EL OPERANDO
 							StringBuilder primerOperando = pilaVar.pop();
 							StringBuilder segundoOperando = pilaVar.pop();
-							//System.out.println("Voy a operar '"+primerOperando+"' con '"+segundoOperando+"'");
 							
 							if((Analizador_Lexico.tablaSimbolos.get(primerOperando.toString()).tipo.equals("uslinteger")) && ((Analizador_Lexico.tablaSimbolos.get(segundoOperando.toString()).tipo.equals("uslinteger")))){
 					    		if(Analizador_Lexico.tablaSimbolos.get(primerOperando.toString()).uso.equals("constante")){

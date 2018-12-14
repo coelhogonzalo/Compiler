@@ -6,10 +6,10 @@ public class AccionSemantica6 implements AccionSemantica {
     //CHEQUEA RANGO CONSTANTE Y AGREGA A TABLA DE SIMBOLOS, SI SE VA DE RANGO REEMPLAZA CON EL MAYOR DEL RANGO
     //PIDE DEVOLVER EL PAR <ID,PTR>
 
-    public Token ejecutar(StringBuilder buffer, char c) {
+	public Token ejecutar(StringBuilder buffer, char c) {
     	Token unToken=null;
-        //if (buffer.toString().contains("F"))
-        //    buffer.replace(buffer.indexOf("F"), buffer.indexOf("F"), "E");
+        if (buffer.toString().contains("F"))
+            buffer.replace(buffer.indexOf("F"), buffer.indexOf("F") + 1, "E");
         Double flotante = Double.parseDouble(buffer.toString());
         if (((flotante < 3.40282347E38) && (flotante > 1.17549435E-38)) || (flotante == 0)){
         	String lexema=buffer.toString();

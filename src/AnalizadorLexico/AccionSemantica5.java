@@ -6,16 +6,18 @@ public class AccionSemantica5 implements AccionSemantica {
     //CHEQUEA RANGO CONSTANTE Y AGREGA A TABLA DE SIMBOLOS, SI SE VA DE RANGO REEMPLAZA CON EL MAYOR DEL RANGO
     //PIDE DEVOLVER EL PAR <ID,PTR>
 
-    public Token ejecutar(StringBuilder buffer, char c) {
+	public Token ejecutar(StringBuilder buffer, char c) {
 
         if (buffer.length() > 0) {
             EliminarChars(buffer);
-            long auxLong=Long.parseLong(buffer.toString());
-            if ((auxLong<= 4294967295l) && (auxLong>= 0)) {
+            if (buffer.length() >= 20)
+                buffer.replace(0, buffer.length(), buffer.substring(0, 19));
+            long auxLong = Long.valueOf(buffer.toString());
+            if ((auxLong <= 4294967295l) && (auxLong >= 0)) {
                 buffer.append("_ul");
-                String lexema=buffer.toString();
-                Token unToken=new Token(lexema, Analizador_Lexico.TOKEN_UL,"uslinteger");
-                unToken.uso="constante";
+                String lexema = buffer.toString();
+                Token unToken = new Token(lexema, Analizador_Lexico.TOKEN_UL, "uslinteger");
+                unToken.uso = "constante";
                 Analizador_Lexico.tablaSimbolos.put(lexema, unToken);
                 return unToken;
             } else {
@@ -23,14 +25,12 @@ public class AccionSemantica5 implements AccionSemantica {
                 Analizador_Lexico.errores.add(e);
                 buffer.delete(0, buffer.length());
                 buffer.append("4294967295_ul");
-                String lexema=buffer.toString();
-                Token unToken=new Token(lexema, Analizador_Lexico.TOKEN_UL,"uslinteger");
-                unToken.uso="constante";
+                String lexema = buffer.toString();
+                Token unToken = new Token(lexema, Analizador_Lexico.TOKEN_UL, "uslinteger");
+                unToken.uso = "constante";
                 Analizador_Lexico.tablaSimbolos.put(lexema, unToken);
                 return unToken;
             }
-
-            //System.out.print("Warning: Se excedio del rango permitido, se procede a realizar tecnica de reemplazo");
         }
         return null;
     }

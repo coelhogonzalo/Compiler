@@ -6,7 +6,6 @@ public class Error {
 	public int linea;
 	public static boolean huboErrores=false;
 	public Error(String tipo, String lexema, int linea) {
-		super();
 		this.tipo = tipo;
 		this.lexema = lexema;
 		this.linea = linea;

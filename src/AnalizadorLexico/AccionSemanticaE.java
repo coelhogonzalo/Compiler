@@ -3,8 +3,6 @@ package AnalizadorLexico;
 public class AccionSemanticaE implements AccionSemantica {
 private AccionSemantica5 arreglarNumero;
     public Token ejecutar(StringBuilder buffer, char c) {
-        //Error e = new Error("ERROR", "Definicion no valida.", Analizador_Lexico.cantLN);
-        //Analizador_Lexico.errores.add(e);
         if (buffer.length() > 0){
         	if (isNumero(buffer)){//Si es un numero valido le agrega el _u para que en la accionsemantica 5 (arreglar numero) se guarde como un _ul
         		arreglarNumero=new AccionSemantica5();
@@ -14,7 +12,6 @@ private AccionSemantica5 arreglarNumero;
         		return arreglarNumero.ejecutar(buffer, c);
         	}
         	else{
-        		//System.out.println("Corrigiendo un identificador!");
         		int indice=buffer.indexOf("_");
         		if (indice != 0)
         			buffer.deleteCharAt(indice);
@@ -58,7 +55,6 @@ private AccionSemantica5 arreglarNumero;
         return null;
     }
 public boolean isNumero(StringBuilder buffer){
-	//System.out.println("Corrigiendo un numero!");
 	if(buffer.charAt(buffer.length()-1)=='l')
 		buffer.deleteCharAt(buffer.length()-1);	
 	if(buffer.charAt(buffer.length()-1)=='u')

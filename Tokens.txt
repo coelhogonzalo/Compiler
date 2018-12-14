@@ -1,81 +1,24 @@
-[Lexema: single   Numero: 275   Tipo: String
-, Lexema: _var123   Numero: 257   Tipo: single
-, Lexema: ,   Numero: 44   Tipo: Caracter
-, Lexema: single   Numero: 275   Tipo: String
-, Lexema: _var1234   Numero: 257   Tipo: single
-, Lexema: ,   Numero: 44   Tipo: Caracter
-, Lexema: _var123   Numero: 257   Tipo: single
-, Lexema: :=   Numero: 272   Tipo: Operador
-, Lexema: 123123_ul   Numero: 259   Tipo: uslinteger
-, Lexema: ,   Numero: 44   Tipo: Caracter
-, Lexema: single   Numero: 275   Tipo: String
-, Lexema: _var123   Numero: 257   Tipo: single
-, Lexema: (   Numero: 40   Tipo: Caracter
-, Lexema: single   Numero: 275   Tipo: String
-, Lexema: _var3   Numero: 257   Tipo: single
-, Lexema: )   Numero: 41   Tipo: Caracter
-, Lexema: {   Numero: 123   Tipo: Caracter
-, Lexema: single   Numero: 275   Tipo: String
-, Lexema: _var3   Numero: 257   Tipo: single
-, Lexema: ,   Numero: 44   Tipo: Caracter
-, Lexema: _var3   Numero: 257   Tipo: single
-, Lexema: :=   Numero: 272   Tipo: Operador
-, Lexema: 21_ul   Numero: 259   Tipo: uslinteger
-, Lexema: ,   Numero: 44   Tipo: Caracter
-, Lexema: return   Numero: 273   Tipo: String
-, Lexema: (   Numero: 40   Tipo: Caracter
-, Lexema: _var2   Numero: 257   Tipo: single
-, Lexema: +   Numero: 43   Tipo: Caracter
-, Lexema: 2_ul   Numero: 259   Tipo: uslinteger
-, Lexema: )   Numero: 41   Tipo: Caracter
-, Lexema: }   Numero: 125   Tipo: Caracter
-, Lexema: single   Numero: 275   Tipo: String
-, Lexema: _fun2   Numero: 257   Tipo: identificador
-, Lexema: (   Numero: 40   Tipo: Caracter
-, Lexema: single   Numero: 275   Tipo: String
-, Lexema: _var3   Numero: 257   Tipo: single
-, Lexema: )   Numero: 41   Tipo: Caracter
-, Lexema: {   Numero: 123   Tipo: Caracter
-, Lexema: single   Numero: 275   Tipo: String
-, Lexema: _var3   Numero: 257   Tipo: single
-, Lexema: ,   Numero: 44   Tipo: Caracter
-, Lexema: _var5   Numero: 257   Tipo: identificador
-, Lexema: :=   Numero: 272   Tipo: Operador
-, Lexema: 22_ul   Numero: 259   Tipo: uslinteger
-, Lexema: ,   Numero: 44   Tipo: Caracter
-, Lexema: return   Numero: 273   Tipo: String
-, Lexema: (   Numero: 40   Tipo: Caracter
-, Lexema: _var3   Numero: 257   Tipo: single
-, Lexema: +   Numero: 43   Tipo: Caracter
-, Lexema: 2_ul   Numero: 259   Tipo: uslinteger
-, Lexema: )   Numero: 41   Tipo: Caracter
-, Lexema: }   Numero: 125   Tipo: Caracter
-, Lexema: single   Numero: 275   Tipo: String
-, Lexema: _var2   Numero: 257   Tipo: single
-, Lexema: ,   Numero: 44   Tipo: Caracter
-, Lexema: single   Numero: 275   Tipo: String
-, Lexema: _var1   Numero: 257   Tipo: single
-, Lexema: ,   Numero: 44   Tipo: Caracter
-, Lexema: _var1   Numero: 257   Tipo: single
-, Lexema: :=   Numero: 272   Tipo: Operador
-, Lexema: _var1234   Numero: 257   Tipo: single
-, Lexema: (   Numero: 40   Tipo: Caracter
-, Lexema: _var2   Numero: 257   Tipo: single
-, Lexema: ;   Numero: 59   Tipo: Caracter
-, Lexema: write   Numero: 266   Tipo: String
-, Lexema: )   Numero: 41   Tipo: Caracter
-, Lexema: ,   Numero: 44   Tipo: Caracter
-, Lexema: _var5   Numero: 257   Tipo: identificador
-, Lexema: :=   Numero: 272   Tipo: Operador
-, Lexema: 123_ul   Numero: 259   Tipo: uslinteger
-, Lexema: ,   Numero: 44   Tipo: Caracter
-, Lexema: _var2   Numero: 257   Tipo: single
-, Lexema: :=   Numero: 272   Tipo: Operador
-, Lexema: _fun1   Numero: 257   Tipo: identificador
-, Lexema: (   Numero: 40   Tipo: Caracter
-, Lexema: _var2   Numero: 257   Tipo: single
-, Lexema: ;   Numero: 59   Tipo: Caracter
-, Lexema: write   Numero: 266   Tipo: String
-, Lexema: )   Numero: 41   Tipo: Caracter
-, Lexema: ,   Numero: 44   Tipo: Caracter
+[Lexema: 'single' dec: false Tipo: String Ambito:Nulo
+, Lexema: '_var1' dec: true Tipo: single Ambito:@main
+, Lexema: ',' dec: false Tipo: Caracter Ambito:Nulo
+, Lexema: 'if' dec: false Tipo: String Ambito:Nulo
+, Lexema: '(' dec: false Tipo: Caracter Ambito:Nulo
+, Lexema: '0.2' dec: false Tipo: single Ambito:Nulo
+, Lexema: '=' dec: false Tipo: Caracter Ambito:Nulo
+, Lexema: '0.3' dec: false Tipo: single Ambito:Nulo
+, Lexema: ')' dec: false Tipo: Caracter Ambito:Nulo
+, Lexema: '{' dec: false Tipo: Caracter Ambito:Nulo
+, Lexema: '_var1' dec: true Tipo: single Ambito:@main
+, Lexema: ':=' dec: false Tipo: Operador Ambito:Nulo
+, Lexema: '0.2' dec: false Tipo: single Ambito:Nulo
+, Lexema: ',' dec: false Tipo: Caracter Ambito:Nulo
+, Lexema: '_var1' dec: true Tipo: single Ambito:@main
+, Lexema: ':=' dec: false Tipo: Operador Ambito:Nulo
+, Lexema: '0.3' dec: false Tipo: single Ambito:Nulo
+, Lexema: ',' dec: false Tipo: Caracter Ambito:Nulo
+, Lexema: '}' dec: false Tipo: Caracter Ambito:Nulo
+, Lexema: 'endif' dec: false Tipo: String Ambito:Nulo
+, Lexema: 'single' dec: false Tipo: String Ambito:Nulo
+, Lexema: '_var2' dec: true Tipo: single Ambito:@main
+, Lexema: ',' dec: false Tipo: Caracter Ambito:Nulo
 ]

@@ -13,7 +13,6 @@ public class Token {
     public String ambito;
 
     public Token(String lexema, Integer nro, String tipo) {
-        super();
         this.lexema = lexema;
         this.nro = nro;
         this.tipo = tipo;
