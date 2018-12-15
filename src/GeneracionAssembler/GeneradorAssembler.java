@@ -12,6 +12,7 @@ import java.lang.reflect.GenericArrayType;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Stack;
+import java.util.logging.Logger;
 
 import AnalizadorLexico.AnalizadorLexico;
 import AnalizadorLexico.FileManager;
@@ -19,6 +20,7 @@ import AnalizadorLexico.Token;
 import GeneracionCodigoIntermedio.PolacaInversa;
 
 public class GeneradorAssembler {
+	private static Logger l=Logger.getLogger(GeneradorAssembler.class.toString());
     private Stack<StringBuilder> pilaVar = new Stack<StringBuilder>();
     private PolacaInversa PI = null;
     private StringBuilder codigo = new StringBuilder("\r\n");
@@ -170,17 +172,19 @@ public void generarCodigoAssembler(StringBuilder escritura){
 		else{
 			if((AnalizadorLexico.tablaSimbolos.get(aAsignar.toString()).tipo.equals("single"))&&(AnalizadorLexico.tablaSimbolos.get(asignacion.toString()).tipo.equals("single"))){
 				if(flotantes.contains(asignacion.toString()))
-					if(asignacion.toString().contains("-"))
-						asignacion = new StringBuilder("_neg"+asignacion.toString().replace(".", "_").substring(1,asignacion.toString().length()));	
-					else
-						asignacion = new StringBuilder("_"+asignacion.toString().replace(".", "_"));
+					if(AnalizadorLexico.tablaSimbolos.get(asignacion.toString()).uso.equals("constante")){
+						if(asignacion.toString().contains("-"))
+							asignacion = new StringBuilder("_neg"+asignacion.toString().replace(".", "_").substring(1,asignacion.toString().length()));	
+						else
+							asignacion = new StringBuilder("_"+asignacion.toString().replace(".", "_"));
+					}
 				escritura.append("FLD "+asignacion+"\r\n"+"FSTP "+ aAsignar+"\r\n");
 			}
 			else 
 				escritura.append("JMP @LABEL_TIPOS_DISTINTOS"+"\r\n");
 		}
 
-	}
+	}//if(AnalizadorLexico.tablaSimbolos.get(segundoOperando.toString()).uso.equals("constante"))
 
 	else{
 	
@@ -329,18 +333,26 @@ public void generarCodigoAssembler(StringBuilder escritura){
 							else{
 								if((AnalizadorLexico.tablaSimbolos.get(primerOperando.toString()).tipo.equals("single")) && ((AnalizadorLexico.tablaSimbolos.get(segundoOperando.toString()).tipo.equals("single")))){
 									if(flotantes.contains(primerOperando.toString())){
-										if(primerOperando.toString().contains("-"))
-											primerOperando = new StringBuilder("_neg"+primerOperando.toString().replace(".", "_").substring(1,primerOperando.toString().length()));	
+										if(AnalizadorLexico.tablaSimbolos.get(primerOperando.toString()).uso.equals("constante")){
+											if(primerOperando.toString().contains("-"))
+												primerOperando = new StringBuilder("_neg"+primerOperando.toString().replace(".", "_").substring(1,primerOperando.toString().length()));	
+											else
+												primerOperando=new StringBuilder("_"+primerOperando.toString().replace(".", "_"));
+										}
 										else
-											primerOperando=new StringBuilder("_"+primerOperando.toString().replace(".", "_"));
+											primerOperando=new StringBuilder(primerOperando.toString());
 									}
 									if(flotantes.contains(segundoOperando.toString())){
-										if(segundoOperando.toString().contains("-"))
-											segundoOperando = new StringBuilder("_neg"+segundoOperando.toString().replace(".", "_").substring(1,segundoOperando.toString().length()));	
+										if(AnalizadorLexico.tablaSimbolos.get(segundoOperando.toString()).uso.equals("constante")){
+											if(segundoOperando.toString().contains("-"))
+												segundoOperando = new StringBuilder("_neg"+segundoOperando.toString().replace(".", "_").substring(1,segundoOperando.toString().length()));	
+											else
+												segundoOperando=new StringBuilder("_"+segundoOperando.toString().replace(".", "_"));
+										}
 										else
-											segundoOperando=new StringBuilder("_"+segundoOperando.toString().replace(".", "_"));
+											segundoOperando=new StringBuilder(segundoOperando.toString());
 									}
-							
+									//l.info(" primer operando: '"+primerOperando+"' segundo operando: '"+segundoOperando+"' ");
 									generarCodigoSingle(operador,primerOperando,segundoOperando,escritura);
 							}
 								else{
@@ -405,6 +417,7 @@ public void generarCodigoInteger(StringBuilder operador,StringBuilder primerOper
     }
     	
 public void generarCodigoSingle(StringBuilder operador,StringBuilder primerOperando, StringBuilder segundoOperando, StringBuilder escritura){ //para los dos single
+			//l.info(" primer operando: '"+primerOperando+"' segundo operando: '"+segundoOperando+"' ");
 			String op = operador.toString();
 			StringBuilder aux = null;
 			switch(op){
