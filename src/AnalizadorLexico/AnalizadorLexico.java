@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class Analizador_Lexico {
+public class AnalizadorLexico {
     private final int ESTADO_FINAL = -1;
 
     private String charAnterior = "0"; //0 es que no es valido, 1 es que es valido
@@ -49,15 +49,15 @@ public class Analizador_Lexico {
     public final static short INVALIDO = 277;
 
 
-    public Analizador_Lexico(File mFile) throws IOException {
+    public AnalizadorLexico(File mFile) throws IOException {
         MLexica = new MatrizLexica();
         errores = new ArrayList<>();
         tokens= new ArrayList<>();
         cargarEquivalentes();
         fm = new FileManager(mFile);
-        Analizador_Lexico.tablaSimbolos = new HashMap<>();
+        AnalizadorLexico.tablaSimbolos = new HashMap<>();
         CargarTablaSimbolos();
-        Analizador_Lexico.cantLN=1;
+        AnalizadorLexico.cantLN=1;
     }
 
     public ArrayList<Error> getErrores() {
@@ -66,55 +66,55 @@ public class Analizador_Lexico {
 
     private void CargarTablaSimbolos() {
 
-        int aux = Analizador_Lexico.ASIGN;
+        int aux = AnalizadorLexico.ASIGN;
         Token unToken = new Token(":=", aux, "Operador");
         tablaSimbolos.put(":=", unToken);
-        aux = Analizador_Lexico.MAYORIGUAL;
+        aux = AnalizadorLexico.MAYORIGUAL;
         unToken = new Token(">=", aux, "Operador");
         tablaSimbolos.put(">=", unToken);
-        aux = Analizador_Lexico.MENORIGUAL;
+        aux = AnalizadorLexico.MENORIGUAL;
         unToken = new Token("<=", aux, "Operador");
         tablaSimbolos.put("<=", unToken);
-        aux = Analizador_Lexico.DISTINTO;
+        aux = AnalizadorLexico.DISTINTO;
         unToken = new Token("!=", aux, "Operador");
         tablaSimbolos.put("!=", unToken);
-        aux = Analizador_Lexico.IF;
+        aux = AnalizadorLexico.IF;
         unToken = new Token("if", aux, "String");
         tablaSimbolos.put("if", unToken);
-        aux = Analizador_Lexico.ELSE;
+        aux = AnalizadorLexico.ELSE;
         unToken = new Token("else", aux, "String");
         tablaSimbolos.put("else", unToken);
-        aux = Analizador_Lexico.ENDIF;
+        aux = AnalizadorLexico.ENDIF;
         unToken = new Token("endif", aux, "String");
         tablaSimbolos.put("endif", unToken);
-        aux = Analizador_Lexico.PRINT;
+        aux = AnalizadorLexico.PRINT;
         unToken = new Token("print", aux, "String");
         tablaSimbolos.put("print", unToken);
-        aux = Analizador_Lexico.USLINTEGER;
+        aux = AnalizadorLexico.USLINTEGER;
         unToken = new Token("uslinteger", aux, "String");
         tablaSimbolos.put("uslinteger", unToken);
-        aux = Analizador_Lexico.SINGLE;
+        aux = AnalizadorLexico.SINGLE;
         unToken = new Token("single", aux, "String");
         tablaSimbolos.put("single", unToken);
-        aux = Analizador_Lexico.WHILE;
+        aux = AnalizadorLexico.WHILE;
         unToken = new Token("while", aux, "String");
         tablaSimbolos.put("while", unToken);
-        aux = Analizador_Lexico.WRITE;
+        aux = AnalizadorLexico.WRITE;
         unToken = new Token("write", aux, "String");
         tablaSimbolos.put("write", unToken);
-        aux = Analizador_Lexico.READONLY;
+        aux = AnalizadorLexico.READONLY;
         unToken = new Token("readonly", aux, "String");
         tablaSimbolos.put("readonly", unToken);
-        aux = Analizador_Lexico.PASS;
+        aux = AnalizadorLexico.PASS;
         unToken = new Token("pass", aux, "String");
         tablaSimbolos.put("pass", unToken);
-        aux = Analizador_Lexico.RETURN;
+        aux = AnalizadorLexico.RETURN;
         unToken = new Token("return", aux, "String");
         tablaSimbolos.put("return", unToken);
-        aux = Analizador_Lexico.USLINTEGERPR;
+        aux = AnalizadorLexico.USLINTEGERPR;
         unToken = new Token("uslinteger", aux, "String");
         tablaSimbolos.put("uslinteger", unToken);
-        aux = Analizador_Lexico.SINGLEPR;
+        aux = AnalizadorLexico.SINGLEPR;
         unToken = new Token("single", aux, "String");
         tablaSimbolos.put("single", unToken);
     }
@@ -145,7 +145,7 @@ public class Analizador_Lexico {
             }
         }
         if(unToken!=null)
-        	Analizador_Lexico.tokens.add(unToken);
+        	AnalizadorLexico.tokens.add(unToken);
         return unToken;
     }
 
@@ -187,7 +187,7 @@ public class Analizador_Lexico {
         return false;
     }
     public static Token getEntradaTS(String lexema, String ambito){
-    	Token t=Analizador_Lexico.tablaSimbolos.get(lexema);
+    	Token t=AnalizadorLexico.tablaSimbolos.get(lexema);
     	if(t!=null){
     		while(ambito.length()>0){
     			//System.out.println(lexema+" El ambito en la ts: '"+t.ambito+"' . El ambito actual: '"+ambito+"'");

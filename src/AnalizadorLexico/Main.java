@@ -16,7 +16,7 @@ public class Main {
     	if(args.length>0){
 	    	fileName=args[0];
 	        File f = new File(fileName);
-	        Analizador_Lexico al = new Analizador_Lexico(f);
+	        AnalizadorLexico al = new AnalizadorLexico(f);
 	        Parser p = new Parser(false);
 	        p.errores = al.getErrores();
 	        Parser.estructuras = new ArrayList<>();
@@ -55,9 +55,9 @@ public class Main {
 	        	System.out.print(" y se encontraron errores (ABORT COMPILATION)");
 	        if(true){
 		        File fErroresOut = new File("Errores.txt");
-		        FileManager.write(Analizador_Lexico.errores.toString(), fErroresOut);
+		        FileManager.write(AnalizadorLexico.errores.toString(), fErroresOut);
 		        File fTokensOut = new File("Tokens.txt");
-		        FileManager.write(Analizador_Lexico.tokens.toString(), fTokensOut);
+		        FileManager.write(AnalizadorLexico.tokens.toString(), fTokensOut);
 		        File estructurasOut = new File("Estructuras.txt");
 		        FileManager.write(Parser.estructuras.toString(), estructurasOut);
 		        Error.huboErrores=false;

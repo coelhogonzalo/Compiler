@@ -16,19 +16,19 @@ public class AccionSemantica5 implements AccionSemantica {
             if ((auxLong <= 4294967295l) && (auxLong >= 0)) {
                 buffer.append("_ul");
                 String lexema = buffer.toString();
-                Token unToken = new Token(lexema, Analizador_Lexico.TOKEN_UL, "uslinteger");
+                Token unToken = new Token(lexema, AnalizadorLexico.TOKEN_UL, "uslinteger");
                 unToken.uso = "constante";
-                Analizador_Lexico.tablaSimbolos.put(lexema, unToken);
+                AnalizadorLexico.tablaSimbolos.put(lexema, unToken);
                 return unToken;
             } else {
-                Error e = new Error("WARNING", buffer.toString() + ": valor fuera de rango", Analizador_Lexico.cantLN);
-                Analizador_Lexico.errores.add(e);
+                Error e = new Error("WARNING", buffer.toString() + ": valor fuera de rango", AnalizadorLexico.cantLN);
+                AnalizadorLexico.errores.add(e);
                 buffer.delete(0, buffer.length());
                 buffer.append("4294967295_ul");
                 String lexema = buffer.toString();
-                Token unToken = new Token(lexema, Analizador_Lexico.TOKEN_UL, "uslinteger");
+                Token unToken = new Token(lexema, AnalizadorLexico.TOKEN_UL, "uslinteger");
                 unToken.uso = "constante";
-                Analizador_Lexico.tablaSimbolos.put(lexema, unToken);
+                AnalizadorLexico.tablaSimbolos.put(lexema, unToken);
                 return unToken;
             }
         }

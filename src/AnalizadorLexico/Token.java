@@ -28,13 +28,13 @@ public class Token {
     }
     
     public String toString(){
-        if ( nro != Analizador_Lexico.TOKEN_ERROR )
+        if ( nro != AnalizadorLexico.TOKEN_ERROR )
             return "Lexema: '" + this.lexema + "' dec: "+this.declarada + " Tipo: " +this.tipo +" Ambito:"+this.ambito+"\r\n";
         else
             return "TOKEN ERROR\n";
     }
     public String toStringDetallado(){
-        if ( nro != Analizador_Lexico.TOKEN_ERROR )
+        if ( nro != AnalizadorLexico.TOKEN_ERROR )
             return "LEXEMA: '" + lexema + "'||| NUMERO: " + nro + "||| TIPO: " + tipo +"|||DECLARADA?: "+this.declarada+"|||USO: "+this.uso+"|||PERMISO: "+this.permisoFun+"\r\n";
         else
             return "TOKEN ERROR\n";

@@ -8,12 +8,12 @@ public class AccionSemantica8 implements AccionSemantica {
     	
         buffer.append(c);
         String lexema=buffer.toString();
-        Token unToken=Analizador_Lexico.tablaSimbolos.get(lexema);
+        Token unToken=AnalizadorLexico.tablaSimbolos.get(lexema);
         if (unToken!=null) {
             return unToken;
         } else {
-        	unToken=new Token(lexema, Analizador_Lexico.TOKEN_CADENA,"cadena");
-            Analizador_Lexico.tablaSimbolos.put(lexema, unToken);
+        	unToken=new Token(lexema, AnalizadorLexico.TOKEN_CADENA,"cadena");
+            AnalizadorLexico.tablaSimbolos.put(lexema, unToken);
             return unToken;
         }
     }

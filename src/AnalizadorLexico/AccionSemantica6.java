@@ -13,19 +13,19 @@ public class AccionSemantica6 implements AccionSemantica {
         Double flotante = Double.parseDouble(buffer.toString());
         if (((flotante < 3.40282347E38) && (flotante > 1.17549435E-38)) || (flotante == 0)){
         	String lexema=buffer.toString();
-        	unToken=new Token(lexema, Analizador_Lexico.TOKEN_FLOAT,"single");
+        	unToken=new Token(lexema, AnalizadorLexico.TOKEN_FLOAT,"single");
         	unToken.uso="constante";
-            Analizador_Lexico.tablaSimbolos.put(lexema, unToken);
+            AnalizadorLexico.tablaSimbolos.put(lexema, unToken);
         }
         else {
-            Error e = new Error("WARNING", buffer.toString() + ": valor fuera de rango", Analizador_Lexico.cantLN);
+            Error e = new Error("WARNING", buffer.toString() + ": valor fuera de rango", AnalizadorLexico.cantLN);
             buffer.delete(0, buffer.length());
             buffer.append("3.40282346E38");
             String lexema=buffer.toString();
-            unToken=new Token(lexema, Analizador_Lexico.TOKEN_FLOAT,"single");
-            Analizador_Lexico.errores.add(e);
+            unToken=new Token(lexema, AnalizadorLexico.TOKEN_FLOAT,"single");
+            AnalizadorLexico.errores.add(e);
             unToken.uso="constante";
-            Analizador_Lexico.tablaSimbolos.put(lexema, unToken);
+            AnalizadorLexico.tablaSimbolos.put(lexema, unToken);
         }
         return unToken;
     }

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Stack;
 
-import AnalizadorLexico.Analizador_Lexico;
+import AnalizadorLexico.AnalizadorLexico;
 import AnalizadorLexico.FileManager;
 import AnalizadorLexico.Token;
 import GeneracionCodigoIntermedio.PolacaInversa;
@@ -87,7 +87,7 @@ public class GeneradorAssembler {
     		}
 
     		if(polaca.get(i).toString().contains(".")){
-	    		if(Analizador_Lexico.tablaSimbolos.get((polaca.get(i)).toString()).tipo.equals("single")&&(polaca.get(i).toString().charAt(0) != '_')){ //para hacer constantes de los float
+	    		if(AnalizadorLexico.tablaSimbolos.get((polaca.get(i)).toString()).tipo.equals("single")&&(polaca.get(i).toString().charAt(0) != '_')){ //para hacer constantes de los float
 	    			if(!flotantes.contains(polaca.get(i).toString())){
 	    				flotantes.add(polaca.get(i).toString());
 	    			}
@@ -111,31 +111,31 @@ public class GeneradorAssembler {
 					pilaVar.pop();
 					StringBuilder retorno = pilaVar.pop();
 					Token t = null; 
-						if(Analizador_Lexico.tablaSimbolos.get(retorno.toString()).tipo.equals("uslinteger")){
-							StringBuilder elOriginalPapa = new StringBuilder(retorno.toString());
-				    		if(Analizador_Lexico.tablaSimbolos.get(retorno.toString()).uso.equals("constante")){	//SACO _UL
+						if(AnalizadorLexico.tablaSimbolos.get(retorno.toString()).tipo.equals("uslinteger")){
+							StringBuilder stringOriginal = new StringBuilder(retorno.toString());
+				    		if(AnalizadorLexico.tablaSimbolos.get(retorno.toString()).uso.equals("constante")){	//SACO _UL
 				    			retorno = new StringBuilder(retorno.substring(0, retorno.length()-3));
 				    		}
 				    		funciones.append("MOV EAX, " +retorno + "\r\n" + "MOV @aux_fun, EAX" +"\r\n" +"RET" +"\r\n \r\n");
-							t = new Token("@aux_fun",Analizador_Lexico.TOKEN_UL,"uslinteger"); //VER
-							t.setUso(Analizador_Lexico.tablaSimbolos.get(elOriginalPapa.toString()).uso); //no se me ocurria como volver el token a _ul asique cree una copia, que mal Emanuel
+							t = new Token("@aux_fun",AnalizadorLexico.TOKEN_UL,"uslinteger"); //VER
+							t.setUso(AnalizadorLexico.tablaSimbolos.get(stringOriginal.toString()).uso); 
 						}
 						
-						if(Analizador_Lexico.tablaSimbolos.get(retorno.toString()).tipo.equals("single")){
+						if(AnalizadorLexico.tablaSimbolos.get(retorno.toString()).tipo.equals("single")){
 							if(flotantes.contains(retorno.toString()))
 								retorno= new StringBuilder("_"+retorno.toString().replace(".", "_"));
 							funciones.append("FLD "+retorno+ "\r\n" + "FSTP @aux_fun"+"\r\n" +"RET" +"\r\n \r\n");
-							t = new Token("@aux_fun",Analizador_Lexico.TOKEN_FLOAT,"single"); //VER
+							t = new Token("@aux_fun",AnalizadorLexico.TOKEN_FLOAT,"single"); //VER
 							if(flotantes.contains(retorno.toString().substring(1, retorno.length()).replace("_", ".")))
-								t.setUso(Analizador_Lexico.tablaSimbolos.get(retorno.toString().substring(1, retorno.length()).replace("_", ".")).uso);
+								t.setUso(AnalizadorLexico.tablaSimbolos.get(retorno.toString().substring(1, retorno.length()).replace("_", ".")).uso);
 							else
-								t.setUso(Analizador_Lexico.tablaSimbolos.get(retorno.toString()).uso);
+								t.setUso(AnalizadorLexico.tablaSimbolos.get(retorno.toString()).uso);
 							
 						}//ACA ARRIBA SAQUE retorno.toString() y lo reemplaze por "@aux_fun"
 					
 					estaEnFuncion = false; //SETEA ENFUNCION A FALSE PARA QUE VUELVA A ESCRIBIR EN CODIGO
 					//StringBuilder aux_fun= new StringBuilder("@aux_fun"); //crea la var?
-					Analizador_Lexico.tablaSimbolos.put(t.lexema,t);  //agrega a la tabla de simbolos
+					AnalizadorLexico.tablaSimbolos.put(t.lexema,t);  //agrega a la tabla de simbolos
 					//pilaVar.push(aux_fun);		
 		    	}
 			   else{
@@ -157,9 +157,9 @@ public void generarCodigoAssembler(StringBuilder escritura){
 		pilaVar.pop(); //SACO EL :=
 		StringBuilder aAsignar = pilaVar.pop();
 		StringBuilder asignacion = pilaVar.pop();
-		if((Analizador_Lexico.tablaSimbolos.get(aAsignar.toString()).tipo.equals("uslinteger"))&&(Analizador_Lexico.tablaSimbolos.get(asignacion.toString()).tipo.equals("uslinteger"))){
-    		if(Analizador_Lexico.tablaSimbolos.get(asignacion.toString()).uso!=null){
-				if(Analizador_Lexico.tablaSimbolos.get(asignacion.toString()).uso.equals("constante")){
+		if((AnalizadorLexico.tablaSimbolos.get(aAsignar.toString()).tipo.equals("uslinteger"))&&(AnalizadorLexico.tablaSimbolos.get(asignacion.toString()).tipo.equals("uslinteger"))){
+    		if(AnalizadorLexico.tablaSimbolos.get(asignacion.toString()).uso!=null){
+				if(AnalizadorLexico.tablaSimbolos.get(asignacion.toString()).uso.equals("constante")){
 	    			asignacion = new StringBuilder(asignacion.substring(0, asignacion.length()-3));
 	    		}
 				
@@ -168,7 +168,7 @@ public void generarCodigoAssembler(StringBuilder escritura){
     		escritura.append("MOV EAX, "+asignacion+"\r\n"+"MOV "+aAsignar+", EAX"+"\r\n" ); //ver si va lo de mov @aux0, EAX despues de esto
 		}	
 		else{
-			if((Analizador_Lexico.tablaSimbolos.get(aAsignar.toString()).tipo.equals("single"))&&(Analizador_Lexico.tablaSimbolos.get(asignacion.toString()).tipo.equals("single"))){
+			if((AnalizadorLexico.tablaSimbolos.get(aAsignar.toString()).tipo.equals("single"))&&(AnalizadorLexico.tablaSimbolos.get(asignacion.toString()).tipo.equals("single"))){
 				if(flotantes.contains(asignacion.toString()))
 					if(asignacion.toString().contains("-"))
 						asignacion = new StringBuilder("_neg"+asignacion.toString().replace(".", "_").substring(1,asignacion.toString().length()));	
@@ -189,7 +189,7 @@ public void generarCodigoAssembler(StringBuilder escritura){
 			pilaVar.pop(); //SACO EL CALL
 			StringBuilder fun_llamada = pilaVar.pop();
 			aux_parametro = pilaVar.pop(); //asigno el valor del parametro
-			if((Analizador_Lexico.tablaSimbolos.get(aux_parametro.toString()).tipo.equals("uslinteger")))
+			if((AnalizadorLexico.tablaSimbolos.get(aux_parametro.toString()).tipo.equals("uslinteger")))
 				escritura.append("MOV EAX, "+aux_parametro+"\r\n"+"MOV @aux_param"+", EAX"+"\r\n"); //asigno el valor del parametro real al de la funcion
 			else
 				escritura.append("FLD "+aux_parametro+"\r\n"+"FSTP @aux_param"+"\r\n");
@@ -204,18 +204,18 @@ public void generarCodigoAssembler(StringBuilder escritura){
 				primerComparado = pilaVar.pop();
 				segundoComparado = pilaVar.pop();
 				//AMBOS INTEGER
-				if((Analizador_Lexico.tablaSimbolos.get(primerComparado.toString()).tipo.equals("uslinteger")) && (Analizador_Lexico.tablaSimbolos.get(segundoComparado.toString()).tipo.equals("uslinteger"))){
-		    		if(Analizador_Lexico.tablaSimbolos.get(primerComparado.toString()).uso.equals("constante")){
+				if((AnalizadorLexico.tablaSimbolos.get(primerComparado.toString()).tipo.equals("uslinteger")) && (AnalizadorLexico.tablaSimbolos.get(segundoComparado.toString()).tipo.equals("uslinteger"))){
+		    		if(AnalizadorLexico.tablaSimbolos.get(primerComparado.toString()).uso.equals("constante")){
 		    			primerComparado = new StringBuilder(primerComparado.substring(0, primerComparado.length()-3));
 		    		}
-		    		if(Analizador_Lexico.tablaSimbolos.get(segundoComparado.toString()).uso.equals("constante")){
+		    		if(AnalizadorLexico.tablaSimbolos.get(segundoComparado.toString()).uso.equals("constante")){
 		    			segundoComparado = new StringBuilder(segundoComparado.substring(0, segundoComparado.length()-3));
 		    		}
 					escritura.append("MOV EAX, "+primerComparado+"\r\n"+"MOV EBX, "+segundoComparado+"\r\n"+"CMP EBX,EAX"+"\r\n");
 				}
 				else{
 					//AMBOS FLOAT 
-					if((Analizador_Lexico.tablaSimbolos.get(primerComparado.toString()).tipo.equals("single")) && ((Analizador_Lexico.tablaSimbolos.get(segundoComparado.toString()).tipo.equals("single")))){
+					if((AnalizadorLexico.tablaSimbolos.get(primerComparado.toString()).tipo.equals("single")) && ((AnalizadorLexico.tablaSimbolos.get(segundoComparado.toString()).tipo.equals("single")))){
 						if(flotantes.contains(primerComparado.toString())){
 							if(primerComparado.toString().contains("-"))
 								primerComparado = new StringBuilder("_neg"+primerComparado.toString().replace(".", "_").substring(1,primerComparado.toString().length()));	
@@ -232,10 +232,10 @@ public void generarCodigoAssembler(StringBuilder escritura){
 					}
 					else{
 						//DISTINTOS TIPOS
-						if((Analizador_Lexico.tablaSimbolos.get(primerComparado.toString()).tipo.equals("uslinteger")) && ((Analizador_Lexico.tablaSimbolos.get(segundoComparado.toString()).tipo.equals("single"))))
+						if((AnalizadorLexico.tablaSimbolos.get(primerComparado.toString()).tipo.equals("uslinteger")) && ((AnalizadorLexico.tablaSimbolos.get(segundoComparado.toString()).tipo.equals("single"))))
 							escritura.append("JMP @LABEL_TIPOS_DISTINTOS"+"\r\n");
 						else{
-							if((Analizador_Lexico.tablaSimbolos.get(primerComparado.toString()).tipo.equals("single")) && ((Analizador_Lexico.tablaSimbolos.get(segundoComparado.toString()).tipo.equals("uslinteger"))))
+							if((AnalizadorLexico.tablaSimbolos.get(primerComparado.toString()).tipo.equals("single")) && ((AnalizadorLexico.tablaSimbolos.get(segundoComparado.toString()).tipo.equals("uslinteger"))))
 								escritura.append("JMP @LABEL_TIPOS_DISTINTOS"+"\r\n");
 						}
 					}
@@ -256,10 +256,10 @@ public void generarCodigoAssembler(StringBuilder escritura){
 							escritura.append("JE "+label+"\r\n");
 					else{
 			    		if(!(primerComparado.toString().contains("_ul"))&&(!flotantes.contains(primerComparado.toString().substring(1, primerComparado.length()).replace("_", ".")))){
-			    			if(!((Analizador_Lexico.tablaSimbolos.get(primerComparado.toString())!=null)&&(Analizador_Lexico.tablaSimbolos.get(primerComparado.toString()).uso.equals("variable"))))
+			    			if(!((AnalizadorLexico.tablaSimbolos.get(primerComparado.toString())!=null)&&(AnalizadorLexico.tablaSimbolos.get(primerComparado.toString()).uso.equals("variable"))))
 			    				primerComparado = new StringBuilder(primerComparado.toString()+"_ul");
 							
-			    			if(Analizador_Lexico.tablaSimbolos.get(primerComparado.toString()).tipo.equals("uslinteger")){
+			    			if(AnalizadorLexico.tablaSimbolos.get(primerComparado.toString()).tipo.equals("uslinteger")){
 								
 								if(signo.toString().equals("<"))
 									escritura.append("JGE "+label+"\r\n");
@@ -273,7 +273,7 @@ public void generarCodigoAssembler(StringBuilder escritura){
 								primerComparado = new StringBuilder(primerComparado.toString().substring(1, primerComparado.length()).replace("_", "."));
 								
 							}
-							if(Analizador_Lexico.tablaSimbolos.get(primerComparado.toString()).tipo.equals("single")){
+							if(AnalizadorLexico.tablaSimbolos.get(primerComparado.toString()).tipo.equals("single")){
 							
 								if(signo.toString().equals("<"))
 									escritura.append("JAE "+label+"\r\n"); //PORQUE NO SE
@@ -304,9 +304,9 @@ public void generarCodigoAssembler(StringBuilder escritura){
 						}
 						else{
 							StringBuilder variable = pilaVar.pop();
-							if(Analizador_Lexico.tablaSimbolos.get(variable.toString()).tipo.equals("single"))
+							if(AnalizadorLexico.tablaSimbolos.get(variable.toString()).tipo.equals("single"))
 								escritura.append("invoke MessageBox,NULL,addr print_single,addr "+"print_single,MB_OK"+"\r\n");
-							if(Analizador_Lexico.tablaSimbolos.get(variable.toString()).tipo.equals("uslinteger"))
+							if(AnalizadorLexico.tablaSimbolos.get(variable.toString()).tipo.equals("uslinteger"))
 								escritura.append("invoke printf, cfm$(\"%d\\n\"), "+variable+"\r\n");
 						}
 					}
@@ -317,17 +317,17 @@ public void generarCodigoAssembler(StringBuilder escritura){
 							StringBuilder primerOperando = pilaVar.pop();
 							StringBuilder segundoOperando = pilaVar.pop();
 							
-							if((Analizador_Lexico.tablaSimbolos.get(primerOperando.toString()).tipo.equals("uslinteger")) && ((Analizador_Lexico.tablaSimbolos.get(segundoOperando.toString()).tipo.equals("uslinteger")))){
-					    		if(Analizador_Lexico.tablaSimbolos.get(primerOperando.toString()).uso.equals("constante")){
+							if((AnalizadorLexico.tablaSimbolos.get(primerOperando.toString()).tipo.equals("uslinteger")) && ((AnalizadorLexico.tablaSimbolos.get(segundoOperando.toString()).tipo.equals("uslinteger")))){
+					    		if(AnalizadorLexico.tablaSimbolos.get(primerOperando.toString()).uso.equals("constante")){
 					    			primerOperando = new StringBuilder(primerOperando.substring(0, primerOperando.length()-3));
 					    		}
-					    		if(Analizador_Lexico.tablaSimbolos.get(segundoOperando.toString()).uso.equals("constante")){
+					    		if(AnalizadorLexico.tablaSimbolos.get(segundoOperando.toString()).uso.equals("constante")){
 					    			segundoOperando = new StringBuilder(segundoOperando.substring(0, segundoOperando.length()-3));
 					    		}
 								generarCodigoInteger(operador ,primerOperando,segundoOperando,escritura);
 							}
 							else{
-								if((Analizador_Lexico.tablaSimbolos.get(primerOperando.toString()).tipo.equals("single")) && ((Analizador_Lexico.tablaSimbolos.get(segundoOperando.toString()).tipo.equals("single")))){
+								if((AnalizadorLexico.tablaSimbolos.get(primerOperando.toString()).tipo.equals("single")) && ((AnalizadorLexico.tablaSimbolos.get(segundoOperando.toString()).tipo.equals("single")))){
 									if(flotantes.contains(primerOperando.toString())){
 										if(primerOperando.toString().contains("-"))
 											primerOperando = new StringBuilder("_neg"+primerOperando.toString().replace(".", "_").substring(1,primerOperando.toString().length()));	
@@ -344,22 +344,22 @@ public void generarCodigoAssembler(StringBuilder escritura){
 									generarCodigoSingle(operador,primerOperando,segundoOperando,escritura);
 							}
 								else{
-									if((Analizador_Lexico.tablaSimbolos.get(primerOperando.toString()).tipo.equals("uslinteger")) && ((Analizador_Lexico.tablaSimbolos.get(segundoOperando.toString()).tipo.equals("single")))){
+									if((AnalizadorLexico.tablaSimbolos.get(primerOperando.toString()).tipo.equals("uslinteger")) && ((AnalizadorLexico.tablaSimbolos.get(segundoOperando.toString()).tipo.equals("single")))){
 										escritura.append("JMP @LABEL_TIPOS_DISTINTOS"+"\r\n");
 										StringBuilder aux= new StringBuilder("@auxDistintosTipos"+contador);
 										pilaVar.push(aux);  
-										Token t = new Token("@auxDistintosTipos"+contador,Analizador_Lexico.TOKEN_UL,"uslinteger");
+										Token t = new Token("@auxDistintosTipos"+contador,AnalizadorLexico.TOKEN_UL,"uslinteger");
 										t.setUso("variable");
-										Analizador_Lexico.tablaSimbolos.put(t.lexema,t);
+										AnalizadorLexico.tablaSimbolos.put(t.lexema,t);
 								}
 									else{
-										if((Analizador_Lexico.tablaSimbolos.get(primerOperando.toString()).tipo.equals("single")) && ((Analizador_Lexico.tablaSimbolos.get(segundoOperando.toString()).tipo.equals("uslinteger"))))
+										if((AnalizadorLexico.tablaSimbolos.get(primerOperando.toString()).tipo.equals("single")) && ((AnalizadorLexico.tablaSimbolos.get(segundoOperando.toString()).tipo.equals("uslinteger"))))
 											escritura.append("JMP @LABEL_TIPOS_DISTINTOS"+"\r\n");
 											StringBuilder aux= new StringBuilder("@auxDistintosTipos"+contador);
 											pilaVar.push(aux);  
-											Token t = new Token("@auxDistintosTipos"+contador,Analizador_Lexico.TOKEN_UL,"single");
+											Token t = new Token("@auxDistintosTipos"+contador,AnalizadorLexico.TOKEN_UL,"single");
 											t.setUso("variable");
-											Analizador_Lexico.tablaSimbolos.put(t.lexema,t);
+											AnalizadorLexico.tablaSimbolos.put(t.lexema,t);
 									 }
 									}
 								}
@@ -398,9 +398,9 @@ public void generarCodigoInteger(StringBuilder operador,StringBuilder primerOper
 	
 		 break;
     	}
-		Token t = new Token("@aux"+contador,Analizador_Lexico.TOKEN_UL,"uslinteger");
+		Token t = new Token("@aux"+contador,AnalizadorLexico.TOKEN_UL,"uslinteger");
 		t.setUso("variable");
-		Analizador_Lexico.tablaSimbolos.put(t.lexema,t);
+		AnalizadorLexico.tablaSimbolos.put(t.lexema,t);
 		contador++;
     }
     	
@@ -431,9 +431,9 @@ public void generarCodigoSingle(StringBuilder operador,StringBuilder primerOpera
 			break;
 			}
 			
-			Token t = new Token("@aux"+contador,Analizador_Lexico.TOKEN_FLOAT,"single");
+			Token t = new Token("@aux"+contador,AnalizadorLexico.TOKEN_FLOAT,"single");
 			t.setUso("variable");
-			Analizador_Lexico.tablaSimbolos.put(t.lexema,t);
+			AnalizadorLexico.tablaSimbolos.put(t.lexema,t);
 			flotantes.add(t.lexema);
 			contador++;
 }
@@ -473,11 +473,11 @@ public void generarCodigoSingle(StringBuilder operador,StringBuilder primerOpera
 
         declaracion.append(".const "+"\r\n");
         for(int uwu=0; uwu<flotantes.size(); uwu++){
-        	String aVerSiAhoraTenesGanasDeAndar = flotantes.get(uwu).toString().replace(".", "_");
+        	String declarado = flotantes.get(uwu).toString().replace(".", "_");
         	if(flotantes.get(uwu).toString().contains("-"))
-        		declaracion.append("_neg"+aVerSiAhoraTenesGanasDeAndar.substring(1,aVerSiAhoraTenesGanasDeAndar.length())+" dd "+ flotantes.get(uwu)+"\n");
+        		declaracion.append("_neg"+declarado.substring(1,declarado.length())+" dd "+ flotantes.get(uwu)+"\n");
         	else
-        		declaracion.append("_"+aVerSiAhoraTenesGanasDeAndar+" dd "+ flotantes.get(uwu)+"\n");
+        		declaracion.append("_"+declarado+" dd "+ flotantes.get(uwu)+"\n");
         }
     	declaracion.append(".code"+"\r\n"+"start: ");
     }

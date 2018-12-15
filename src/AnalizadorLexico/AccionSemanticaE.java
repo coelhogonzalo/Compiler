@@ -6,9 +6,9 @@ private AccionSemantica5 arreglarNumero;
         if (buffer.length() > 0){
         	if (isNumero(buffer)){//Si es un numero valido le agrega el _u para que en la accionsemantica 5 (arreglar numero) se guarde como un _ul
         		arreglarNumero=new AccionSemantica5();
-        		Error e = new Error("WARNING", "'"+buffer.toString() + "' : Las constantes de tipo uslinteger deben terminar en _ul", Analizador_Lexico.cantLN);
+        		Error e = new Error("WARNING", "'"+buffer.toString() + "' : Las constantes de tipo uslinteger deben terminar en _ul", AnalizadorLexico.cantLN);
         		buffer.append("_u");
-                Analizador_Lexico.errores.add(e);
+                AnalizadorLexico.errores.add(e);
         		return arreglarNumero.ejecutar(buffer, c);
         	}
         	else{
@@ -17,36 +17,36 @@ private AccionSemantica5 arreglarNumero;
         			buffer.deleteCharAt(indice);
         		if (buffer.charAt(0) != '_') {
         			if (buffer.length() < 25){
-        				Error e = new Error("WARNING", "'"+buffer.toString() + "' : Se agrego el caracter _ al principio y se interpreto como un identificador ", Analizador_Lexico.cantLN);
-                        Analizador_Lexico.errores.add(e);
+        				Error e = new Error("WARNING", "'"+buffer.toString() + "' : Se agrego el caracter _ al principio y se interpreto como un identificador ", AnalizadorLexico.cantLN);
+                        AnalizadorLexico.errores.add(e);
                         String lexema="_" +buffer.subSequence(0, 24);
-                        Token unToken = new Token(lexema, Analizador_Lexico.TOKEN_ID, "identificador");
-                        Analizador_Lexico.tablaSimbolos.put(lexema, unToken);
+                        Token unToken = new Token(lexema, AnalizadorLexico.TOKEN_ID, "identificador");
+                        AnalizadorLexico.tablaSimbolos.put(lexema, unToken);
         				return unToken;
         			}
         			else{
-        				Error e = new Error("WARNING", "'"+buffer.toString() + "' : Se agrego el caracter _ al principio y se interpreto como un identificador ", Analizador_Lexico.cantLN);
-        				Analizador_Lexico.errores.add(e);
+        				Error e = new Error("WARNING", "'"+buffer.toString() + "' : Se agrego el caracter _ al principio y se interpreto como un identificador ", AnalizadorLexico.cantLN);
+        				AnalizadorLexico.errores.add(e);
                         String lexema="_" +buffer.subSequence(0, 24);
-                        Token unToken = new Token(lexema, Analizador_Lexico.TOKEN_ID, "identificador");
-                        Analizador_Lexico.tablaSimbolos.put(lexema, unToken);
+                        Token unToken = new Token(lexema, AnalizadorLexico.TOKEN_ID, "identificador");
+                        AnalizadorLexico.tablaSimbolos.put(lexema, unToken);
         				return unToken;
         			}
         		} else {
         			if (buffer.length() < 25){
-        				Error e = new Error("WARNING", "'"+buffer.toString() + "' : Se interpreto como un identificador ", Analizador_Lexico.cantLN);
-                        Analizador_Lexico.errores.add(e);
+        				Error e = new Error("WARNING", "'"+buffer.toString() + "' : Se interpreto como un identificador ", AnalizadorLexico.cantLN);
+                        AnalizadorLexico.errores.add(e);
                         String lexema=buffer.subSequence(0, buffer.length()).toString();
-                        Token unToken = new Token(lexema, Analizador_Lexico.TOKEN_ID, "identificador");
-                        Analizador_Lexico.tablaSimbolos.put(lexema, unToken);
+                        Token unToken = new Token(lexema, AnalizadorLexico.TOKEN_ID, "identificador");
+                        AnalizadorLexico.tablaSimbolos.put(lexema, unToken);
         				return unToken;
         			}
         			else{
-        				Error e = new Error("WARNING", buffer.toString() + ": Se interpreto como un identificador ", Analizador_Lexico.cantLN);
-                        Analizador_Lexico.errores.add(e);
+        				Error e = new Error("WARNING", buffer.toString() + ": Se interpreto como un identificador ", AnalizadorLexico.cantLN);
+                        AnalizadorLexico.errores.add(e);
                         String lexema=buffer.subSequence(0, 24).toString();
-                        Token unToken = new Token(lexema, Analizador_Lexico.TOKEN_ID, "identificador");
-                        Analizador_Lexico.tablaSimbolos.put(lexema, unToken);
+                        Token unToken = new Token(lexema, AnalizadorLexico.TOKEN_ID, "identificador");
+                        AnalizadorLexico.tablaSimbolos.put(lexema, unToken);
         				return unToken;
         			}
         		}
