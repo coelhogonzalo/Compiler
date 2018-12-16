@@ -1,33 +1,188 @@
-uslinteger _a;_var1;_c,
-single _b;_var2;_d,
- 
-print('Hola'),
- 
-_var1 := 20_ul,
-_a := 3_ul,
-_c := _var1 + _a,
-print(_c),
- 
-_b := 2.0,
- 
-uslinteger _funWRITEB ( uslinteger _param1) {
-   	print('_funWRITEB'),
-                _a := 16_ul,
-            	uslinteger _x,
-            	_x := 3_ul,
-    	_param1 := 4_ul,
-                return ( _x * 2_ul)
-}
- 
-uslinteger _funWRITEA ( uslinteger _param2) {
-   	print('_funWRITEA'),
-            	_param2 := _funWRITEB(_param2; write),,
-                print(_a),
-            	_a := 14_ul,
-          	_param2 := 9_ul,
-            	return (_param2 * 2_ul)
-}
- 
-_var1 := _funWRITEA (_a; write;pass ),,
-print(_var1),
-print(_a),
+print('CAMBIE'),
+__1.Declaracion de una variable de cada tipo
+__Sin error
+uslinteger _varuslinteger,single _varsingle,
+__Con error
+__uslinteger varuslinteger,
+__single id,__2.Declaracion de una lista de variables
+
+__Sin error
+uslinteger _var1;_var2;_var3,single _single1;_single2;_single3,
+__Con error (REDECLARACION DE VARIABLES)
+__uslinteger _var4;_var2;_var4,
+__single _var2;_single4;_single5,
+
+
+
+
+__3.Sentencia de salida de mensajes por pantalla
+
+__Sin error
+print ( 'cadena probando' ),print ( _var1 ),print ( 'esta cadena es de -
+mas de un ren-
+glon' ),
+
+__Con error
+__print ( 'esto esta mal' ,
+__print  'esto tambien' ),
+__print ( ' y esto tambien' )
+__print ('cadenita')
+
+
+__4.Sentencia IF sin bloque ELSE con una sola sentencia.
+
+__Sin error
+if (0.2=0.3)print ( ' probando ' ),endif
+
+__Con error
+__if ( 0.2 < 0.3 )
+__endif
+
+__if (0.2 < 0.4
+__	print ( ' probando ' ),
+__endif
+
+__if 0.2 < 0.4)
+__	print ( ' probando ' ),
+__endif
+
+
+
+__5.Sentencia IF sin bloque ELSE con un bloque de sentencias
+
+__Sin error
+if(_var1=_var2){print ( ' probando' ),print ( ' probando parte dos' ),}endif
+
+__6.Sentencia IF con bloque ELSE
+
+__Sin error
+if(0.2<0.3)print ('dale que funcionas'),else print('probando'),endif
+
+__Con error
+__if ( 0.2 < 0.3 )
+__else
+__endif,
+
+__if ( 0.2 < 0.3 )
+__	print ( ' probando ' ),
+__else
+__endif
+
+__if ( 0.2 < 0.3 )
+__else
+__	print ( ' probando ' ),
+__endif
+
+
+
+__7.Sentencia IF con comparacion entre expresiones aritmeticas como condicion, con bloque ELSE
+
+__Sin error
+if(0.2+5.2<0.3-3.2)print ( ' dale que funcionas' ),else print('probando'),endif
+
+__Con error
+__if ( 0.2+5.2 < 0.3-3.2 )
+__else
+__endif
+
+__if ()
+__	print ( ' dale que funcionas' ),
+__else
+__	print ( ' probando' ),
+__endif
+
+
+
+__8.Sentencia de control asignada como tema particular
+
+__Sin error
+while(0.6<0.5)print ('Soy el elegido'),
+__Con error
+__while ( 0.2+5.2 < 0.3-3.2 
+__	print ( ' dale que funcionas' ),
+	
+__while 0.2+5.2 < 0.3-3.2 )
+__	print ( ' dale que funcionas' ),
+	
+__while()
+__	print ( ' dale que funcionas' ),
+
+__9.Sentencia de control asignada con IF anidado
+
+__Sin error
+while(5.2<0.3)if(5.2<0.3)print('No voy a printear esto'),endif
+
+__Con error
+__while ( 0.2+5.2 < 0.3-3.2 
+__	if ( 0.2+5.2 < 0.3-3.2 
+__		print ( ' dale que funcionas ' ),
+__	endif
+
+
+
+__14. Declaracion de funciones con lista de permisos (si corresponde) con sentencias de control dentro.
+
+__Sin error
+single_diversion,single_funWRITE(single _param1){if(0.2 < 0.3)print('dale que funcionas'),endif_param1 := 0.2,return(2.0)}
+single_funWRITEPASS(single_param2){if(0.2<0.3)print ('dale que funcionas'),endif_param2:=_funWRITE(_param2;write),,return(2.0)}__Con error UTILIZACION DE VARIABLE LOCAL A FUNCION FUERA DE SU AMBITO
+__single _testAmbito ( single _paramTest) {
+__	single _declaradaenfuncion,
+__	print ( ' dale que funcionas' ),
+__	return ( 2.0 )
+__}
+__declaradaenfuncion := 0.2,
+
+
+__15. Llamado de funciones como sentencia ejecutable.
+
+__Sin error
+single_varsingle2,_varsingle2:=_funWRITE(_diversion;write),,
+
+__Con error
+
+__varsingle2:=_funWRITE (_diversion; readonly ),,   __invalido
+__varsingle2:=_funWRITE (_diversion; pass ),,  __invalido
+__varsingle2:=_funWRITE (_diversion; write ),,   __Valido
+__varsingle2:=_funWRITE (_diversion; write;pass ),,   __Valido
+__varsingle2:=_funWRITEPASS (_diversion; readonly ),,   __invalido
+__varsingle2:=_funWRITEPASS (_diversion; pass ),,   __invalido
+__varsingle2:=_funWRITEPASS (_diversion; write ),,   __invalido
+__varsingle2:=_funWRITEPASS (_diversion; write;pass ),,   __Valido
+
+
+
+__16.Expresiones con numeros negativos
+
+__Sin error
+_varsingle2:=-0.2--0.6,
+
+__Con error VARIABLE SIN DECLARAR
+
+__ _nodeclarada := -0.2 - 0.6,
+
+
+__ERRORES EN EJECUCION
+
+single _unavar1,single _unavar2,single _unavar3,_unavar1 := 0.0,_unavar2 := 34.0,_unavar3 :=_unavar2/_unavar1,single _unavar4,single _unavar5,single _unavar6,
+
+_unavar4:= 3.40282347F38,      __rango maximo de float
+_unavar5:= 5.0,
+_unavar6 := _unavar4 * _unavar5,
+
+uslinteger _lin1,
+uslinteger _lin2,
+uslinteger _lin3,
+
+_lin1:=0,_lin2:=34,_lin3:=_lin2/_lin1,
+
+uslinteger _lin4,uslinteger _lin5,uslinteger _lin6,
+
+_lin4:= 4294967295_ul, __acaponele el rango maximo de int
+_lin5:= 5,_lin6 := _lin5 * _lin4,
+uslinteger _lin7,
+uslinteger _lin8,
+uslinteger _lin9,
+
+_lin7 := 56,
+_lin8 := 34,
+_lin9 := _lin8 - _lin7,

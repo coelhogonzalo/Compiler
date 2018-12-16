@@ -1,18 +1,20 @@
-package AnalizadorLexico;//no me andagit
-//prueba
+package AnalizadorLexico;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Logger;
+
+import GeneracionAssembler.GeneradorAssembler;
 
 public class AnalizadorLexico {
     private final int ESTADO_FINAL = -1;
-
+    
+    private static Logger l=Logger.getLogger(GeneradorAssembler.class.toString());
     private String charAnterior = "0"; //0 es que no es valido, 1 es que es valido
     public static HashMap<String, Token> tablaSimbolos = null;
-    //No habria que agregar una hash para determinar que numeros van a tener los token
     private HashMap<String, Integer> equivalentes = null;
     private MatrizLexica MLexica = null;
     public static List<Error> errores;
@@ -132,7 +134,7 @@ public class AnalizadorLexico {
             c = charAnterior.substring(1).charAt(0);
         while (estadoActual != ESTADO_FINAL && c != null) {
             int columna = this.getEquivalente(c);
-
+            
             int estadoFuturo = MLexica.getEstado(estadoActual, columna);
             AccionSemantica as = MLexica.getAS(estadoActual, columna);
             unToken = as.ejecutar(buffer, c);
@@ -142,10 +144,12 @@ public class AnalizadorLexico {
             if (estadoActual != ESTADO_FINAL || estadoFantasma) {
                 c = fm.readChar();
                 charAnterior = "1" + c;
+                //l.info("Lei el char: '"+c+"'");
             }
         }
         if(unToken!=null)
         	AnalizadorLexico.tokens.add(unToken);
+        //l.info("RETORNO EL TOKENr: '"+unToken.lexema+"'");
         return unToken;
     }
 
@@ -160,7 +164,7 @@ public class AnalizadorLexico {
     }
 
     private void aumentarCantSaltosLinea(char c, boolean repetidos) {
-        if ((c == '\n' || c=='\r')&& !repetidos) {// Lo de \r lo agregue pero la verdad si anda es de casualidad, REQUIERE TESTING
+        if ((c == '\n' || c=='\r')&& !repetidos) {
             cantLN++;
         }
     }
@@ -190,7 +194,6 @@ public class AnalizadorLexico {
     	Token t=AnalizadorLexico.tablaSimbolos.get(lexema);
     	if(t!=null){
     		while(ambito.length()>0){
-    			//System.out.println(lexema+" El ambito en la ts: '"+t.ambito+"' . El ambito actual: '"+ambito+"'");
     			if(t.ambito.equals(ambito))
     				return t;
     			ambito=cortarAmbito(ambito);
@@ -207,83 +210,7 @@ public class AnalizadorLexico {
     		return cortado;
     	}
     	return cortado;
-    	
     }
-    /*
-    public static void testAmbito(String [] args){
-    	String ambito="@main@_Funcion";
-    	System.out.println(" asd '"+ambito+"'");
-    	System.out.println(" asd '"+cortarAmbito(ambito)+"'");
-    	System.out.println(" asd '"+cortarAmbito(cortarAmbito(ambito))+"'");
-    }*/
-    /*public Token GetToken() {// Hay que revisarla y testearla
-        StringBuilder buffer; //me parece que vamos a tener uqe hacer que sea null y que se inicialice en el while por el yacc
-        if (cursor < fuente.length())
-            buffer = new StringBuilder();
-        else
-            buffer = null;
-        int estadoActual = 0;
-        int nIter = 0;
-        Token unToken = new Token("", 0, "");
-        while ((estadoActual != ESTADO_FINAL)) //El -1 corresponde al estado final?) && (estadoActual != 1))
-    {
-            //System.out.println(cursor + " vs " + fuente.length() + " y tiene " + buffer );
-            //a
-            if (cursor < fuente.length()) {
-                //System.out.println("entro al getoken:    " + buffer.toString() );
-                nIter++;
-                char c = fuente.charAt(cursor);
-                cursor++;
-                System.out.println("Leyo algo");
-                int columna = this.Equivalente(c); //A partir del caracter indica que columna de la matriz debo posicionarme
-                int estadoFuturo = MLexica.GetEstado(estadoActual, columna);
-                AccionSemantica as = MLexica.GetAS(estadoActual, columna);
-                if (as != null) {
-                    unToken = as.Ejecutar(buffer, c); //Se ejecuta la accion semantica correspondiente
-                    if (c == '\n') {
-                        cantLN++;
-                    }
-                    if (unToken != null) {
-                        if (unToken.nro == TOKEN_ERROR) {
-                            System.out.println("ef: " + estadoFuturo);
-                            return unToken;
-                        }
-                    }
-                }
-                if (estadoActual == 18 && estadoFuturo == -1)
-                    nIter = -1;
-                if (estadoActual == 8 && estadoFuturo == -1)
-                    nIter = -1;
-                if (estadoActual == 0 && estadoFuturo == -1)
-                    nIter = -1;
-                if (estadoActual == 12 && estadoFuturo == -1)
-                    nIter = -1;//lel
-                if (estadoActual == 13 && estadoFuturo == -1)
-                    nIter = -1;
-                if (estadoActual == 14 && estadoFuturo == -1)
-                    nIter = -1;
-                if (estadoActual == 15 && estadoFuturo == -1)
-                    nIter = -1;
-                if (estadoActual == 17 && estadoFuturo == -1)
-                    nIter = -1;
-                estadoActual = estadoFuturo;
-                System.out.println("------------gettoken " + buffer);
-                //System.out.println("            gettoken " + fuente.charAt(cursor));
-                //System.out.println("ea ver que hace:    " + buffer.toString() + "  estado   " + estadoActual);
-            } else
-                return unToken;
-        }
-        if (fuente.charAt(cursor - 1) != '\n') {
-            if (nIter != -1) {
-                System.out.println("entro");
-                cursor--;
-            } //else if (fuente.charAt(cursor - 1))
-        }
-        System.out.println("Return: " + buffer + " y " + fuente.charAt(cursor - 1));
-        //cursor--; //esto esta tirando error ya que vuelve al que acaba de leer al comienzo siempre
-        return unToken;
-    }*/
-
     private void cargarEquivalentes() {
         equivalentes = new HashMap<>();
         equivalentes.put("Numero", 0);
@@ -314,13 +241,8 @@ public class AnalizadorLexico {
         equivalentes.put("tab", 25);
 
     }
-
-
     public int getEquivalente(char c) throws IOException {//Devuelve el indice (correspondiente al caracter) de la matriz lexica
         // espacio|| tab  || salto de linea
-		/*if ((c == 32) || (c == 9) || (c == 10)) { ESTO LO TUVE QUE CAMBIAR PARA QUE RECONOZCA POR SEPARADO
-			return equivalentes.get("BTS");
-		}*/
         if (c == 32) //es un espacio?
             return equivalentes.get("blanco");
         if (c == 9) //es una tabulacion?
@@ -345,67 +267,4 @@ public class AnalizadorLexico {
             return 26;//Si el caracter no existe en el lenguaje
         return indice;//Si es un caracter valido
     }
-
-    public static void test0() {
-		/* System.out.println("Probando el caracter 'a' y retorno: " + lexico.Equivalente('a'));
-        System.out.println("Probando el caracter 'A' y retorno: " + lexico.Equivalente('A'));
-        System.out.println("Probando el caracter 'z' y retorno: " + lexico.Equivalente('z'));
-        System.out.println("Probando el caracter 'Z' y retorno: " + lexico.Equivalente('Z'));
-        System.out.println("Probando el caracter 'u' y retorno: " + lexico.Equivalente('u'));
-        System.out.println("Probando el caracter 'l' y retorno: " + lexico.Equivalente('l'));
-        System.out.println("Probando el caracter 'F' y retorno: " + lexico.Equivalente('F'));
-        System.out.println("Probando el caracter '-' y retorno: " + lexico.Equivalente('-'));
-        System.out.println("Probando el caracter '/' y retorno: " + lexico.Equivalente('/'));
-        System.out.println("Probando el caracter '{' y retorno: " + lexico.Equivalente('{'));
-        System.out.println("Probando el caracter '}' y retorno: " + lexico.Equivalente('}'));
-        System.out.println("Probando el caracter '[' y retorno: " + lexico.Equivalente('['));
-        System.out.println("Probando el caracter ']' y retorno: " + lexico.Equivalente(']'));
-        System.out.println("Probando el caracter '(' y retorno: " + lexico.Equivalente('('));
-        System.out.println("Probando el caracter ')' y retorno: " + lexico.Equivalente(')'));
-        System.out.println("Probando el caracter 'G' y retorno: " + lexico.Equivalente('G'));
-        System.out.println("Probando el caracter 'E' y retorno: " + lexico.Equivalente('E'));
-        System.out.println("Probando el caracter '_' y retorno: " + lexico.Equivalente('_'));
-        System.out.println("Probando el caracter '+' y retorno: " + lexico.Equivalente('+'));
-        System.out.println("Probando el caracter '-' y retorno: " + lexico.Equivalente('-'));*/
-    }
-	/*public static void test1() {//PROBANDO LA FUNCION EQUIVALENTE()
-		File f = new File("codigo.txt");
-		Analizador_Lexico lexico = null;
-		try {
-			lexico = new Analizador_Lexico(f);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		for (Error e : errores) {
-			System.out.println("primero " + e);
-		}
-		try {
-			String token = "";
-			int numToken=0;
-			Token unToken = new Token("", -1, "");
-			while (unToken != null) {
-				unToken = lexico.GetToken();
-				numToken=unToken.nro;
-				token=unToken.lexema;
-				System.out.println(numToken++ + " " + token + "     fin");
-			}
-		} catch (Exception e) {
-		}
-		System.out.println("esto quiere decir que termino");
-		for (Error e : errores) {
-			System.out.println(e);
-		}
-	}
-	public static void main(String[] args) {
-		File f = new File("codigo.txt");
-		Analizador_Lexico lexico = null;
-		try {
-			lexico = new Analizador_Lexico(f);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		//test1();//PROBANDO LA FUNCION EQUIVALENTE() y el
-	}*/
 }
