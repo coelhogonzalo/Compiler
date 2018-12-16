@@ -122,19 +122,19 @@ public class GeneradorAssembler {
 							t = new Token("@aux_fun",AnalizadorLexico.TOKEN_UL,"uslinteger"); //VER
 							t.setUso(AnalizadorLexico.tablaSimbolos.get(stringOriginal.toString()).uso); 
 						}
-						
-						if(AnalizadorLexico.tablaSimbolos.get(retorno.toString()).tipo.equals("single")){
-							if(flotantes.contains(retorno.toString()))
-								retorno= new StringBuilder("_"+retorno.toString().replace(".", "_"));
-							funciones.append("FLD "+retorno+ "\r\n" + "FSTP @aux_fun"+"\r\n" +"RET" +"\r\n \r\n");
-							t = new Token("@aux_fun",AnalizadorLexico.TOKEN_FLOAT,"single"); //VER
-							if(flotantes.contains(retorno.toString().substring(1, retorno.length()).replace("_", ".")))
-								t.setUso(AnalizadorLexico.tablaSimbolos.get(retorno.toString().substring(1, retorno.length()).replace("_", ".")).uso);
-							else
-								t.setUso(AnalizadorLexico.tablaSimbolos.get(retorno.toString()).uso);
-							
-						}//ACA ARRIBA SAQUE retorno.toString() y lo reemplaze por "@aux_fun"
-					
+						else{
+							if(AnalizadorLexico.tablaSimbolos.get(retorno.toString()).tipo.equals("single")){
+								if(flotantes.contains(retorno.toString()))
+									retorno= new StringBuilder("_"+retorno.toString().replace(".", "_"));
+								funciones.append("FLD "+retorno+ "\r\n" + "FSTP @aux_fun"+"\r\n" +"RET" +"\r\n \r\n");
+								t = new Token("@aux_fun",AnalizadorLexico.TOKEN_FLOAT,"single"); //VER
+								if(flotantes.contains(retorno.toString().substring(1, retorno.length()).replace("_", ".")))
+									t.setUso(AnalizadorLexico.tablaSimbolos.get(retorno.toString().substring(1, retorno.length()).replace("_", ".")).uso);
+								else
+									t.setUso(AnalizadorLexico.tablaSimbolos.get(retorno.toString()).uso);
+								
+							}
+						}
 					estaEnFuncion = false; //SETEA ENFUNCION A FALSE PARA QUE VUELVA A ESCRIBIR EN CODIGO
 					//StringBuilder aux_fun= new StringBuilder("@aux_fun"); //crea la var?
 					AnalizadorLexico.tablaSimbolos.put(t.lexema,t);  //agrega a la tabla de simbolos
@@ -399,7 +399,7 @@ public void generarCodigoInteger(StringBuilder operador,StringBuilder primerOper
   				  pilaVar.push(aux);
 		 		 
     	break;
-    	case"*": escritura.append("MOV EAX,"+primerOperando+"\r\n"+"MUL "+segundoOperando+"\r\n"+"JO @LABEL_OVF"+"\r\n"+ "MOV "+"@aux"+contador+", EAX"+"\r\n");
+    	case"*": escritura.append("MOV EAX,"+primerOperando+"\r\n"+"MUL EAX,"+segundoOperando+"\r\n"+"JO @LABEL_OVF"+"\r\n"+ "MOV "+"@aux"+contador+", EAX"+"\r\n");
  				 aux= new StringBuilder("@aux"+contador);
  				 pilaVar.push(aux);
 		break;		
@@ -545,4 +545,3 @@ public void generarCodigoSingle(StringBuilder operador,StringBuilder primerOpera
     
 
 }
-
