@@ -3,6 +3,7 @@ package AnalizadorLexico;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import GeneracionAssembler.GeneradorAssembler;
 import Parser.Parser;
@@ -43,10 +44,18 @@ public class Main {
 	        	gen.generameAssemblydotexe(fileNameOutput);
 	        	
 	        	String comc ="\\masm32\\bin\\ml /c /Zd /coff "+fileNameOutput+".asm";
-	        	Runtime.getRuntime().exec(comc);
-	        	
+	        	Process ptasm32 = Runtime.getRuntime().exec(comc);
+	        	InputStream is1= ptasm32.getInputStream();
 	        	String coml ="\\masm32\\bin\\Link /SUBSYSTEM:CONSOLE "+fileNameOutput+".obj";
-	        	Runtime.getRuntime().exec(coml);
+	        	Process ptlink32=Runtime.getRuntime().exec(coml);
+	        	System.out.println();
+	        	InputStream is2= ptlink32.getInputStream();
+	        	Scanner scanner = new Scanner(ptasm32.getInputStream());
+	        	while (scanner.hasNext())
+	        		System.out.println(scanner.nextLine());
+	        	Scanner scanner2 = new Scanner(ptlink32.getInputStream());
+	        	while (scanner.hasNext())
+	        		System.out.println(scanner.nextLine());
 	        	System.out.print("Si no se genero un nuevo '.exe', correr de nuevo el programa");
 	        	
 	     

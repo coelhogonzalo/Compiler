@@ -389,22 +389,22 @@ public void generarCodigoInteger(StringBuilder operador,StringBuilder primerOper
     	String op = operador.toString();
     	StringBuilder aux = null;
     	switch(op){
-    	case "+" :  escritura.append("MOV EAX,"+primerOperando+"\r\n"+"ADD EAX, "+segundoOperando+"\r\n"+"MOV "+"@aux"+contador+", EAX"+"\r\n");
+    	case "+" :  escritura.append("MOV EAX, "+primerOperando+"\r\n"+"ADD EAX, "+segundoOperando+"\r\n"+"MOV "+"@aux"+contador+", EAX"+"\r\n");
     				aux= new StringBuilder("@aux"+contador);
     				pilaVar.push(aux);  				
     				
     	break;
-    	case"-" : escritura.append("MOV EAX,"+segundoOperando+"\r\n"+"CMP EAX, "+primerOperando+"\r\n"+"JL @LABEL_RESUL_NEG"+"\r\n"+"SUB EAX, "+primerOperando+"\r\n"+ "MOV "+"@aux"+contador+", EAX"+"\r\n");
+    	case"-" : escritura.append("MOV EAX, "+segundoOperando+"\r\n"+"CMP EAX, "+primerOperando+"\r\n"+"JL @LABEL_RESUL_NEG"+"\r\n"+"SUB EAX, "+primerOperando+"\r\n"+ "MOV "+"@aux"+contador+", EAX"+"\r\n");
   				  aux= new StringBuilder("@aux"+contador);
   				  pilaVar.push(aux);
 		 		 
     	break;
-    	case"*": escritura.append("MOV EAX,"+primerOperando+"\r\n"+"MUL EAX,"+segundoOperando+"\r\n"+"JO @LABEL_OVF"+"\r\n"+ "MOV "+"@aux"+contador+", EAX"+"\r\n");
+    	case"*": escritura.append("MOV EAX, "+primerOperando+"\r\n"+"IMUL EAX, "+segundoOperando+"\r\n"+"JO @LABEL_OVF"+"\r\n"+ "MOV "+"@aux"+contador+", EAX"+"\r\n");
  				 aux= new StringBuilder("@aux"+contador);
  				 pilaVar.push(aux);
 		break;		
 
-    	case"/" : escritura.append("MOV EDX, 0"+"\r\n"+"MOV EAX,"+segundoOperando+"\r\n"+"MOV EBX,"+primerOperando+"\r\n"+"CMP EBX, 0"+"\r\n"+"JZ @LABEL_ZERO"+"\r\n"+"DIV EBX"+"\r\n"+ "MOV "+"@aux"+contador+", EAX"+"\r\n");
+    	case"/" : escritura.append("MOV EDX, 0"+"\r\n"+"MOV EAX, "+segundoOperando+"\r\n"+"MOV EBX,"+primerOperando+"\r\n"+"CMP EBX, 0"+"\r\n"+"JZ @LABEL_ZERO"+"\r\n"+"DIV EBX"+"\r\n"+ "MOV "+"@aux"+contador+", EAX"+"\r\n");
  				  aux= new StringBuilder("@aux"+contador);
  				  pilaVar.push(aux);
 	
