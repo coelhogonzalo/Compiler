@@ -38,11 +38,12 @@ public class Main {
 	        	
 	        	System.out.print(" y no se encontraron errores (PROCEED COMPILATION)");
 	        	GeneradorAssembler gen=new GeneradorAssembler(p.PI);
+	        	
 	        	String fileNameOutput=removeExtension(fileName);
 	        	System.out.println();
 	        	System.out.println("Voy a generar un .asm en: "+fileNameOutput);
 	        	gen.generameAssemblydotexe(fileNameOutput);
-	        	
+	        	genereAssembler=true;
 	        	String comc ="\\masm32\\bin\\ml /c /Zd /coff "+fileNameOutput+".asm";
 	        	Process ptasm32 = Runtime.getRuntime().exec(comc);
 	        	InputStream is1= ptasm32.getInputStream();
@@ -51,26 +52,39 @@ public class Main {
 	        	System.out.println();
 	        	InputStream is2= ptlink32.getInputStream();
 	        	Scanner scanner = new Scanner(ptasm32.getInputStream());
-	        	while (scanner.hasNext())
-	        		System.out.println(scanner.nextLine());
+	        	int i=1;
+	        	while (scanner.hasNext()){
+	        		String stringError=scanner.nextLine();
+	        		System.out.println(stringError);
+	        		i++;
+	        		if(stringError.contains("fatal error"))
+	        			System.out.println("Ocurrio un error generando el .obj, se debe ejecutar de nuevo");
+	        	}
 	        	Scanner scanner2 = new Scanner(ptlink32.getInputStream());
-	        	while (scanner.hasNext())
-	        		System.out.println(scanner.nextLine());
-	        	System.out.print("Si no se genero un nuevo '.exe', correr de nuevo el programa");
+	        	i=1;
+	        	while (scanner2.hasNext()){
+	        		String stringError=scanner2.nextLine();
+	        		System.out.println(stringError);
+	        		if(stringError.contains("fatal error"))
+	        			System.out.println("Ocurrio un error generando el .exe, se debe ejecutar de nuevo");
+	        		i++;
+	        	}
 	        	
 	     
 	        }
 	        else
 	        	System.out.print(" y se encontraron errores (ABORT COMPILATION)");
-	        if(true){
-		        File fErroresOut = new File("Errores.txt");
+	        File fErroresOut = new File("Errores.txt");
+	        File fTokensOut = new File("Tokens.txt");
+	        File estructurasOut = new File("Estructuras.txt");
+	        FileManager.write(AnalizadorLexico.tokens.toString(), fTokensOut);
+	        FileManager.write(Parser.estructuras.toString(), estructurasOut);
+	        if(!genereAssembler){
 		        FileManager.write(AnalizadorLexico.errores.toString(), fErroresOut);
-		        File fTokensOut = new File("Tokens.txt");
-		        FileManager.write(AnalizadorLexico.tokens.toString(), fTokensOut);
-		        File estructurasOut = new File("Estructuras.txt");
-		        FileManager.write(Parser.estructuras.toString(), estructurasOut);
 		        Error.huboErrores=false;
 	        }
+	        else
+	        	FileManager.write("No hubo errores", fErroresOut);
     	}
     	else
     		System.out.println("Ingrese el nombre del archivo a compilar");

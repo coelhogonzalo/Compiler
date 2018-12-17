@@ -7,7 +7,6 @@ public class FileManager {
     private FileReader in = null;
     private boolean salto = false;
     private boolean LN = false;
-    
     public FileManager(File fuente) throws FileNotFoundException {
         in = new FileReader(fuente);
     }
@@ -16,7 +15,6 @@ public class FileManager {
     	if ( LN == true ) {
             LN = false;
             return ' ';
-      
         }
         int ret = in.read();
         if (ret != -1){
@@ -24,7 +22,6 @@ public class FileManager {
         		LN=true;
             return (char) ret;
         }else{
-        	LN=true;
         	if (!salto){
         		salto = true;
         		return new Character('\n');
