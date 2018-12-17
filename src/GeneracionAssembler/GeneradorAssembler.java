@@ -389,7 +389,7 @@ public void generarCodigoInteger(StringBuilder operador,StringBuilder primerOper
     	String op = operador.toString();
     	StringBuilder aux = null;
     	switch(op){
-    	case "+" :  escritura.append("MOV EAX, "+primerOperando+"\r\n"+"ADD EAX, "+segundoOperando+"\r\n"+"MOV "+"@aux"+contador+", EAX"+"\r\n");
+    	case"+" : escritura.append("MOV EAX, "+primerOperando+"\r\n"+"ADD EAX, "+segundoOperando+"\r\n"+"JC @LABEL_OVF"+"\r\n"+"MOV "+"@aux"+contador+", EAX"+"\r\n");
     				aux= new StringBuilder("@aux"+contador);
     				pilaVar.push(aux);  				
     				
@@ -399,7 +399,7 @@ public void generarCodigoInteger(StringBuilder operador,StringBuilder primerOper
   				  pilaVar.push(aux);
 		 		 
     	break;
-    	case"*": escritura.append("MOV EAX, "+primerOperando+"\r\n"+"IMUL EAX, "+segundoOperando+"\r\n"+"JO @LABEL_OVF"+"\r\n"+ "MOV "+"@aux"+contador+", EAX"+"\r\n");
+    	case"*": escritura.append("MOV EAX, "+primerOperando+"\r\n"+"IMUL EAX, "+segundoOperando+"\r\n"+"JC @LABEL_OVF"+"\r\n"+ "MOV "+"@aux"+contador+", EAX"+"\r\n");
  				 aux= new StringBuilder("@aux"+contador);
  				 pilaVar.push(aux);
 		break;		
@@ -502,7 +502,7 @@ public void generarCodigoSingle(StringBuilder operador,StringBuilder primerOpera
     			+"\r\n"+"include \\masm32\\include\\masm32rt.inc"+"\r\n"+"dll_dllcrt0 PROTO C"+"\r\n"+"printf PROTO C: VARARG"+"\r\n"+".data"+"\r\n");   
     }
     
-    public void generarMensajitosDeControl(){
+    public void generarMensajesDeControl(){
     	fin.append("@LABEL_OVF:"+ "\r\n"+ "invoke MessageBox,NULL,addr mensaje_overflow,addr "+"mensaje_overflow,MB_OK"+"\r\n"+"JMP @LABEL_END"+"\r\n");
     	fin.append("@LABEL_ZERO:"+ "\r\n"+ "invoke MessageBox,NULL,addr mensaje_zero,addr "+"mensaje_zero,MB_OK"+"\r\n"+"JMP @LABEL_END"+"\r\n");
     	fin.append("@LABEL_RESUL_NEG:"+ "\r\n"+ "invoke MessageBox,NULL,addr mensaje_resultadoNeg,addr "+"mensaje_resultadoNeg,MB_OK"+"\r\n"+"JMP @LABEL_END"+"\r\n");
@@ -533,7 +533,7 @@ public void generarCodigoSingle(StringBuilder operador,StringBuilder primerOpera
     	inicio.append(codigo);
     	inicio.append("JMP @LABEL_END");
     	inicio.append(funciones);    	
-    	generarMensajitosDeControl();
+    	generarMensajesDeControl();
     	generarFin();
     	inicio.append(fin);
     	System.out.println("Assembler generado:");

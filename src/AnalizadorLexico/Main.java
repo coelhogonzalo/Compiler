@@ -52,22 +52,18 @@ public class Main {
 	        	System.out.println();
 	        	InputStream is2= ptlink32.getInputStream();
 	        	Scanner scanner = new Scanner(ptasm32.getInputStream());
-	        	int i=1;
 	        	while (scanner.hasNext()){
 	        		String stringError=scanner.nextLine();
 	        		System.out.println(stringError);
-	        		i++;
 	        		if(stringError.contains("fatal error"))
 	        			System.out.println("Ocurrio un error generando el .obj, se debe ejecutar de nuevo");
 	        	}
 	        	Scanner scanner2 = new Scanner(ptlink32.getInputStream());
-	        	i=1;
 	        	while (scanner2.hasNext()){
 	        		String stringError=scanner2.nextLine();
 	        		System.out.println(stringError);
 	        		if(stringError.contains("fatal error"))
 	        			System.out.println("Ocurrio un error generando el .exe, se debe ejecutar de nuevo");
-	        		i++;
 	        	}
 	        	
 	     
