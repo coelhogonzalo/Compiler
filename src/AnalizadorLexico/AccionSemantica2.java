@@ -11,12 +11,12 @@ public class AccionSemantica2 implements AccionSemantica {
             Error e = new Error("ERROR", lexema + " (palabra reservada no valida)", AnalizadorLexico.cantLN);
             unToken = new Token("ERROR", AnalizadorLexico.TOKEN_ERROR,"ERROR");
             AnalizadorLexico.errores.add(e);
-            if (buffer.length() < 24){
+            if (buffer.length() < 25){
             	lexema="_" + buffer.subSequence(0, buffer.length());
                 unToken = new Token(lexema, AnalizadorLexico.TOKEN_ID, "identificador");
             }
             else{
-            	lexema="_" +buffer.subSequence(0, 24);
+            	lexema="_" +buffer.subSequence(0, 25);
                 unToken = new Token(lexema, AnalizadorLexico.TOKEN_ID, "identificador");
             }
             AnalizadorLexico.tablaSimbolos.put(lexema, unToken);
