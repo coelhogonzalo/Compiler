@@ -5,13 +5,11 @@ import java.util.List;
 
 import java.util.Set;
 import java.io.File;
-//import java.io.FileWriter;TODO SACAR A LA MIERDA ESTO SI NO SIRVE
+
 import java.io.IOException;
-//import java.io.InputStream;TODO SACAR A LA MIERDA ESTO SI NO SIRVE
-//import java.io.PrintWriter;TODO SACAR A LA MIERDA ESTO SI NO SIRVE
-//import java.lang.reflect.GenericArrayType;TODO SACAR A LA MIERDA ESTO SI NO SIRVE
+
 import java.util.ArrayList;
-//import java.util.HashSet;TODO SACAR A LA MIERDA ESTO SI NO SIRVE
+
 import java.util.Stack;
 import java.util.logging.Logger;
 
@@ -48,9 +46,6 @@ public class GeneradorAssembler {
     	this.PI=PI;
     }
     
-    //Analizador_Lexico.tablaSimbolos.get(PI.getPI().get(i)).tipo;TODO SACAR A LA MIERDA ESTO SI NO SIRVE
-    //if(Analizador_Lexico.tablaSimbolos.get(PI.getPI().get(i)).tipo.equals("single")TODO SACAR A LA MIERDA ESTO SI NO SIRVE
-    //if(Analizador_Lexico.tablaSimbolos.get(PI.getPI().get(i)).tipo.equals("uslinteger")TODO SACAR A LA MIERDA ESTO SI NO SIRVE
     
     public void guardarSaltos(){
     	ArrayList<StringBuilder> polaca=PI.getPI();
@@ -84,9 +79,8 @@ public class GeneradorAssembler {
     		}
     		
     		if(polaca.get(i).charAt(0) == '\''){ //para hacer variables de las cadenas
-    			//if(!mensajes.contains(PI.getPI().get(i).toString())){TODO SACAR A LA MIERDA ESTO SI NO SIRVE
     				mensajes.add(PI.getPI().get(i).toString());
-    			//}TODO SACAR A LA MIERDA ESTO SI NO SIRVE
+
     		}
 
     		if(polaca.get(i).toString().contains(".")){
@@ -110,7 +104,7 @@ public class GeneradorAssembler {
 			}
 			else{
 			
-				if((pilaVar.peek().toString()).equals("return")){ //LEE EL RETURN DE UNA FUNCION
+				if((pilaVar.peek().toString()).equals("return")){  //LEE EL RETURN DE UNA FUNCION
 					pilaVar.pop();
 					StringBuilder retorno = pilaVar.pop();
 					Token t = null; 
@@ -137,9 +131,8 @@ public class GeneradorAssembler {
 							}
 						}
 					estaEnFuncion = false; //SETEA ENFUNCION A FALSE PARA QUE VUELVA A ESCRIBIR EN CODIGO
-					//StringBuilder aux_fun= new StringBuilder("@aux_fun"); TODO SACAR A LA MIERDA ESTO SI NO SIRVE//crea la var?
 					AnalizadorLexico.tablaSimbolos.put(t.lexema,t);  //agrega a la tabla de simbolos
-					//pilaVar.push(aux_fun);	TODO SACAR A LA MIERDA ESTO SI NO SIRVE	
+
 		    	}
 			   else{
 					if(!estaEnFuncion)
@@ -174,7 +167,7 @@ public void generarCodigoAssembler(StringBuilder escritura){
 			if((AnalizadorLexico.tablaSimbolos.get(aAsignar.toString()).tipo.equals("single"))&&(AnalizadorLexico.tablaSimbolos.get(asignacion.toString()).tipo.equals("single"))){
 				if(flotantes.contains(asignacion.toString()))
 					if(AnalizadorLexico.tablaSimbolos.get(asignacion.toString()).uso.equals("constante")){
-						if(asignacion.toString().contains("-"))
+						if(asignacion.toString().charAt(0)=='-')// Si es negativo
 							asignacion = new StringBuilder("_neg"+asignacion.toString().replace(".", "_").substring(1,asignacion.toString().length()));	
 						else
 							asignacion = new StringBuilder("_"+asignacion.toString().replace(".", "_"));
@@ -185,7 +178,7 @@ public void generarCodigoAssembler(StringBuilder escritura){
 				escritura.append("JMP @LABEL_TIPOS_DISTINTOS"+"\r\n");
 		}
 
-	}//if(AnalizadorLexico.tablaSimbolos.get(segundoOperando.toString()).uso.equals("constante"))TODO SACAR A LA MIERDA ESTO SI NO SIRVE
+	}
 
 	else{
 	
@@ -222,16 +215,16 @@ public void generarCodigoAssembler(StringBuilder escritura){
 					//AMBOS FLOAT 
 					if((AnalizadorLexico.tablaSimbolos.get(primerComparado.toString()).tipo.equals("single")) && ((AnalizadorLexico.tablaSimbolos.get(segundoComparado.toString()).tipo.equals("single")))){
 						if(flotantes.contains(primerComparado.toString())){
-							if(primerComparado.toString().contains("-"))
-								primerComparado = new StringBuilder("_neg"+primerComparado.toString().replace(".", "_").substring(1,primerComparado.toString().length()));	
+							if(primerComparado.toString().charAt(0)=='-')
+								primerComparado = new StringBuilder("_neg"+primerComparado.toString().replace(".", "_").replace('-', '_').substring(1,primerComparado.toString().length()));	
 							else
-								primerComparado=new StringBuilder("_"+primerComparado.toString().replace(".", "_"));
+								primerComparado=new StringBuilder("_"+primerComparado.toString().replace(".", "_").replace('-', '_'));
 						}
 						if(flotantes.contains(segundoComparado.toString())){
-							if(segundoComparado.toString().contains("-"))
-								segundoComparado = new StringBuilder("_neg"+segundoComparado.toString().replace(".", "_").substring(1,segundoComparado.toString().length()));	
+							if(segundoComparado.toString().charAt(0)=='-')
+								segundoComparado = new StringBuilder("_neg"+segundoComparado.toString().replace(".", "_").replace('-', '_').substring(1,segundoComparado.toString().length()));	
 							else
-								segundoComparado=new StringBuilder("_"+segundoComparado.toString().replace(".", "_"));
+								segundoComparado=new StringBuilder("_"+segundoComparado.toString().replace(".", "_").replace('-', '_'));
 						}
 						escritura.append("FLD "+primerComparado+"\r\n"+"FLD "+segundoComparado+"\r\n"+"FCOM"+"\r\n"+"FSTSW AX"+"\r\n"+"SAHF"+"\r\n");
 					}
@@ -303,7 +296,6 @@ public void generarCodigoAssembler(StringBuilder escritura){
 					if(pilaVar.peek().toString().equals("print")){
 					pilaVar.pop(); //SACO LA PALABRA PRINT
 						if(pilaVar.peek().toString().contains("'")){
-							//StringBuilder mensajito = pilaVar.pop();TODO SACAR A LA MIERDA ESTO SI NO SIRVE
 							pilaVar.pop();
 							escritura.append("invoke MessageBox, NULL, addr "+"msj"+contmsj+", addr "+"msj"+contmsj+", MB_OK"+"\r\n");
 							contmsj++;
@@ -336,20 +328,20 @@ public void generarCodigoAssembler(StringBuilder escritura){
 								if((AnalizadorLexico.tablaSimbolos.get(primerOperando.toString()).tipo.equals("single")) && ((AnalizadorLexico.tablaSimbolos.get(segundoOperando.toString()).tipo.equals("single")))){
 									if(flotantes.contains(primerOperando.toString())){
 										if(AnalizadorLexico.tablaSimbolos.get(primerOperando.toString()).uso.equals("constante")){
-											if(primerOperando.toString().contains("-"))
-												primerOperando = new StringBuilder("_neg"+primerOperando.toString().replace(".", "_").substring(1,primerOperando.toString().length()));	
+											if(primerOperando.toString().charAt(0)=='-')
+												primerOperando = new StringBuilder("_neg"+primerOperando.toString().replace(".", "_").replace('-', '_').substring(1,primerOperando.toString().length()));	
 											else
-												primerOperando=new StringBuilder("_"+primerOperando.toString().replace(".", "_"));
+												primerOperando=new StringBuilder("_"+primerOperando.toString().replace(".", "_").replace('-', '_'));
 										}
 										else
 											primerOperando=new StringBuilder(primerOperando.toString());
 									}
 									if(flotantes.contains(segundoOperando.toString())){
 										if(AnalizadorLexico.tablaSimbolos.get(segundoOperando.toString()).uso.equals("constante")){
-											if(segundoOperando.toString().contains("-"))
-												segundoOperando = new StringBuilder("_neg"+segundoOperando.toString().replace(".", "_").substring(1,segundoOperando.toString().length()));	
+											if(segundoOperando.toString().charAt(0)=='-')
+												segundoOperando = new StringBuilder("_neg"+segundoOperando.toString().replace(".", "_").replace('-', '_').substring(1,segundoOperando.toString().length()));	
 											else
-												segundoOperando=new StringBuilder("_"+segundoOperando.toString().replace(".", "_"));
+												segundoOperando=new StringBuilder("_"+segundoOperando.toString().replace(".", "_").replace('-', '_'));
 										}
 										else
 											segundoOperando=new StringBuilder(segundoOperando.toString());
@@ -425,7 +417,7 @@ public void generarCodigoSingle(StringBuilder operador,StringBuilder primerOpera
 			switch(op){
 			case "+":escritura.append("FLD "+primerOperando+"\r\n"+"FLD "+segundoOperando+"\r\n"+ "FADD"+"\r\n"+"FSTP "+"@aux"+contador+"\r\n");
 					 escritura.append("FLD cte_max_rango"+"\r\n"+"FLD @aux"+contador+"\r\n"+"FCOM"+"\r\n"+"FSTSW AX"+"\r\n"+"SAHF"+"\r\n"+"JA @LABEL_OVF"+"\r\n");
-					 escritura.append("FLD cte_min_rango"+"\r\n"+"FLD @aux"+contador+"\r\n"+"FCOM"+"\r\n"+"FSTSW AX"+"\r\n"+"SAHF"+"\r\n"+"JA @LABEL_OVF"+"\r\n");
+					 escritura.append("FLD cte_min_rango"+"\r\n"+"FLD @aux"+contador+"\r\n"+"FCOM"+"\r\n"+"FSTSW AX"+"\r\n"+"SAHF"+"\r\n"+"JB @LABEL_OVF"+"\r\n");
 					 aux= new StringBuilder("@aux"+contador);
 					 pilaVar.push(aux);
 					
@@ -437,7 +429,7 @@ public void generarCodigoSingle(StringBuilder operador,StringBuilder primerOpera
 			break;
 			case "*":escritura.append("FLD "+primerOperando+"\r\n"+"FLD "+segundoOperando+"\r\n"+ "FMUL"+"\r\n"+"FSTP "+"@aux"+contador+"\r\n");
 					 escritura.append("FLD cte_max_rango"+"\r\n"+"FLD @aux"+contador+"\r\n"+"FCOM"+"\r\n"+"FSTSW AX"+"\r\n"+"SAHF"+"\r\n"+"JA @LABEL_OVF"+"\r\n");
-					 escritura.append("FLD cte_min_rango"+"\r\n"+"FLD @aux"+contador+"\r\n"+"FCOM"+"\r\n"+"FSTSW AX"+"\r\n"+"SAHF"+"\r\n"+"JA @LABEL_OVF"+"\r\n");
+					 escritura.append("FLD cte_min_rango"+"\r\n"+"FLD @aux"+contador+"\r\n"+"FCOM"+"\r\n"+"FSTSW AX"+"\r\n"+"SAHF"+"\r\n"+"JB @LABEL_OVF"+"\r\n");
 					 aux= new StringBuilder("@aux"+contador);
 					 pilaVar.push(aux);		
 					 
@@ -453,7 +445,6 @@ public void generarCodigoSingle(StringBuilder operador,StringBuilder primerOpera
 			Token t = new Token("@aux"+contador,AnalizadorLexico.TOKEN_FLOAT,"single");
 			t.setUso("variable");
 			AnalizadorLexico.tablaSimbolos.put(t.lexema,t);
-			//flotantes.add(t.lexema); // TODO ESTO ESTABA AGREGANDO VARIABLES A LA DECLARACION DE .CONST TODO SACAR ESTE COMENTARIO
 			contador++;
 }
    
@@ -493,10 +484,11 @@ public void generarCodigoSingle(StringBuilder operador,StringBuilder primerOpera
 
         declaracion.append(".const "+"\r\n");
         for(int uwu=0; uwu<flotantes.size(); uwu++){
-        	String declarado = flotantes.get(uwu).toString().replace(".", "_");
-        	l.info(flotantes.toString());// TODO SACAR ESTO... AUX0 ESTA EN FLOTANTES... KE
-        	if(flotantes.get(uwu).toString().contains("-"))
-        		declaracion.append("_neg"+declarado.substring(1,declarado.length())+" dd "+ flotantes.get(uwu)+"\n");
+        	String declarado = flotantes.get(uwu).toString().replace(".", "_").replace('-', '_');
+        	l.info(flotantes.toString());// TODO SACAR ESTO... 
+        	String stringValor=flotantes.get(uwu).toString();
+        	if(stringValor.charAt(0)=='-')
+        		declaracion.append("_neg"+declarado.substring(1,declarado.length())+" dd "+ stringValor+"\n");
         	else
         		declaracion.append("_"+declarado+" dd "+ flotantes.get(uwu)+"\n");
         }
@@ -521,17 +513,8 @@ public void generarCodigoSingle(StringBuilder operador,StringBuilder primerOpera
     	fin.append("@LABEL_END:"+"\r\n"+"invoke ExitProcess, 0"+"\r\n"+"end start");
     }
     
-//Cosas que me dijo anto: recorrer toda la polaca para crear la declaracion de variable, osea hacerlo al final TODO SACAR A LA MIERDA ESTO SI NO SIRVE
-    //No hay anidamiento de funciones TODO SACAR A LA MIERDA ESTO SI NO SIRVE
-    //Las funciones escribirlas al final del programa TODO SACAR A LA MIERDA ESTO SI NO SIRVE
-    //poner en la declaracion de variables una constante con el maximo para la comparacion de overflow de single TODO SACAR A LA MIERDA ESTO SI NO SIRVE
-    //despues de la declaracion de variables concatenar el .code y el start: TODO SACAR A LA MIERDA ESTO SI NO SIRVE
+
      
-    /* TODO SACAR A LA MIERDA ESTO SI NO SIRVE
-    private StringBuilder apilar(StringBuilder s){
-    	return pilaVar.push(s);
-    }
-    */
     public void generameAssemblydotexe(String fileName) throws IOException{
     	generarEncabezado();
     	guardarSaltos();
