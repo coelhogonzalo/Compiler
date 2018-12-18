@@ -11,7 +11,7 @@ public class AccionSemantica6 implements AccionSemantica {
         if (buffer.toString().contains("F"))
             buffer.replace(buffer.indexOf("F"), buffer.indexOf("F") + 1, "E");
         Double flotante = Double.parseDouble(buffer.toString());
-        if (((flotante < 3.40282347E38) && (flotante > 1.17549435E-38)) || (flotante == 0)){
+        if (((flotante <= 3.40282347E38) && (flotante >= 1.17549435E-38)) || (flotante == 0)){
         	String lexema=buffer.toString();
         	unToken=new Token(lexema, AnalizadorLexico.TOKEN_FLOAT,"single");
         	unToken.uso="constante";
