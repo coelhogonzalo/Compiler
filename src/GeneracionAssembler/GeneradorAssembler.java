@@ -261,9 +261,11 @@ public void generarCodigoAssembler(StringBuilder escritura){
 					if(signo.toString().equals("!="))
 							escritura.append("JE "+label+"\r\n");
 					else{
-						//l.info(AnalizadorLexico.tablaSimbolos.toString()); //TODO
-			    		//if(!(primerComparado.toString().contains("_ul"))&&(!flotantes.contains(primerComparado.toString().substring(1, primerComparado.length()).replace("_", ".")))){ //TODO SACAR
-						if(!flotantes.contains(primerComparado.toString().substring(1, primerComparado.length()).replace("_", "."))){
+						String primerComparadoString=primerComparado.toString();
+						if(primerComparadoString.charAt(0)!='@')//Si no es una variable le recorto el _
+							primerComparadoString=primerComparadoString.substring(1, primerComparado.length()).replace("_", ".");
+						if(!flotantes.contains(primerComparadoString)){
+							
 			    			if(!((AnalizadorLexico.tablaSimbolos.get(primerComparado.toString())!=null)&&(AnalizadorLexico.tablaSimbolos.get(primerComparado.toString()).uso.equals("variable"))))
 			    				primerComparado = new StringBuilder(primerComparado.toString()+"_ul");
 							
@@ -281,9 +283,9 @@ public void generarCodigoAssembler(StringBuilder escritura){
 								primerComparado = new StringBuilder(primerComparado.toString().substring(1, primerComparado.length()).replace("_", "."));
 								
 							}
-							//l.info(primerComparado.toString());
-							if(AnalizadorLexico.tablaSimbolos.get(primerComparado.toString()).tipo.equals("single")){
 							
+							if(AnalizadorLexico.tablaSimbolos.get(primerComparado.toString()).tipo.equals("single")){
+								
 								if(signo.toString().equals("<"))
 									escritura.append("JAE "+label+"\r\n"); 
 									
@@ -341,8 +343,10 @@ public void generarCodigoAssembler(StringBuilder escritura){
 										if(AnalizadorLexico.tablaSimbolos.get(primerOperando.toString()).uso.equals("constante")){
 											if(primerOperando.toString().charAt(0)=='-')
 												primerOperando = new StringBuilder("_neg"+primerOperando.toString().replace(".", "_").replace('-', '_').substring(1,primerOperando.toString().length()));	
-											else
-												primerOperando=new StringBuilder("_"+primerOperando.toString().replace(".", "_").replace('-', '_'));
+											else//{ TODO TENGO QUE CONFIRMAR SI VA ESTO
+												//if(primerOperando.toString().charAt(0)!='@')
+													primerOperando=new StringBuilder("_"+primerOperando.toString().replace(".", "_").replace('-', '_'));
+											//}
 										}
 										else
 											primerOperando=new StringBuilder(primerOperando.toString());
@@ -351,8 +355,10 @@ public void generarCodigoAssembler(StringBuilder escritura){
 										if(AnalizadorLexico.tablaSimbolos.get(segundoOperando.toString()).uso.equals("constante")){
 											if(segundoOperando.toString().charAt(0)=='-')
 												segundoOperando = new StringBuilder("_neg"+segundoOperando.toString().replace(".", "_").replace('-', '_').substring(1,segundoOperando.toString().length()));	
-											else
-												segundoOperando=new StringBuilder("_"+segundoOperando.toString().replace(".", "_").replace('-', '_'));
+											else//{ TODO TENGO QUE CONFIRMAR SI VA ESTO
+												//if(segundoOperando.toString().charAt(0)!='@')
+													segundoOperando=new StringBuilder("_"+segundoOperando.toString().replace(".", "_").replace('-', '_'));
+											//}
 										}
 										else
 											segundoOperando=new StringBuilder(segundoOperando.toString());

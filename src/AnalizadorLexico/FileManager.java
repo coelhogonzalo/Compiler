@@ -10,7 +10,7 @@ public class FileManager {
     public FileManager(File fuente) throws FileNotFoundException {
         in = new FileReader(fuente);
     }
-    /*
+    
     public Character readChar() throws IOException {
     	if ( LN == true ) {
             LN = false;
@@ -30,7 +30,7 @@ public class FileManager {
         		return null;
         }
     }
-    */
+    /*
     public Character readChar() throws IOException {
 
         int ret = in.read();
@@ -44,7 +44,7 @@ public class FileManager {
         	else 
         		return null;
         }
-    }
+    }*/
     public static void write(String entry, File f) throws IOException {
         f.delete();
         entry = entry.replace("[", "");
