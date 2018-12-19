@@ -166,13 +166,16 @@ public void generarCodigoAssembler(StringBuilder escritura){
 		}	
 		else{
 			if((AnalizadorLexico.tablaSimbolos.get(aAsignar.toString()).tipo.equals("single"))&&(AnalizadorLexico.tablaSimbolos.get(asignacion.toString()).tipo.equals("single"))){
-				if(flotantes.contains(asignacion.toString()))
+				if(flotantes.contains(asignacion.toString())){
+					Token tokenDEBUG =AnalizadorLexico.tablaSimbolos.get(asignacion.toString()); //TODO DEBUG
+					l.info(tokenDEBUG.toString());
 					if(AnalizadorLexico.tablaSimbolos.get(asignacion.toString()).uso.equals("constante")){
 						if(asignacion.toString().charAt(0)=='-')// Si es negativo
 							asignacion = new StringBuilder("_neg"+asignacion.toString().replace(".", "_").substring(1,asignacion.toString().length()));	
 						else
 							asignacion = new StringBuilder("_"+asignacion.toString().replace(".", "_"));
 					}
+				}
 				escritura.append("FLD "+asignacion+"\r\n"+"FSTP "+ aAsignar+"\r\n");
 			}
 			else 
@@ -218,14 +221,18 @@ public void generarCodigoAssembler(StringBuilder escritura){
 						if(flotantes.contains(primerComparado.toString())){
 							if(primerComparado.toString().charAt(0)=='-')
 								primerComparado = new StringBuilder("_neg"+primerComparado.toString().replace(".", "_").replace('-', '_').substring(1,primerComparado.toString().length()));	
-							else
-								primerComparado=new StringBuilder("_"+primerComparado.toString().replace(".", "_").replace('-', '_'));
+							else{
+								if(primerComparado.charAt(0)!='@')
+									primerComparado=new StringBuilder("_"+primerComparado.toString().replace(".", "_").replace('-', '_'));
+							}
 						}
 						if(flotantes.contains(segundoComparado.toString())){
 							if(segundoComparado.toString().charAt(0)=='-')
 								segundoComparado = new StringBuilder("_neg"+segundoComparado.toString().replace(".", "_").replace('-', '_').substring(1,segundoComparado.toString().length()));	
-							else
-								segundoComparado=new StringBuilder("_"+segundoComparado.toString().replace(".", "_").replace('-', '_'));
+							else{
+								if(segundoComparado.charAt(0)!='@')
+									segundoComparado=new StringBuilder("_"+segundoComparado.toString().replace(".", "_").replace('-', '_'));
+							}
 						}
 						escritura.append("FLD "+primerComparado+"\r\n"+"FLD "+segundoComparado+"\r\n"+"FCOM"+"\r\n"+"FSTSW AX"+"\r\n"+"SAHF"+"\r\n");
 					}
@@ -254,7 +261,9 @@ public void generarCodigoAssembler(StringBuilder escritura){
 					if(signo.toString().equals("!="))
 							escritura.append("JE "+label+"\r\n");
 					else{
-			    		if(!(primerComparado.toString().contains("_ul"))&&(!flotantes.contains(primerComparado.toString().substring(1, primerComparado.length()).replace("_", ".")))){
+						//l.info(AnalizadorLexico.tablaSimbolos.toString()); //TODO
+			    		//if(!(primerComparado.toString().contains("_ul"))&&(!flotantes.contains(primerComparado.toString().substring(1, primerComparado.length()).replace("_", ".")))){ //TODO SACAR
+						if(!flotantes.contains(primerComparado.toString().substring(1, primerComparado.length()).replace("_", "."))){
 			    			if(!((AnalizadorLexico.tablaSimbolos.get(primerComparado.toString())!=null)&&(AnalizadorLexico.tablaSimbolos.get(primerComparado.toString()).uso.equals("variable"))))
 			    				primerComparado = new StringBuilder(primerComparado.toString()+"_ul");
 							
@@ -272,13 +281,14 @@ public void generarCodigoAssembler(StringBuilder escritura){
 								primerComparado = new StringBuilder(primerComparado.toString().substring(1, primerComparado.length()).replace("_", "."));
 								
 							}
+							//l.info(primerComparado.toString());
 							if(AnalizadorLexico.tablaSimbolos.get(primerComparado.toString()).tipo.equals("single")){
 							
 								if(signo.toString().equals("<"))
-									escritura.append("JAE "+label+"\r\n"); //PORQUE NO SE
+									escritura.append("JAE "+label+"\r\n"); 
 									
 								if(signo.toString().equals(">"))
-									escritura.append("JBE "+label+"\r\n"); //AAAA WHY
+									escritura.append("JBE "+label+"\r\n"); 
 							}
 			    		}
 			    	}
@@ -357,6 +367,7 @@ public void generarCodigoAssembler(StringBuilder escritura){
 										pilaVar.push(aux);  
 										Token t = new Token("@auxDistintosTipos"+contador,AnalizadorLexico.TOKEN_UL,"uslinteger");
 										t.setUso("variable");
+										t.tipo="uslinteger";// TODO CREO QUE ESTO NO SIRVE PARA NADA PERO TAMPOCO ROMPE NADA
 										AnalizadorLexico.tablaSimbolos.put(t.lexema,t);
 								}
 									else{
@@ -366,6 +377,7 @@ public void generarCodigoAssembler(StringBuilder escritura){
 											pilaVar.push(aux);  
 											Token t = new Token("@auxDistintosTipos"+contador,AnalizadorLexico.TOKEN_UL,"single");
 											t.setUso("variable");
+											t.tipo="single";// TODO CREO QUE ESTO NO SIRVE PARA NADA PERO TAMPOCO ROMPE NADA
 											AnalizadorLexico.tablaSimbolos.put(t.lexema,t);
 									 }
 									}
@@ -417,8 +429,6 @@ public void generarCodigoSingle(StringBuilder operador,StringBuilder primerOpera
 			StringBuilder aux = null;
 			switch(op){
 			case "+":escritura.append("FLD "+primerOperando+"\r\n"+"FLD "+segundoOperando+"\r\n"+ "FADD"+"\r\n"+"FSTP "+"@aux"+contador+"\r\n");
-					 escritura.append("FLD cte_max_rango"+"\r\n"+"FLD @aux"+contador+"\r\n"+"FCOM"+"\r\n"+"FSTSW AX"+"\r\n"+"SAHF"+"\r\n"+"JA @LABEL_OVF"+"\r\n");
-					 escritura.append("FLD cte_min_rango"+"\r\n"+"FLD @aux"+contador+"\r\n"+"FCOM"+"\r\n"+"FSTSW AX"+"\r\n"+"SAHF"+"\r\n"+"JB @LABEL_OVF"+"\r\n");
 					 aux= new StringBuilder("@aux"+contador);
 					 pilaVar.push(aux);
 					
@@ -430,7 +440,7 @@ public void generarCodigoSingle(StringBuilder operador,StringBuilder primerOpera
 			break;
 			case "*":escritura.append("FLD "+primerOperando+"\r\n"+"FLD "+segundoOperando+"\r\n"+ "FMUL"+"\r\n"+"FSTP "+"@aux"+contador+"\r\n");
 					 escritura.append("FLD cte_max_rango"+"\r\n"+"FLD @aux"+contador+"\r\n"+"FCOM"+"\r\n"+"FSTSW AX"+"\r\n"+"SAHF"+"\r\n"+"JA @LABEL_OVF"+"\r\n");
-					 escritura.append("FLD cte_min_rango"+"\r\n"+"FLD @aux"+contador+"\r\n"+"FCOM"+"\r\n"+"FSTSW AX"+"\r\n"+"SAHF"+"\r\n"+"JB @LABEL_OVF"+"\r\n");
+					 escritura.append("FLD cte_min_rango"+"\r\n"+"FLD @aux"+contador+"\r\n"+"FCOM"+"\r\n"+"FSTSW AX"+"\r\n"+"SAHF"+"\r\n"+"JNAE @LABEL_OVFN"+"\r\n");
 					 aux= new StringBuilder("@aux"+contador);
 					 pilaVar.push(aux);		
 					 
@@ -446,6 +456,7 @@ public void generarCodigoSingle(StringBuilder operador,StringBuilder primerOpera
 			Token t = new Token("@aux"+contador,AnalizadorLexico.TOKEN_FLOAT,"single");
 			t.setUso("variable");
 			AnalizadorLexico.tablaSimbolos.put(t.lexema,t);
+			flotantes.add(t.lexema);
 			contador++;
 }
    
@@ -459,13 +470,14 @@ public void generarCodigoSingle(StringBuilder operador,StringBuilder primerOpera
     public void generarDeclaracion(){
 
     	declaracion.append("mensaje_overflow db \"La operacion aritmetica genero overflow\", 0 "+"\r\n");
+    	declaracion.append("mensaje_overflowNeg db \"La operacion aritmetica genero overflow (negativo)\", 0 "+"\r\n");
     	declaracion.append("mensaje_zero db \"Division por cero\", 0 "+"\r\n");
     	declaracion.append("mensaje_resultadoNeg db \"El resultado de la resta es negativo\", 0 "+"\r\n");
     	declaracion.append("mensaje_tipos db \"Se esta operando con tipos diferentes\", 0 "+"\r\n");
     	declaracion.append("print_single  db \"Solo se pueden printear variables de tipo uslinteger\", 0 "+"\r\n");
     	declaracion.append("zero  dd 0.0"+"\r\n");
         declaracion.append("cte_max_rango  dd 3.40282347E+38"+"\r\n");
-        declaracion.append("cte_min_rango  dd 1.17549435E-38"+"\r\n");
+        declaracion.append("cte_min_rango  dd -3.40282347E+38"+"\r\n");
         
     	
     	for(int k=0; k<mensajes.size(); k++)
@@ -485,13 +497,16 @@ public void generarCodigoSingle(StringBuilder operador,StringBuilder primerOpera
 
         declaracion.append(".const "+"\r\n");
         for(int uwu=0; uwu<flotantes.size(); uwu++){
-        	String declarado = flotantes.get(uwu).toString().replace(".", "_").replace('-', '_');
-        	l.info(flotantes.toString());// TODO SACAR ESTO... 
-        	String stringValor=flotantes.get(uwu).toString();
-        	if(stringValor.charAt(0)=='-')
-        		declaracion.append("_neg"+declarado.substring(1,declarado.length())+" dd "+ stringValor+"\n");
-        	else
-        		declaracion.append("_"+declarado+" dd "+ flotantes.get(uwu)+"\n");
+        	String declarado = flotantes.get(uwu).toString();
+        	if(declarado.charAt(0)!='@'){
+        		declarado=declarado.replace(".", "_").replace('-', '_');
+	        	//l.info(flotantes.toString());// TODO SACAR ESTO... 
+	        	String stringValor=flotantes.get(uwu).toString();
+	        	if(stringValor.charAt(0)=='-')
+	        		declaracion.append("_neg"+declarado.substring(1,declarado.length())+" dd "+ stringValor+"\n");
+	        	else
+	        		declaracion.append("_"+declarado+" dd "+ flotantes.get(uwu)+"\n");
+        	}
         }
     	declaracion.append(".code"+"\r\n"+"start: ");
     }
@@ -505,6 +520,7 @@ public void generarCodigoSingle(StringBuilder operador,StringBuilder primerOpera
     
     public void generarMensajesDeControl(){
     	fin.append("@LABEL_OVF:"+ "\r\n"+ "invoke MessageBox,NULL,addr mensaje_overflow,addr "+"mensaje_overflow,MB_OK"+"\r\n"+"JMP @LABEL_END"+"\r\n");
+    	fin.append("@LABEL_OVFN:"+ "\r\n"+ "invoke MessageBox,NULL,addr mensaje_overflowNeg,addr "+"mensaje_overflowNeg,MB_OK"+"\r\n"+"JMP @LABEL_END"+"\r\n");
     	fin.append("@LABEL_ZERO:"+ "\r\n"+ "invoke MessageBox,NULL,addr mensaje_zero,addr "+"mensaje_zero,MB_OK"+"\r\n"+"JMP @LABEL_END"+"\r\n");
     	fin.append("@LABEL_RESUL_NEG:"+ "\r\n"+ "invoke MessageBox,NULL,addr mensaje_resultadoNeg,addr "+"mensaje_resultadoNeg,MB_OK"+"\r\n"+"JMP @LABEL_END"+"\r\n");
     	fin.append("@LABEL_TIPOS_DISTINTOS:"+"\r\n"+ "invoke MessageBox,NULL,addr mensaje_tipos,addr "+"mensaje_tipos,MB_OK"+"\r\n"+"JMP @LABEL_END"+"\r\n");
