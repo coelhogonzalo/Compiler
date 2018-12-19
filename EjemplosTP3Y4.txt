@@ -9,7 +9,7 @@ __uslinteger varuslinteger,
 __single id,
 
 
-
+print('Fin del ejemplo 1'),
 __2.Declaracion de una lista de variables
 
 __Sin error
@@ -22,15 +22,15 @@ __single _var2;_single4;_single5,
 
 
 
-
+print('Fin del ejemplo 2'),
 __3.Sentencia de salida de mensajes por pantalla
 
 __Sin error
-print ( 'cadena probando' ),
+print ( 'Esta cadena es de 1 renglon' ),
 print ( _var1 ),
-print ( 'esta cadena es de -
-mas de un ren-
-glon' ),
+print ( 'esta cadena es de-
+mas de un renglon'),
+
 
 __Con error
 __print ( 'esto esta mal' ,
@@ -38,14 +38,16 @@ __print  'esto tambien' ),
 __print ( ' y esto tambien' )
 __print ('cadenita')
 
-
+print('Fin del ejemplo 3'),
 __4.Sentencia IF sin bloque ELSE con una sola sentencia.
 
 __Sin error
-if (0.2=0.3) 
-	print ( ' probando ' ),
+if (0.2=0.2) 
+	print ( ' Entre al if del ejemplo 4 ' ),
 endif
-
+if (0.2=0.3) 
+	print ( 'Nunca entro aca' ),
+endif
 __Con error
 __if ( 0.2 < 0.3 )
 __endif
@@ -59,23 +61,24 @@ __	print ( ' probando ' ),
 __endif
 
 
-
+print('Fin del ejemplo 4'),
 __5.Sentencia IF sin bloque ELSE con un bloque de sentencias
 
 __Sin error
 if ( _var1 = _var2 ){
-	print ( ' probando' ),
-	print ( ' probando parte dos' ),
+	print ( ' Entre al if del ejemplo 5' ),
+	print ( ' Entre porque _var1 y _var2 son iguales' ),
 }
 endif
 
+print('Fin del ejemplo 5'),
 __6.Sentencia IF con bloque ELSE
 
 __Sin error
-if ( 0.2 < 0.3 ) 
-	print ( ' dale que funcionas' ),
+if ( 0.2 > 0.3 ) 
+	print ('Nunca entro a este if del ejemplo 6'),
 else
-	print ( ' probando ' ),
+	print ('Entre al else del ejemplo 6 obviamente'), 
 endif
 
 __Con error
@@ -94,14 +97,14 @@ __	print ( ' probando ' ),
 __endif
 
 
-
+print('Fin del ejemplo 6'),
 __7.Sentencia IF con comparacion entre expresiones aritmeticas como condicion, con bloque ELSE
 
 __Sin error
 if ( 0.2+5.2 < 0.3-3.2 ) 
-	print ( ' dale que funcionas' ),
+	print ( ' Nunca entro a este if del ejemplo 7' ),
 else
-	print ( ' probando ' ),
+	print ( ' Entro al else del ejemplo 7 obviamente' ),
 endif
 
 __Con error
@@ -116,13 +119,20 @@ __	print ( ' probando' ),
 __endif
 
 
-
+print('Fin del ejemplo 7'),
 __8.Sentencia de control asignada como tema particular
 
 __Sin error
 while ( 0.6 < 0.5 )
-	print ( 'Soy el elegido' ),
-
+	print ( 'Nunca itero por aca' ),
+	
+uslinteger _condicion,
+_condicion:=1_ul,
+while (_condicion!=0_ul){
+	_condicion:=_condicion -1_ul,
+	print('La condicion del while se cumplio'),
+}
+print('La condicion del while se dejo de cumplir'),
 __Con error
 __while ( 0.2+5.2 < 0.3-3.2 
 __	print ( ' dale que funcionas' ),
@@ -133,6 +143,8 @@ __	print ( ' dale que funcionas' ),
 __while()
 __	print ( ' dale que funcionas' ),
 
+
+print('Fin del ejemplo 8'),
 __9.Sentencia de control asignada con IF anidado
 
 __Sin error
@@ -141,6 +153,7 @@ while ( 5.2 < 0.3  )
 		print ( ' No voy a printear esto ' ),
 	endif
 
+
 __Con error
 __while ( 0.2+5.2 < 0.3-3.2 
 __	if ( 0.2+5.2 < 0.3-3.2 
@@ -148,7 +161,7 @@ __		print ( ' dale que funcionas ' ),
 __	endif
 
 
-
+print('Fin del ejemplo 9'),
 __14. Declaracion de funciones con lista de permisos (si corresponde) con sentencias de control dentro.
 
 __Sin error
@@ -176,7 +189,7 @@ __	return ( 2.0 )
 __}
 __declaradaenfuncion := 0.2,
 
-
+print('Fin del ejemplo 14'),
 __15. Llamado de funciones como sentencia ejecutable.
 
 __Sin error
@@ -195,7 +208,7 @@ __varsingle2 := _funWRITEPASS (_diversion; write ),,   __invalido
 __varsingle2 := _funWRITEPASS (_diversion; write;pass ),,   __Valido
 
 
-
+print('Fin del ejemplo 15'),
 __16.Expresiones con numeros negativos
 
 __Sin error
@@ -248,3 +261,5 @@ uslinteger _lin9,
 _lin7 := 56,
 _lin8 := 34,
 _lin9 := _lin8 - _lin7,
+
+print('Fin del ejemplo 16 y fin del programa'),

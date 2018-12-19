@@ -10,7 +10,7 @@ public class FileManager {
     public FileManager(File fuente) throws FileNotFoundException {
         in = new FileReader(fuente);
     }
-
+    /*
     public Character readChar() throws IOException {
     	if ( LN == true ) {
             LN = false;
@@ -20,6 +20,21 @@ public class FileManager {
         if (ret != -1){
         	if(ret == asciiLN)
         		LN=true;
+            return (char) ret;
+        }else{
+        	if (!salto){
+        		salto = true;
+        		return new Character('\n');
+        	}
+        	else 
+        		return null;
+        }
+    }
+    */
+    public Character readChar() throws IOException {
+
+        int ret = in.read();
+        if (ret != -1){
             return (char) ret;
         }else{
         	if (!salto){
