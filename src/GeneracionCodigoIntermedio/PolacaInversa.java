@@ -25,9 +25,8 @@ public class PolacaInversa {
         PI.add(new StringBuilder(l));
     }
 
-    public void putAt(StringBuilder l, int index) {
-    	PI.remove(index);
-    	PI.add(index, new StringBuilder(l));
+    public void putAt(String l, int index) {
+        PI.add(index, new StringBuilder(l));
     }
 
     public void setSaltoIncond(){
@@ -41,13 +40,14 @@ public class PolacaInversa {
     
     public void bifurcacion() {
         pila.add(PI.size());
-        PI.add(null);
+        //System.out.println("La bifurcacion apilo "+PI.size());
+        PI.add(new StringBuilder("WHERE"));
         PI.add(new StringBuilder("B"));
     }
     
     public void bifurcacionElse() {
         pila.add(PI.size());
-        PI.add(null);
+        PI.add(new StringBuilder("WHERE"));
         PI.add(new StringBuilder("BT"));
     }
     
@@ -69,23 +69,21 @@ public class PolacaInversa {
 
     public void desapilar() {
         int pop = pila.pop();
-        StringBuilder v=new StringBuilder("Label" + PI.size());
-        this.putAt(v, pop);
-        //StringBuilder v = PI.get(pop);
-        //v.setLength(0);
-        //v.append("Label" + PI.size());
-        PI.add(new StringBuilder("Label" + pop));
+        StringBuilder v = PI.get(pop);
+        //System.out.println("Desapile esto "+v.toString());
+        v.setLength(0);
+        v.append("Label" + PI.size());
+        //PI.add(new StringBuilder("Label" + pop));
     }
     public void desapilarElse() {
         int pop = pila.pop();
-        StringBuilder v=new StringBuilder("Label" + (PI.size() + 2));
-        this.putAt(v, pop);
-        //StringBuilder v = PI.get(pop);
-        //v.setLength(0);
-        //v.append("Label" + (PI.size() + 2));
-        PI.add(new StringBuilder("Label" + pop));
+        StringBuilder v = PI.get(pop);
+        v.setLength(0);
+        v.append("Label" + (PI.size() + 2));
+        //PI.add(new StringBuilder("Label" + pop));
     }
 
+    public void finFuncion() {    }
 
     public void printContent(){//PARA DEBUG
     	System.out.println(this.PI);

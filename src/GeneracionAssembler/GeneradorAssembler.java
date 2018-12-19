@@ -99,8 +99,9 @@ public class GeneradorAssembler {
 				StringBuilder nom_fun = pilaVar.pop();
 				aux_param_declarada = pilaVar.pop();
 				funciones.append("@FUNCTION_"+nom_fun+":"+"\r\n");
-				funciones.append("MOV EAX, @aux_param"+"\r\n"+"MOV "+aux_param_declarada+", EAX"+"\r\n"); //asigno el valor del parametro real al de la funcion
+				funciones.append("MOV EAX, @aux_param"+nom_fun+"\r\n"+"MOV "+aux_param_declarada+", EAX"+"\r\n"); //asigno el valor del parametro real al de la funcion
 				estaEnFuncion = true; //HAGO QUE EMPIEZE A ESCRIBIR EN LA PARTE DE FUNCIONES
+				variables.add("@aux_param"+nom_fun);
 			}
 			else{
 			
@@ -188,9 +189,9 @@ public void generarCodigoAssembler(StringBuilder escritura){
 			StringBuilder fun_llamada = pilaVar.pop();
 			aux_parametro = pilaVar.pop(); //asigno el valor del parametro
 			if((AnalizadorLexico.tablaSimbolos.get(aux_parametro.toString()).tipo.equals("uslinteger")))
-				escritura.append("MOV EAX, "+aux_parametro+"\r\n"+"MOV @aux_param"+", EAX"+"\r\n"); //asigno el valor del parametro real al de la funcion
+				escritura.append("MOV EAX, "+aux_parametro+"\r\n"+"MOV @aux_param"+fun_llamada+", EAX"+"\r\n"); //asigno el valor del parametro real al de la funcion
 			else
-				escritura.append("FLD "+aux_parametro+"\r\n"+"FSTP @aux_param"+"\r\n");
+				escritura.append("FLD "+aux_parametro+"\r\n"+"FSTP @aux_param"+fun_llamada+"\r\n");
 			escritura.append("CALL @FUNCTION_"+fun_llamada+"\r\n");
 			StringBuilder aux_fun= new StringBuilder("@aux_fun"); //crea la var?
 			pilaVar.push(aux_fun);		
