@@ -3,7 +3,7 @@
 
 public class MatrizLexica {
 
-    private final int cantEstados = 20;
+    private final int cantEstados = 21;
     private final int cantCaracteres = 27;
 
     private CasillaLexica[][] MatrizCL = null;
@@ -76,9 +76,11 @@ public class MatrizLexica {
         filaLexica = new CasillaLexica[]{c(AS[1], 18), c(AS[1], 18), c(AS[1], 18), /*Recien cambiado1*/c(AS[1],18), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[0], 19), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[8], -1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[1],18), c(AS[1], 18), c(AS[1], 18), c(AS[9],-1), c(AS[9],-1),c(AS[1], 18),c(AS[1], 18),c(AS[0],18)};
         addFila(filaLexica, i++);
         //19
-        filaLexica = new CasillaLexica[]{c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[11], 18), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1),c(AS[9],-1),c(AS[9],-1),c(AS[0],19)};
+        filaLexica = new CasillaLexica[]{c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[11], 20), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1),c(AS[9],-1),c(AS[9],-1),c(AS[0],19)};
         addFila(filaLexica, i++);
-        //asdas
+        //20
+        filaLexica = new CasillaLexica[]{c(AS[1], 18), c(AS[1], 18), c(AS[1], 18), /*Recien cambiado1*/c(AS[1],18), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[0], 19), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[11],-1), c(AS[8], -1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[9],-1), c(AS[1],18), c(AS[1], 18), c(AS[1], 18), c(AS[9],-1), c(AS[9],-1),c(AS[0], 20),c(AS[0], 20),c(AS[0],18)};
+        addFila(filaLexica, i++);
     }
 /*Recien cambiado 1: Es para que las cadenas admitan _ en su formacion*/
 
