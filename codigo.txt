@@ -1,15 +1,33 @@
-__15. Llamado de funciones como sentencia ejecutable.
-
-__Sin error
-single _diversion,
-single _funWRITE2 ( single _param1) {
-	if(0.2 < 0.3)
-		print ( ' Entre al if dentro de funWRITE2 en el ejemplo 15' ),
-	endif
-	_param1 := 0.2,
-	return ( 2.0 )
+uslinteger _a;_var1;_c,
+single _b;_var2;_d,
+ 
+print('Hola'),
+ 
+_var1 := 20_ul,
+_a := 3_ul,
+_c := _var1 + _a,
+print(_c),
+ 
+_b := 2.0,
+ 
+uslinteger _funWRITEB ( uslinteger _param1) {
+   	print('_funWRITEB'),
+                _a := 16_ul,
+            	uslinteger _x,
+            	_x := 3_ul,
+    	_param1 := 4_ul,
+                return ( _x * 2_ul)
 }
-single _varsingle2,
-_varsingle2 := _funWRITE2 (_diversion; write ),,
-
-print('Fin del ejemplo 15'),
+ 
+uslinteger _funWRITEA ( uslinteger _param2) {
+   	print('_funWRITEA'),
+            	_param2:= _funWRITEB(_param2; write),,
+                print(_a),
+            	_a := 14_ul,
+          	_param2 := 9_ul,
+            	return (_param2 * 2_ul)
+}
+ 
+_var1 := _funWRITEA (_a; write;pass ),,
+print(_var1),
+print(_a),

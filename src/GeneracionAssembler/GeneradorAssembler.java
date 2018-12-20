@@ -42,7 +42,7 @@ public class GeneradorAssembler {
 
     //CONSTRUCTOR
     public GeneradorAssembler(PolacaInversa PI) {
-        this.PI = PI; //TODO sacar lo de abajo
+        this.PI = PI;
     }
 
 
@@ -166,9 +166,9 @@ public class GeneradorAssembler {
             if (flotantes.contains(asignacion.toString())) {
                 if (AnalizadorLexico.tablaSimbolos.get(asignacion.toString()).uso.equals("constante")) {
                     if (asignacion.toString().charAt(0) == '-')// Si es negativo
-                        asignacion.replace(0, asignacion.length(),"_neg" + asignacion.toString().replace(".", "_").substring(1, asignacion.toString().length()));
+                        asignacion.replace(0, asignacion.length(), "_neg" + asignacion.toString().replace(".", "_").substring(1, asignacion.toString().length()));
                     else// TODO PUEDE SER QUE ACA HAYA QUE CONTROLAR SI EL PRIMER CARACTER DE ASIGNACION ES @ PARA NO AGREGARLE EL _ AL PRINCIPIO
-                        asignacion.replace(0, asignacion.length(),"_" + asignacion.toString().replace(".", "_"));
+                        asignacion.replace(0, asignacion.length(), "_" + asignacion.toString().replace(".", "_"));
                 }
             }
             return false;
@@ -190,15 +190,19 @@ public class GeneradorAssembler {
             StringBuilder asignacionSinUL = new StringBuilder(asignacion);
             StringBuilder asignacionSingleCorregido = new StringBuilder(asignacion);
 
-            //TODO ESTO ES LO ULTIMO LO HIZO LUCHO IF CAGADA VER ESTO
-            //TODO solo para USLINTEGER
-            boolean hayMasParamsConPermisoEscritura = true;
-            StringBuilder paramConPermisoEscritura = new StringBuilder(aAsignar);
+            if (AnalizadorLexico.tablaSimbolos.get(asignacion.toString()).tipo.equals("uslinteger"))
+                isUslint = eliminarUl(asignacionSinUL);
+            if (AnalizadorLexico.tablaSimbolos.get(asignacion.toString()).tipo.equals("single"))
+                isUslint = eliminarPuntos(asignacionSingleCorregido);
+
+            boolean hayMasParamsConPermisoEscritura = false;
+            StringBuilder paramConPermisoEscritura = new StringBuilder("null");
+            //TODO ESTO ES LO ULTIMO LO HIZO LUCHO IF ANDA MAL VER ESTO
+            if ( paramsPermisoEscritura.containsKey(aAsignar.toString())) {
+                hayMasParamsConPermisoEscritura = true;
+                paramConPermisoEscritura = new StringBuilder(paramsPermisoEscritura.get(aAsignar.toString()));
+            }
             if (paramsPermisoEscritura.containsKey(paramConPermisoEscritura.toString())) {
-                if (AnalizadorLexico.tablaSimbolos.get(asignacion.toString()).tipo.equals("uslinteger"))
-                    isUslint = eliminarUl(asignacionSinUL);
-                if (AnalizadorLexico.tablaSimbolos.get(asignacion.toString()).tipo.equals("single"))
-                    isUslint = eliminarPuntos(asignacionSingleCorregido);
                 while (hayMasParamsConPermisoEscritura) {
                     System.out.println("luciano tangorra1: " + asignacion);
                     //if ( !asignacion.toString().contains("@aux_param")) {
@@ -225,23 +229,12 @@ public class GeneradorAssembler {
             }
 
             //Para las asignaciones que no son por llamado a funciones
-            if (isUslint) {
-                escritura.append("MOV EAX, " + asignacion + "\r\n" + "MOV " + aAsignar + ", EAX" + "\r\n");
-            } else {
-                if ((AnalizadorLexico.tablaSimbolos.get(aAsignar.toString()).tipo.equals("single")) && (AnalizadorLexico.tablaSimbolos.get(asignacion.toString()).tipo.equals("single"))) {
-                    if (flotantes.contains(asignacion.toString())) {
-                        if (AnalizadorLexico.tablaSimbolos.get(asignacion.toString()).uso.equals("constante")) {
-                            if (asignacion.toString().charAt(0) == '-')// Si es negativo
-                                asignacion = new StringBuilder("_neg" + asignacion.toString().replace(".", "_").substring(1, asignacion.toString().length()));
-                            else// TODO PUEDE SER QUE ACA HAYA QUE CONTROLAR SI EL PRIMER CARACTER DE ASIGNACION ES @ PARA NO AGREGARLE EL _ AL PRINCIPIO
-                                asignacion = new StringBuilder("_" + asignacion.toString().replace(".", "_"));
-                        }
-                    }
-                    escritura.append("FLD " + asignacion + "\r\n" + "FSTP " + aAsignar + "\r\n");
-                } else
-                    escritura.append("JMP @LABEL_TIPOS_DISTINTOS" + "\r\n");
-            }
-
+            if (isUslint)
+                escritura.append("MOV EAX, " + asignacionSinUL + "\r\n" + "MOV " + aAsignar + ", EAX" + "\r\n");
+            else if ((AnalizadorLexico.tablaSimbolos.get(aAsignar.toString()).tipo.equals("single")) && (AnalizadorLexico.tablaSimbolos.get(asignacion.toString()).tipo.equals("single")))
+                escritura.append("FLD " + asignacionSingleCorregido + "\r\n" + "FSTP " + aAsignar + "\r\n");
+            else
+                escritura.append("JMP @LABEL_TIPOS_DISTINTOS" + "\r\n");
         } else {
 
             //LLAMADO DE FUNCIONES
