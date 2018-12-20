@@ -127,10 +127,11 @@ while ( 0.6 < 0.5 )
 	print ( 'Nunca itero por aca' ),
 	
 uslinteger _condicion,
-_condicion:=1_ul,
-while (_condicion!=0_ul){
-	_condicion:=_condicion -1_ul,
-	print('La condicion del while se cumplio'),
+_condicion:= 0_ul,
+while (_condicion < 3_ul){
+	_condicion :=  _condicion+1_ul,
+	print(_condicion),
+	print('La condicion del while se cumplio ITERACION ver consola'),
 }
 print('La condicion del while se dejo de cumplir'),
 __Con error
@@ -142,7 +143,6 @@ __	print ( ' dale que funcionas' ),
 	
 __while()
 __	print ( ' dale que funcionas' ),
-
 
 print('Fin del ejemplo 8'),
 __9.Sentencia de control asignada con IF anidado
@@ -165,7 +165,7 @@ print('Fin del ejemplo 9'),
 __14. Declaracion de funciones con lista de permisos (si corresponde) con sentencias de control dentro.
 
 __Sin error
-single _diversion,
+
 single _funWRITE ( single _param1) {
 	if(0.2 < 0.3)
 		print ( ' dale que funcionas' ),
@@ -193,8 +193,16 @@ print('Fin del ejemplo 14'),
 __15. Llamado de funciones como sentencia ejecutable.
 
 __Sin error
+single _diversion,
+single _funWRITE2 ( single _param1) {
+	if(0.2 < 0.3)
+		print ( ' Entre al if dentro de funWRITE2 en el ejemplo 15' ),
+	endif
+	_param1 := 0.2,
+	return ( 2.0 )
+}
 single _varsingle2,
-_varsingle2 := _funWRITE (_diversion; write ),,
+_varsingle2 := _funWRITE2 (_diversion; write ),,
 
 __Con error
 
