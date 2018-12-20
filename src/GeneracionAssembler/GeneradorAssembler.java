@@ -149,8 +149,8 @@ public class GeneradorAssembler {
         }
     }
 
-    private boolean eliminarUl(StringBuilder aAsignar, StringBuilder asignacion) {
-        if ((AnalizadorLexico.tablaSimbolos.get(aAsignar.toString()).tipo.equals("uslinteger")) && (AnalizadorLexico.tablaSimbolos.get(asignacion.toString()).tipo.equals("uslinteger"))) {
+    private boolean eliminarUl(StringBuilder asignacion) {
+        if (AnalizadorLexico.tablaSimbolos.get(asignacion.toString()).tipo.equals("uslinteger")) {
             if (AnalizadorLexico.tablaSimbolos.get(asignacion.toString()).uso != null) {
                 if (AnalizadorLexico.tablaSimbolos.get(asignacion.toString()).uso.equals("constante")) {
                     asignacion.replace(0, asignacion.length(), asignacion.substring(0, asignacion.length() - 3));
@@ -159,6 +159,21 @@ public class GeneradorAssembler {
             return true;
         }
         return false;
+    }
+
+    private boolean eliminarPuntos(StringBuilder asignacion) {
+        if (AnalizadorLexico.tablaSimbolos.get(asignacion.toString()).tipo.equals("single")) {
+            if (flotantes.contains(asignacion.toString())) {
+                if (AnalizadorLexico.tablaSimbolos.get(asignacion.toString()).uso.equals("constante")) {
+                    if (asignacion.toString().charAt(0) == '-')// Si es negativo
+                        asignacion.replace(0, asignacion.length(),"_neg" + asignacion.toString().replace(".", "_").substring(1, asignacion.toString().length()));
+                    else// TODO PUEDE SER QUE ACA HAYA QUE CONTROLAR SI EL PRIMER CARACTER DE ASIGNACION ES @ PARA NO AGREGARLE EL _ AL PRINCIPIO
+                        asignacion.replace(0, asignacion.length(),"_" + asignacion.toString().replace(".", "_"));
+                }
+            }
+            return false;
+        }
+        return true;
     }
 
     public void generarCodigoAssembler(StringBuilder escritura) {
@@ -173,6 +188,7 @@ public class GeneradorAssembler {
             l.info(AnalizadorLexico.tablaSimbolos.toString());
             boolean isUslint = false;
             StringBuilder asignacionSinUL = new StringBuilder(asignacion);
+            StringBuilder asignacionSingleCorregido = new StringBuilder(asignacion);
 
             //TODO ESTO ES LO ULTIMO LO HIZO LUCHO IF CAGADA VER ESTO
             //TODO solo para USLINTEGER
@@ -180,7 +196,9 @@ public class GeneradorAssembler {
             StringBuilder paramConPermisoEscritura = new StringBuilder(aAsignar);
             if (paramsPermisoEscritura.containsKey(paramConPermisoEscritura.toString())) {
                 if (AnalizadorLexico.tablaSimbolos.get(asignacion.toString()).tipo.equals("uslinteger"))
-                    isUslint = eliminarUl(paramConPermisoEscritura, asignacionSinUL);
+                    isUslint = eliminarUl(asignacionSinUL);
+                if (AnalizadorLexico.tablaSimbolos.get(asignacion.toString()).tipo.equals("single"))
+                    isUslint = eliminarPuntos(asignacionSingleCorregido);
                 while (hayMasParamsConPermisoEscritura) {
                     System.out.println("luciano tangorra1: " + asignacion);
                     //if ( !asignacion.toString().contains("@aux_param")) {
@@ -188,7 +206,7 @@ public class GeneradorAssembler {
                     if (AnalizadorLexico.tablaSimbolos.get(asignacion.toString()).tipo.equals("uslinteger"))
                         escritura.append("MOV EAX, " + asignacionSinUL + "\r\n" + "MOV " + paramConPermisoEscritura + ", EAX" + "\r\n");
                     else if (AnalizadorLexico.tablaSimbolos.get(asignacion.toString()).tipo.equals("single"))
-                        escritura.append("FLD " + asignacion + "\r\n" + "FSTP " + paramConPermisoEscritura + "\r\n");
+                        escritura.append("FLD " + asignacionSingleCorregido + "\r\n" + "FSTP " + paramConPermisoEscritura + "\r\n");
                     /*} else {
                         StringBuilder auxAsignacion = new StringBuilder(paramsPermisoEscrituraVuelta.get(asignacion));
                         if (AnalizadorLexico.tablaSimbolos.get(auxAsignacion.toString()).tipo.equals("uslinteger")) {
@@ -426,7 +444,8 @@ public class GeneradorAssembler {
     }
 
 
-    public void generarCodigoInteger(StringBuilder operador, StringBuilder primerOperando, StringBuilder segundoOperando, StringBuilder escritura) { //para los dos integer
+    public void generarCodigoInteger(StringBuilder operador, StringBuilder primerOperando, StringBuilder
+            segundoOperando, StringBuilder escritura) { //para los dos integer
         String op = operador.toString();
         StringBuilder aux = null;
         switch (op) {
@@ -461,7 +480,8 @@ public class GeneradorAssembler {
         contador++;
     }
 
-    public void generarCodigoSingle(StringBuilder operador, StringBuilder primerOperando, StringBuilder segundoOperando, StringBuilder escritura) { //para los dos single
+    public void generarCodigoSingle(StringBuilder operador, StringBuilder primerOperando, StringBuilder
+            segundoOperando, StringBuilder escritura) { //para los dos single
         //l.info(" primer operando: '"+primerOperando+"' segundo operando: '"+segundoOperando+"' ");
         String op = operador.toString();
         StringBuilder aux = null;

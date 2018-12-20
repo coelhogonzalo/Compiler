@@ -1,3 +1,15 @@
-        print('asdf-
-        asdf-
-        asdf'),
+__15. Llamado de funciones como sentencia ejecutable.
+
+__Sin error
+single _diversion,
+single _funWRITE2 ( single _param1) {
+	if(0.2 < 0.3)
+		print ( ' Entre al if dentro de funWRITE2 en el ejemplo 15' ),
+	endif
+	_param1 := 0.2,
+	return ( 2.0 )
+}
+single _varsingle2,
+_varsingle2 := _funWRITE2 (_diversion; write ),,
+
+print('Fin del ejemplo 15'),

@@ -13,8 +13,8 @@ public class Main {
     public static void main(String[] args) throws IOException, InterruptedException {
     	String fileName=null;
     	boolean genereAssembler=false;
-    	if(args.length>0){
-	    	fileName=args[0];
+    	if(args.length>-1){
+	    	fileName="codigo.txt";
 	        File f = new File(fileName);
 	        AnalizadorLexico al = new AnalizadorLexico(f);
 	        Parser p = new Parser(false);
