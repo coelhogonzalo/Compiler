@@ -178,7 +178,6 @@ public class GeneradorAssembler {
             //TODO solo para USLINTEGER
             boolean hayMasParamsConPermisoEscritura = true;
             StringBuilder paramConPermisoEscritura = new StringBuilder(aAsignar);
-
             if (paramsPermisoEscritura.containsKey(paramConPermisoEscritura.toString())) {
                 if (AnalizadorLexico.tablaSimbolos.get(asignacion.toString()).tipo.equals("uslinteger"))
                     isUslint = eliminarUl(paramConPermisoEscritura, asignacionSinUL);
@@ -190,15 +189,15 @@ public class GeneradorAssembler {
                         escritura.append("MOV EAX, " + asignacionSinUL + "\r\n" + "MOV " + paramConPermisoEscritura + ", EAX" + "\r\n");
                     else if (AnalizadorLexico.tablaSimbolos.get(asignacion.toString()).tipo.equals("single"))
                         escritura.append("FLD " + asignacion + "\r\n" + "FSTP " + paramConPermisoEscritura + "\r\n");
-                /*} else {
-                    StringBuilder auxAsignacion = new StringBuilder(paramsPermisoEscrituraVuelta.get(asignacion));
-                    if (AnalizadorLexico.tablaSimbolos.get(auxAsignacion.toString()).tipo.equals("uslinteger")) {
-                        isUslint = eliminarUl(aAsignar, auxAsignacion);
-                        escritura.append("MOV EAX, " + asignacion + "\r\n" + "MOV " + paramConPermisoEscritura + ", EAX" + "\r\n");
-                    } else if (AnalizadorLexico.tablaSimbolos.get(auxAsignacion.toString()).tipo.equals("single")) {
-                        escritura.append("FLD " + asignacion + "\r\n" + "FSTP " + paramConPermisoEscritura + "\r\n");
-                    }
-                }*/
+                    /*} else {
+                        StringBuilder auxAsignacion = new StringBuilder(paramsPermisoEscrituraVuelta.get(asignacion));
+                        if (AnalizadorLexico.tablaSimbolos.get(auxAsignacion.toString()).tipo.equals("uslinteger")) {
+                            isUslint = eliminarUl(aAsignar, auxAsignacion);
+                            escritura.append("MOV EAX, " + asignacion + "\r\n" + "MOV " + paramConPermisoEscritura + ", EAX" + "\r\n");
+                        } else if (AnalizadorLexico.tablaSimbolos.get(auxAsignacion.toString()).tipo.equals("single")) {
+                            escritura.append("FLD " + asignacion + "\r\n" + "FSTP " + paramConPermisoEscritura + "\r\n");
+                        }
+                    }*/
                     if (paramsPermisoEscritura.containsKey(paramConPermisoEscritura.toString())) {
                         paramConPermisoEscritura = new StringBuilder(paramsPermisoEscritura.get(paramConPermisoEscritura.toString()));
                         System.out.println(paramConPermisoEscritura);
@@ -206,19 +205,6 @@ public class GeneradorAssembler {
                         hayMasParamsConPermisoEscritura = false;
                 }
             }
-            // TODO Esto no se esta haciendo... Se deberia ejecutar porque no siempre entra en la condicion del IF MARCADO DE LA LINEA 190
-            else// TODO AVISO ESTO LO TUVE QUE HACER ASI PORQUE LA FUNCION QUE HICIERON NO MODIFICA EL VALOR DE ASIGNACION... LO IDEAL SERIA QUE SE EJECUTE UNA SOLA VEZ TODOS ESTOS IF Y NO DOS VECES PERO NO ENTIENDO SU CODIGO Y NO QUIERO TOCAR MUCHO
-                if ((AnalizadorLexico.tablaSimbolos.get(aAsignar.toString()).tipo.equals("uslinteger")) && (AnalizadorLexico.tablaSimbolos.get(asignacion.toString()).tipo.equals("uslinteger"))) {
-                    if (AnalizadorLexico.tablaSimbolos.get(asignacion.toString()).uso != null) {
-                        if (AnalizadorLexico.tablaSimbolos.get(asignacion.toString()).uso.equals("constante")) {
-                            asignacion = new StringBuilder(asignacion.substring(0, asignacion.length() - 3));
-                        }
-
-
-                    }
-                    isUslint = true;
-                }
-
 
             //Para las asignaciones que no son por llamado a funciones
             if (isUslint) {
