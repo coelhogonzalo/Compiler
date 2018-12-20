@@ -183,9 +183,7 @@ public class GeneradorAssembler {
             pilaVar.pop(); //SACO EL :=
             StringBuilder aAsignar = pilaVar.pop();
             StringBuilder asignacion = pilaVar.pop();
-            l.info("a asignar: " + aAsignar);
-            l.info("asignacion: " + asignacion);
-            l.info(AnalizadorLexico.tablaSimbolos.toString());
+
             boolean isUslint = false;
             StringBuilder asignacionSinUL = new StringBuilder(asignacion);
             StringBuilder asignacionSingleCorregido = new StringBuilder(asignacion);
@@ -197,36 +195,23 @@ public class GeneradorAssembler {
 
             boolean hayMasParamsConPermisoEscritura = false;
             StringBuilder paramConPermisoEscritura = new StringBuilder("null");
-            //TODO ESTO ES LO ULTIMO LO HIZO LUCHO IF ANDA MAL VER ESTO
-            if ( paramsPermisoEscritura.containsKey(aAsignar.toString())) {
+
+            if (paramsPermisoEscritura.containsKey(aAsignar.toString())) {
                 hayMasParamsConPermisoEscritura = true;
                 paramConPermisoEscritura = new StringBuilder(paramsPermisoEscritura.get(aAsignar.toString()));
             }
-            if (paramsPermisoEscritura.containsKey(paramConPermisoEscritura.toString())) {
-                while (hayMasParamsConPermisoEscritura) {
-                    System.out.println("luciano tangorra1: " + asignacion);
-                    //if ( !asignacion.toString().contains("@aux_param")) {
-                    System.out.println("luciano tangorra2: " + asignacionSinUL);
-                    if (AnalizadorLexico.tablaSimbolos.get(asignacion.toString()).tipo.equals("uslinteger"))
-                        escritura.append("MOV EAX, " + asignacionSinUL + "\r\n" + "MOV " + paramConPermisoEscritura + ", EAX" + "\r\n");
-                    else if (AnalizadorLexico.tablaSimbolos.get(asignacion.toString()).tipo.equals("single"))
-                        escritura.append("FLD " + asignacionSingleCorregido + "\r\n" + "FSTP " + paramConPermisoEscritura + "\r\n");
-                    /*} else {
-                        StringBuilder auxAsignacion = new StringBuilder(paramsPermisoEscrituraVuelta.get(asignacion));
-                        if (AnalizadorLexico.tablaSimbolos.get(auxAsignacion.toString()).tipo.equals("uslinteger")) {
-                            isUslint = eliminarUl(aAsignar, auxAsignacion);
-                            escritura.append("MOV EAX, " + asignacion + "\r\n" + "MOV " + paramConPermisoEscritura + ", EAX" + "\r\n");
-                        } else if (AnalizadorLexico.tablaSimbolos.get(auxAsignacion.toString()).tipo.equals("single")) {
-                            escritura.append("FLD " + asignacion + "\r\n" + "FSTP " + paramConPermisoEscritura + "\r\n");
-                        }
-                    }*/
-                    if (paramsPermisoEscritura.containsKey(paramConPermisoEscritura.toString())) {
-                        paramConPermisoEscritura = new StringBuilder(paramsPermisoEscritura.get(paramConPermisoEscritura.toString()));
-                        System.out.println(paramConPermisoEscritura);
-                    } else
-                        hayMasParamsConPermisoEscritura = false;
-                }
+            while (hayMasParamsConPermisoEscritura) {
+                if (AnalizadorLexico.tablaSimbolos.get(asignacion.toString()).tipo.equals("uslinteger"))
+                    escritura.append("MOV EAX, " + asignacionSinUL + "\r\n" + "MOV " + paramConPermisoEscritura + ", EAX" + "\r\n");
+                else if (AnalizadorLexico.tablaSimbolos.get(asignacion.toString()).tipo.equals("single"))
+                    escritura.append("FLD " + asignacionSingleCorregido + "\r\n" + "FSTP " + paramConPermisoEscritura + "\r\n");
+                if (paramsPermisoEscritura.containsKey(paramConPermisoEscritura.toString())) {
+                    paramConPermisoEscritura = new StringBuilder(paramsPermisoEscritura.get(paramConPermisoEscritura.toString()));
+                    System.out.println(paramConPermisoEscritura);
+                } else
+                    hayMasParamsConPermisoEscritura = false;
             }
+
 
             //Para las asignaciones que no son por llamado a funciones
             if (isUslint)
@@ -243,7 +228,7 @@ public class GeneradorAssembler {
                 StringBuilder fun_llamada = pilaVar.pop();
                 aux_parametro = pilaVar.pop(); //asigno el valor del parametro
                 //paramsPermisoEscritura.put("@aux_param" + fun_llamada, aux_parametro.toString());     //Para llamados a funciones dentro de funciones
-                //TODO DESCOMENTAR ESTO
+                //TODO ver si anda esto o ya esta resuelto en el while
 
 
                 if ((AnalizadorLexico.tablaSimbolos.get(aux_parametro.toString()).tipo.equals("uslinteger")))
