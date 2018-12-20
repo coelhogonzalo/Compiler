@@ -20,13 +20,13 @@
 package Parser;
 import java.io.IOException;
 import AnalizadorLexico.AnalizadorLexico;
-import AnalizadorLexico.Error;
 import AnalizadorLexico.Token;
+import AnalizadorLexico.Error;
 import java.util.ArrayList;
 import GeneracionCodigoIntermedio.PolacaInversa;
 import java.util.Arrays;
 import java.util.HashMap;
-//#line 26 "Parser.java"
+//#line 27 "Parser.java"
 
 
 
@@ -528,7 +528,7 @@ final static String yyrule[] = {
 "lista_permisos : WRITE PASS",
 };
 
-//#line 356 "gramatica.y"
+//#line 348 "gramatica.y"
 
 private static final int Rd = 0;
 private static final int Wr = 1;
@@ -572,7 +572,6 @@ public int parsepublico(){
 public void registrarTipo(String listaVariables,String tipo){
 	ArrayList<String> items= new ArrayList<String>(Arrays.asList(listaVariables.split(" ")));
 	for (String item:items){
-		//System.out.println(items.size()+" El identificador es :'"+item+"'");
 		Token t=AnalizadorLexico.tablaSimbolos.get(item);
 		t.tipo=tipo;
 	}
@@ -580,10 +579,9 @@ public void registrarTipo(String listaVariables,String tipo){
 		char nuevoChar=listaVariables.charAt(pos);
 		if(nuevoChar!=' '){
 			idVariable=idVariable+nuevoChar;
-			System.out.println(idVariable);
 		}
 		else{
-			Token t=Analizador_Lexico.tablaSimbolos.get(idVariable);
+			Token t=AnalizadorLexico.tablaSimbolos.get(idVariable);
 			t.tipo=tipo;
 			idVariable="";
 		}
@@ -602,56 +600,8 @@ public static boolean isPermited(int permisoFuncion, int permisoInvocacion){
     	return false;
     }
 
-    public static void main(String [] args) {
-    	System.out.println();
-    	System.out.println("Testing con readonly en la funcion:");
-    	System.out.println();
-    	if(isPermited(Parser.Rd,Parser.Rd))
-    		System.out.println("Recibi un readonly y la funcion tenia un readonly, lo acepte");
-    	if(isPermited(Parser.Rd,Parser.Ps))
-    		System.out.println("Recibi un pass y la funcion tenia readonly, lo acepte");
-    	if(isPermited(Parser.Rd,Parser.Wr))
-    		System.out.println("Recibi un write y la funcion tenia readonly, lo acepte");
-    	if(isPermited(Parser.Rd,Parser.Wrps))
-    		System.out.println("Recibi un write;pass y la funcion tenia readonly, lo acepte");
-    	System.out.println();
-    	System.out.println("Testing con pass en la funcion:");
-    	System.out.println();
-    	if(isPermited(Parser.Ps,Parser.Ps))
-    		System.out.println("Recibi un pass y la funcion tenia un pass, lo acepte");
-    	if(!isPermited(Parser.Ps,Parser.Rd))
-    		System.out.println("Recibi un readonly y la funcion tenia pass, RECHAZADO");
-    	if(!isPermited(Parser.Ps,Parser.Wr))
-    		System.out.println("Recibi un write y la funcion tenia pass, RECHAZADO");
-    	if(isPermited(Parser.Ps,Parser.Wrps))
-    		System.out.println("Recibi un write;pass y la funcion tenia pass, lo acepte");
-    	System.out.println();
-    	System.out.println("Testing con write en la funcion:");
-    	System.out.println();
-    	if(isPermited(Parser.Wr,Parser.Wr))
-    		System.out.println("Recibi un write y la funcion tenia write, lo acepte");
-    	if(!isPermited(Parser.Wr,Parser.Ps))
-    		System.out.println("Recibi un pass y la funcion tenia un write, RECHAZADO");
-    	if(!isPermited(Parser.Wr,Parser.Rd))
-    		System.out.println("Recibi un readonly y la funcion tenia write, RECHAZADO");
-    	if(isPermited(Parser.Wr,Parser.Wrps))
-    		System.out.println("Recibi un write;pass y la funcion tenia write, lo acepte");
-    	System.out.println();
-    	System.out.println("Testing con write;pass en la funcion:");
-    	System.out.println();
-    	if(!isPermited(Parser.Wrps,Parser.Wr))
-    		System.out.println("Recibi un write y la funcion tenia write;pass, RECHAZADO");
-    	if(!isPermited(Parser.Wrps,Parser.Ps))
-    		System.out.println("Recibi un pass y la funcion tenia un write;pass, RECHAZADO");
-    	if(!isPermited(Parser.Wrps,Parser.Rd))
-    		System.out.println("Recibi un readonly y la funcion tenia write;pass, RECHAZADO");
-    	if(isPermited(Parser.Wrps,Parser.Wrps))
-    		System.out.println("Recibi un write;pass y la funcion tenia write;pass, lo acepte");
-    	System.out.println();
-    	System.out.println("Testing con noseusaelparametro en la funcion:");
-    	System.out.println();
-    }
-//#line 582 "Parser.java"
+    
+//#line 533 "Parser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -806,25 +756,25 @@ boolean doaction;
       {
 //########## USER-SUPPLIED ACTIONS ##########
 case 6:
-//#line 33 "gramatica.y"
-{ registrarTipo( val_peek(1).sval, val_peek(2).sval); /*System.out.println($2.sval);*/
+//#line 34 "gramatica.y"
+{ registrarTipo( val_peek(1).sval, val_peek(2).sval); 
 Parser.estructuras.add("Se detecto la declaracion de variables en la linea "+AnalizadorLexico.cantLN+"\r\n");}
 break;
 case 7:
-//#line 35 "gramatica.y"
+//#line 36 "gramatica.y"
 { parametrosFunciones.put(val_peek(2).sval,val_peek(1).sval);
 	Parser.estructuras.add("Se detecto la declaracion de una funcion en la linea "+AnalizadorLexico.cantLN+"\r\n");}
 break;
 case 8:
-//#line 38 "gramatica.y"
+//#line 39 "gramatica.y"
 {this.errores.add(new ErrorG("Error 001: Falta definir el tipo de las variables", AnalizadorLexico.cantLN));}
 break;
 case 9:
-//#line 39 "gramatica.y"
+//#line 40 "gramatica.y"
 {this.errores.add(new ErrorG("Error 004: Falta definir los parametros de la funcion", AnalizadorLexico.cantLN));}
 break;
 case 10:
-//#line 43 "gramatica.y"
+//#line 44 "gramatica.y"
 { estoyEnFuncion = true; yyval=val_peek(0);/*Le paso el nombre de la funcion para arriba*/
                 idFun = val_peek(0).sval;
  Token t=AnalizadorLexico.tablaSimbolos.get(val_peek(0).sval); 
@@ -843,17 +793,17 @@ case 10:
 	}
 break;
 case 11:
-//#line 59 "gramatica.y"
+//#line 60 "gramatica.y"
 {PI.inicioFuncion("NOMBRE_FALTANTE"); this.ambitoActual=this.ambitoActual+"@"+"NOMBRE_FALTANTE";
 	this.errores.add(new ErrorG("Error 002: Falta definir el nombre de la funcion", AnalizadorLexico.cantLN));}
 break;
 case 12:
-//#line 61 "gramatica.y"
+//#line 62 "gramatica.y"
 {PI.inicioFuncion(val_peek(0).sval); this.ambitoActual=this.ambitoActual+"@"+val_peek(0).sval;
 	this.errores.add(new ErrorG("Error 003: Falta definir el tipo de la funcion", AnalizadorLexico.cantLN));}
 break;
 case 13:
-//#line 65 "gramatica.y"
+//#line 66 "gramatica.y"
 { yyval=val_peek(2);/*Le paso el tipo del parametro para arriba*/
                 idParam = val_peek(1).sval;
 PI.paramFun(val_peek(1).sval); 
@@ -872,46 +822,46 @@ Token t=AnalizadorLexico.tablaSimbolos.get(val_peek(1).sval);
 		System.out.println("El token que quisiste recuperar es null (ndmpp)"); }
 break;
 case 14:
-//#line 81 "gramatica.y"
+//#line 82 "gramatica.y"
 {idParam = val_peek(0).sval;PI.paramFun(val_peek(0).sval);
 	this.errores.add(new ErrorG("Error 005: Falta un ) despues del identificador", AnalizadorLexico.cantLN));}
 break;
 case 15:
-//#line 83 "gramatica.y"
+//#line 84 "gramatica.y"
 {idParam = val_peek(1).sval;PI.paramFun(val_peek(1).sval);
 	this.errores.add(new ErrorG("Error 006 : Falta un ( antes del tipo del parametro", AnalizadorLexico.cantLN));}
 break;
 case 16:
-//#line 87 "gramatica.y"
+//#line 88 "gramatica.y"
 {
 
     this.ambitoActual=AnalizadorLexico.cortarAmbito(this.ambitoActual);}
 break;
 case 21:
-//#line 98 "gramatica.y"
+//#line 99 "gramatica.y"
 { registrarTipo( val_peek(1).sval, val_peek(2).sval); 
 Parser.estructuras.add("Se detecto la declaracion de variables en la linea "+AnalizadorLexico.cantLN+"\r\n");}
 break;
 case 22:
-//#line 101 "gramatica.y"
+//#line 102 "gramatica.y"
 {this.errores.add(new ErrorG("Error 001: Falta definir el tipo de las variables", AnalizadorLexico.cantLN));}
 break;
 case 23:
-//#line 102 "gramatica.y"
+//#line 103 "gramatica.y"
 { this.errores.add(new ErrorG("Error 007: Se declaro una funcion dentro de otra funcion", AnalizadorLexico.cantLN));}
 break;
 case 24:
-//#line 105 "gramatica.y"
+//#line 106 "gramatica.y"
 { estoyEnFuncion = false; PI.put("return");
                 idFun = "None";
  }
 break;
 case 25:
-//#line 108 "gramatica.y"
+//#line 109 "gramatica.y"
 {this.errores.add(new ErrorG("Error 008: La funcion debe retornar un valor", AnalizadorLexico.cantLN));}
 break;
 case 26:
-//#line 112 "gramatica.y"
+//#line 113 "gramatica.y"
 {Token t=AnalizadorLexico.tablaSimbolos.get(val_peek(0).sval);
 	if(t!=null){
 		if(t.declarada==false&&t.uso!="parametro"){
@@ -927,7 +877,7 @@ case 26:
 		System.out.println("El token que quisiste recuperar es null");}
 break;
 case 27:
-//#line 125 "gramatica.y"
+//#line 126 "gramatica.y"
 {	Token t=AnalizadorLexico.tablaSimbolos.get(val_peek(0).sval);
 	if(t!=null){
 		if(t.declarada==false&&t.uso!="parametro"){
@@ -944,138 +894,138 @@ case 27:
 	}
 break;
 case 33:
-//#line 151 "gramatica.y"
+//#line 152 "gramatica.y"
 {this.errores.add(new ErrorG("Error 010: Se esperaba un )", AnalizadorLexico.cantLN));}
 break;
 case 34:
-//#line 152 "gramatica.y"
+//#line 153 "gramatica.y"
 {this.errores.add(new ErrorG("Error 011: Se esperaba una expresion", AnalizadorLexico.cantLN));}
 break;
 case 35:
-//#line 155 "gramatica.y"
+//#line 156 "gramatica.y"
 { PI.put(val_peek(1).sval); }
 break;
 case 36:
-//#line 156 "gramatica.y"
+//#line 157 "gramatica.y"
 {
 		PI.put(val_peek(1).sval); }
 break;
 case 37:
-//#line 158 "gramatica.y"
+//#line 159 "gramatica.y"
 {this.errores.add(new ErrorG("Error 012 : Falta un )", AnalizadorLexico.cantLN));}
 break;
 case 38:
-//#line 159 "gramatica.y"
+//#line 160 "gramatica.y"
 {this.errores.add(new ErrorG("Error 013 : Falta un (", AnalizadorLexico.cantLN));}
 break;
 case 39:
-//#line 162 "gramatica.y"
+//#line 163 "gramatica.y"
 { Parser.estructuras.add("Se detecto un print en la linea "+AnalizadorLexico.cantLN+"\r\n"); PI.put("print");}
 break;
 case 40:
-//#line 163 "gramatica.y"
+//#line 164 "gramatica.y"
 { Parser.estructuras.add("Se detecto una asignacion en  la linea "+AnalizadorLexico.cantLN+"\r\n");}
 break;
 case 41:
-//#line 164 "gramatica.y"
+//#line 165 "gramatica.y"
 { Parser.estructuras.add("Se detecto un if en la linea "+AnalizadorLexico.cantLN+"\r\n"); PI.desapilar(); }
 break;
 case 42:
-//#line 165 "gramatica.y"
+//#line 166 "gramatica.y"
 { Parser.estructuras.add("Se detecto un if en la linea "+AnalizadorLexico.cantLN+"\r\n"); PI.desapilar();}
 break;
 case 43:
-//#line 166 "gramatica.y"
+//#line 167 "gramatica.y"
 { Parser.estructuras.add("Se detecto un while en la linea "+AnalizadorLexico.cantLN+"\r\n"); PI.saltoIncond(); PI.desapilar(); }
 break;
 case 44:
-//#line 170 "gramatica.y"
-{this.errores.add(new ErrorG("Error 015: Se esperaba un bloque de sentencias en la rama del if", AnalizadorLexico.cantLN));}
-break;
-case 45:
 //#line 171 "gramatica.y"
 {this.errores.add(new ErrorG("Error 015: Se esperaba un bloque de sentencias en la rama del if", AnalizadorLexico.cantLN));}
 break;
-case 46:
+case 45:
 //#line 172 "gramatica.y"
+{this.errores.add(new ErrorG("Error 015: Se esperaba un bloque de sentencias en la rama del if", AnalizadorLexico.cantLN));}
+break;
+case 46:
+//#line 173 "gramatica.y"
 {this.errores.add(new ErrorG("Error 016: Se esperaba un bloque de sentencias en la rama del else", AnalizadorLexico.cantLN));}
 break;
 case 47:
-//#line 173 "gramatica.y"
+//#line 174 "gramatica.y"
 {this.errores.add(new ErrorG("Error 017: Se esperaba un bloque de sentencias en la rama del if y del else", AnalizadorLexico.cantLN));}
 break;
 case 48:
-//#line 175 "gramatica.y"
+//#line 176 "gramatica.y"
 {this.errores.add(new ErrorG("Error 014: Se esperaba una coma al final", AnalizadorLexico.cantLN));}
 break;
 case 49:
-//#line 176 "gramatica.y"
-{this.errores.add(new ErrorG("Error 014: Se esperaba una coma al final ", AnalizadorLexico.cantLN));}
+//#line 177 "gramatica.y"
+{this.errores.add(new ErrorG("Error 014: Se esperaba una coma al final", AnalizadorLexico.cantLN));}
 break;
 case 50:
-//#line 179 "gramatica.y"
+//#line 180 "gramatica.y"
 { PI.bifurcacion(); }
 break;
 case 51:
-//#line 183 "gramatica.y"
+//#line 184 "gramatica.y"
 { PI.desapilarElse(); PI.bifurcacionElse(); }
 break;
 case 52:
-//#line 187 "gramatica.y"
+//#line 188 "gramatica.y"
 { PI.bifurcacion(); }
 break;
 case 53:
-//#line 191 "gramatica.y"
+//#line 192 "gramatica.y"
 { PI.setSaltoIncond(); }
 break;
 case 55:
-//#line 198 "gramatica.y"
+//#line 199 "gramatica.y"
 {this.errores.add(new ErrorG("Error 018: No se definio una condicion", AnalizadorLexico.cantLN));}
 break;
 case 56:
-//#line 199 "gramatica.y"
+//#line 200 "gramatica.y"
 {this.errores.add(new ErrorG("Error 019: Se esperaba un ) despues de la condicion", AnalizadorLexico.cantLN));}
 break;
 case 57:
-//#line 200 "gramatica.y"
+//#line 201 "gramatica.y"
 {this.errores.add(new ErrorG("Error 020: Se esperaba un ( antes de la condicion", AnalizadorLexico.cantLN));}
 break;
 case 58:
-//#line 206 "gramatica.y"
+//#line 207 "gramatica.y"
 { PI.put(val_peek(1).sval); }
 break;
 case 59:
-//#line 207 "gramatica.y"
+//#line 208 "gramatica.y"
 {this.errores.add(new ErrorG("Error 021: Se esperaba un operador logico valido", AnalizadorLexico.cantLN));}
 break;
 case 60:
-//#line 211 "gramatica.y"
+//#line 212 "gramatica.y"
 { yyval.sval = "<"; }
 break;
 case 61:
-//#line 212 "gramatica.y"
+//#line 213 "gramatica.y"
 { yyval.sval = ">"; }
 break;
 case 62:
-//#line 213 "gramatica.y"
+//#line 214 "gramatica.y"
 { yyval.sval = "<="; }
 break;
 case 63:
-//#line 214 "gramatica.y"
+//#line 215 "gramatica.y"
 { yyval.sval = ">="; }
 break;
 case 64:
-//#line 215 "gramatica.y"
+//#line 216 "gramatica.y"
 { yyval.sval = "="; }
 break;
 case 65:
-//#line 216 "gramatica.y"
+//#line 217 "gramatica.y"
 { yyval.sval = "!="; }
 break;
 case 66:
-//#line 220 "gramatica.y"
+//#line 221 "gramatica.y"
 {
-	System.out.println("El tipo de ID :'"+AnalizadorLexico.tablaSimbolos.get(val_peek(2).sval).tipo+"' y el tipo de la expresion:'"+val_peek(0).sval+"'");
+	
 	if(!val_peek(0).sval.equals(AnalizadorLexico.tablaSimbolos.get(val_peek(2).sval).tipo))
 		this.errores.add(new ErrorG("Error 035 : El tipo de la variable "+val_peek(2).sval+" no coincide con el de la expresion", AnalizadorLexico.cantLN));
     if ( estoyEnFuncion ){
@@ -1102,35 +1052,35 @@ case 66:
 }
 break;
 case 67:
-//#line 246 "gramatica.y"
+//#line 247 "gramatica.y"
 {this.errores.add(new ErrorG("Error 022: Falta el operador de asignacion", AnalizadorLexico.cantLN));}
 break;
 case 68:
-//#line 249 "gramatica.y"
+//#line 250 "gramatica.y"
 { PI.put("+"); }
 break;
 case 69:
-//#line 250 "gramatica.y"
+//#line 251 "gramatica.y"
 { PI.put("-"); }
 break;
 case 70:
-//#line 251 "gramatica.y"
+//#line 252 "gramatica.y"
 {yyval.sval=val_peek(0).sval;}
 break;
 case 71:
-//#line 254 "gramatica.y"
+//#line 255 "gramatica.y"
 { PI.put("*"); }
 break;
 case 72:
-//#line 255 "gramatica.y"
+//#line 256 "gramatica.y"
 { PI.put("/"); }
 break;
 case 73:
-//#line 256 "gramatica.y"
+//#line 257 "gramatica.y"
 {yyval.sval=val_peek(0).sval;}
 break;
 case 74:
-//#line 259 "gramatica.y"
+//#line 260 "gramatica.y"
 { PI.put(val_peek(0).sval);  
 	Token t=AnalizadorLexico.tablaSimbolos.get(val_peek(0).sval);
 	if(t!=null){
@@ -1148,25 +1098,24 @@ case 74:
 	}
 break;
 case 75:
-//#line 275 "gramatica.y"
-{ PI.put(val_peek(0).sval); yyval.sval=AnalizadorLexico.tablaSimbolos.get(val_peek(0).sval).tipo; }
-break;
-case 76:
 //#line 276 "gramatica.y"
 { PI.put(val_peek(0).sval); yyval.sval=AnalizadorLexico.tablaSimbolos.get(val_peek(0).sval).tipo; }
 break;
-case 77:
+case 76:
 //#line 277 "gramatica.y"
+{ PI.put(val_peek(0).sval); yyval.sval=AnalizadorLexico.tablaSimbolos.get(val_peek(0).sval).tipo; }
+break;
+case 77:
+//#line 278 "gramatica.y"
 {	Token t=AnalizadorLexico.tablaSimbolos.get(val_peek(0).sval); 
-	/*Analizador_Lexico.tablaSimbolos.remove($2.sval); Lo saque porque puede borrar otra instancia positiva de un single*/
+	/*AnalizadorLexico.tablaSimbolos.remove($2.sval); Lo saque porque puede borrar otra instancia positiva de un single*/
 	t.lexema="-"+t.lexema; PI.put("-" + val_peek(0).sval);
 	AnalizadorLexico.tablaSimbolos.put(t.lexema,t);	yyval.sval=t.tipo;}
 break;
 case 78:
-//#line 281 "gramatica.y"
+//#line 282 "gramatica.y"
 { yyval.sval=AnalizadorLexico.tablaSimbolos.get(val_peek(2).sval).tipo;
                     if ( estoyEnFuncion ){
-                        /*System.out.println(idParam + " contra " + $2.sval);*/
                         if ( idParam.equals(val_peek(1).sval) )
                             if ( AnalizadorLexico.tablaSimbolos.get(idFun).permisoFun == Rd )
                                 AnalizadorLexico.tablaSimbolos.get(idFun).permisoFun = Ps;
@@ -1174,15 +1123,8 @@ case 78:
                                     AnalizadorLexico.tablaSimbolos.get(idFun).permisoFun = Wrps;
 
                     }
-                    /*System.out.println("\n idFun " + idFun + "\n" + "CantLN: " + Analizador_Lexico.cantLN);*/
-                    /*System.out.println(Analizador_Lexico.tablaSimbolos.get($1.sval).permisoFun + " y pase " + $2.ival);*/
 	                if ( !isPermited(AnalizadorLexico.tablaSimbolos.get(val_peek(2).sval).permisoFun, val_peek(1).ival) )
                         this.errores.add(new ErrorG("Error 026 : La funcion "+val_peek(2).sval+" no puede ser invocada con el permiso " + permisos[val_peek(1).ival], AnalizadorLexico.cantLN));
-					System.out.println();
-					System.out.println();
-					System.out.println(val_peek(1).sval+"");
-					System.out.println();
-					System.out.println();
 					String tipoParametro=AnalizadorLexico.tablaSimbolos.get(val_peek(1).sval).tipo;
 					if(!tipoParametro.equals(parametrosFunciones.get(val_peek(2).sval)))
 						this.errores.add(new ErrorG("Error 034 : La funcion "+val_peek(2).sval+" no puede ser invocada con un parametro de tipo '"+tipoParametro+"' ", AnalizadorLexico.cantLN));
@@ -1199,10 +1141,9 @@ case 78:
 		System.out.println("El identificador "+val_peek(2).sval+" no se agrego a la tabla de simbolos (El identificador es una funcion) (ndmpp)"); }
 break;
 case 79:
-//#line 316 "gramatica.y"
+//#line 309 "gramatica.y"
 {
                         yyval.ival = val_peek(1).ival; yyval.sval = val_peek(3).sval;
-						System.out.println(val_peek(3).sval+"acasads");
 						
 
  PI.put(val_peek(3).sval);
@@ -1221,34 +1162,34 @@ case 79:
 	}
 break;
 case 80:
-//#line 337 "gramatica.y"
+//#line 329 "gramatica.y"
 {this.errores.add(new ErrorG("Error 031: Se esperaba un )", AnalizadorLexico.cantLN));}
 break;
 case 81:
-//#line 338 "gramatica.y"
+//#line 330 "gramatica.y"
 {this.errores.add(new ErrorG("Error 032: Se esperaba un ;", AnalizadorLexico.cantLN));}
 break;
 case 84:
-//#line 345 "gramatica.y"
+//#line 337 "gramatica.y"
 { yyval.ival = Rd; }
 break;
 case 85:
-//#line 346 "gramatica.y"
+//#line 338 "gramatica.y"
 { yyval.ival = Wr; }
 break;
 case 86:
-//#line 347 "gramatica.y"
+//#line 339 "gramatica.y"
 { yyval.ival = Ps; }
 break;
 case 87:
-//#line 348 "gramatica.y"
+//#line 340 "gramatica.y"
 { yyval.ival = Wrps; }
 break;
 case 89:
-//#line 351 "gramatica.y"
+//#line 343 "gramatica.y"
 {this.errores.add(new ErrorG("Error 033: Se esperaba un ; entre los permisos", AnalizadorLexico.cantLN));}
 break;
-//#line 1174 "Parser.java"
+//#line 1116 "Parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

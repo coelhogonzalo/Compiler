@@ -194,11 +194,11 @@ __15. Llamado de funciones como sentencia ejecutable.
 
 __Sin error
 single _diversion,
-single _funWRITE2 ( single _param1) {
+single _funWRITE2 ( single _param15) {
 	if(0.2 < 0.3)
 		print ( ' Entre al if dentro de funWRITE2 en el ejemplo 15' ),
 	endif
-	_param1 := 0.2,
+	_param15 := 0.2,
 	return ( 2.0 )
 }
 single _varsingle2,
@@ -220,7 +220,8 @@ print('Fin del ejemplo 15'),
 __16.Expresiones con numeros negativos
 
 __Sin error
-_varsingle2 := - 0.2 - -0.6,
+single _varsingle3,
+_varsingle3 := - 0.2 - -0.6,
 
 __Con error VARIABLE SIN DECLARAR
 
@@ -243,7 +244,10 @@ single _unavar6,
 
 _unavar4:= 3.40282347F38,      __rango maximo de float
 _unavar5:= 5.0,
-_unavar6 := _unavar4 * _unavar5,
+_unavar6 := _unavar4 * _unavar5, __overflow
+
+_unavar5:= 5.0 * -1.0,
+_unavar6 := _unavar4 * _unavar5, __overflow negativo
 
 uslinteger _lin1,
 uslinteger _lin2,
@@ -251,14 +255,14 @@ uslinteger _lin3,
 
 _lin1 := 0,
 _lin2 := 34,
-_lin3 := _lin2 / _lin1,
+_lin3 := _lin2 / _lin1, __Division por 0
 
 uslinteger _lin4,
 uslinteger _lin5,
 uslinteger _lin6,
 
 _lin4:= 4294967295_ul, __acaponele el rango maximo de int
-_lin5:= 5,
+_lin5:= 5_ul,
 _lin6 := _lin5 * _lin4,
 
 
@@ -268,6 +272,6 @@ uslinteger _lin9,
 
 _lin7 := 56,
 _lin8 := 34,
-_lin9 := _lin8 - _lin7,
+_lin9 := _lin8 - _lin7, __Resultado negativo
 
 print('Fin del ejemplo 16 y fin del programa'),
