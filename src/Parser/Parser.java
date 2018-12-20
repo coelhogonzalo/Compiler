@@ -779,7 +779,7 @@ case 10:
                 idFun = val_peek(0).sval;
  Token t=AnalizadorLexico.tablaSimbolos.get(val_peek(0).sval); 
 	if(t.declarada){
-		this.errores.add(new ErrorG("Error SIN NUMERO: El identificador '"+t.lexema+"' ,de uso '"+t.uso+"' ya esta declarado", AnalizadorLexico.cantLN));
+		this.errores.add(new ErrorG("Error 036: El identificador '"+t.lexema+"' ,de uso '"+t.uso+"' ya esta declarado", AnalizadorLexico.cantLN));
 		PI.inicioFuncion(val_peek(0).sval);
 	}
 	else{
@@ -870,7 +870,7 @@ case 26:
 			t.ambito=this.ambitoActual;
 		}
 		else
-			this.errores.add(new ErrorG("Error SIN NUMERO: Se redeclaro el identificador de uso "+t.uso+" :'"+t.lexema+"' ", AnalizadorLexico.cantLN));
+			this.errores.add(new ErrorG("Error 037: Se redeclaro el identificador de uso "+t.uso+" :'"+t.lexema+"' ", AnalizadorLexico.cantLN));
 		yyval.sval = yyval.sval+" "+ val_peek(0).sval;
 	}
 	else
@@ -886,7 +886,7 @@ case 27:
 			t.ambito=this.ambitoActual;
 		}
 		else
-			this.errores.add(new ErrorG("Error SIN NUMERO: Se redeclaro el identificador de tipo "+t.uso+" :'"+t.lexema+"' ", AnalizadorLexico.cantLN));
+			this.errores.add(new ErrorG("Error 038: Se redeclaro el identificador de tipo "+t.uso+" :'"+t.lexema+"' ", AnalizadorLexico.cantLN));
 		yyval.sval = yyval.sval+" "+ val_peek(0).sval;
 	}
 	else

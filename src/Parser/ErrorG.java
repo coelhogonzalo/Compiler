@@ -4,7 +4,6 @@ public class ErrorG extends Error{
 
 	public ErrorG( String texto, int linea) {
 		super("ERROR", texto, linea);
-		// TODO Auto-generated constructor stub
 		System.out.println(this.toString());
 	}
 	public String toString(){

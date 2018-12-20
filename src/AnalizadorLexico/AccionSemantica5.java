@@ -39,15 +39,5 @@ public class AccionSemantica5 implements AccionSemantica {
         if (b.length() > 0)
             b.delete(b.indexOf("_u"), b.length());
     }
-	
-	/*public static void test1(String [] args){// El sacarle el _ul anda bien
-		String buffer="23432_ul";
-		StringBuilder nbuffer=new StringBuilder(buffer);
-		nbuffer.deleteCharAt(nbuffer.length()-1);
-		nbuffer.deleteCharAt(nbuffer.length()-1);
-		nbuffer.deleteCharAt(nbuffer.length()-1);
-		buffer=nbuffer.toString();
-		System.out.println(buffer);
-	}*/
 
 }

@@ -70,17 +70,15 @@ public class PolacaInversa {
     public void desapilar() {
         int pop = pila.pop();
         StringBuilder v = PI.get(pop);
-        //System.out.println("Desapile esto "+v.toString());
         v.setLength(0);
         v.append("Label" + PI.size());
-        //PI.add(new StringBuilder("Label" + pop));
+
     }
     public void desapilarElse() {
         int pop = pila.pop();
         StringBuilder v = PI.get(pop);
         v.setLength(0);
         v.append("Label" + (PI.size() + 2));
-        //PI.add(new StringBuilder("Label" + pop));
     }
 
     public void finFuncion() {    }

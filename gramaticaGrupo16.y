@@ -45,7 +45,7 @@ tipoFunID : tipo ID { estoyEnFuncion = true; $$=$2;//Le paso el nombre de la fun
                 idFun = $2.sval;
  Token t=AnalizadorLexico.tablaSimbolos.get($2.sval); 
 	if(t.declarada){
-		this.errores.add(new ErrorG("Error SIN NUMERO: El identificador '"+t.lexema+"' ,de uso '"+t.uso+"' ya esta declarado", AnalizadorLexico.cantLN));
+		this.errores.add(new ErrorG("Error 036: El identificador '"+t.lexema+"' ,de uso '"+t.uso+"' ya esta declarado", AnalizadorLexico.cantLN));
 		PI.inicioFuncion($2.sval);
 	}
 	else{
@@ -118,7 +118,7 @@ lista_variables : lista_variables ';' ID {Token t=AnalizadorLexico.tablaSimbolos
 			t.ambito=this.ambitoActual;
 		}
 		else
-			this.errores.add(new ErrorG("Error SIN NUMERO: Se redeclaro el identificador de uso "+t.uso+" :'"+t.lexema+"' ", AnalizadorLexico.cantLN));
+			this.errores.add(new ErrorG("Error 037: Se redeclaro el identificador de uso "+t.uso+" :'"+t.lexema+"' ", AnalizadorLexico.cantLN));
 		$$.sval = $$.sval+" "+ $3.sval;
 	}
 	else
@@ -131,7 +131,7 @@ lista_variables : lista_variables ';' ID {Token t=AnalizadorLexico.tablaSimbolos
 			t.ambito=this.ambitoActual;
 		}
 		else
-			this.errores.add(new ErrorG("Error SIN NUMERO: Se redeclaro el identificador de tipo "+t.uso+" :'"+t.lexema+"' ", AnalizadorLexico.cantLN));
+			this.errores.add(new ErrorG("Error 038: Se redeclaro el identificador de tipo "+t.uso+" :'"+t.lexema+"' ", AnalizadorLexico.cantLN));
 		$$.sval = $$.sval+" "+ $1.sval;
 	}
 	else

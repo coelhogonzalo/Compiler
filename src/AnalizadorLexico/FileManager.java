@@ -30,21 +30,6 @@ public class FileManager {
         		return null;
         }
     }
-    /*
-    public Character readChar() throws IOException {
-
-        int ret = in.read();
-        if (ret != -1){
-            return (char) ret;
-        }else{
-        	if (!salto){
-        		salto = true;
-        		return new Character('\n');
-        	}
-        	else 
-        		return null;
-        }
-    }*/
     public static void write(String entry, File f) throws IOException {
         f.delete();
         entry = entry.replace("[", "");

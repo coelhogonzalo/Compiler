@@ -217,6 +217,96 @@ __varsingle2 := _funWRITEPASS (_diversion; write;pass ),,   __Valido
 
 
 print('Fin del ejemplo 15'),
+__El ejemplo 16 lo pongo al final asi no frena la ejecucion
+__ Codigos de algunas correcciones
+__1
+uslinteger _aC1;_var1C1;_cC1,
+single _bC1;_var2C1;_dC1,
+ 
+print('Hola'),
+ 
+_var1C1 := 20_ul,
+_aC1 := 3_ul,
+_cC1 := _var1C1 + _aC1,
+print(_cC1),
+ 
+_bC1 := 2.0,
+ 
+uslinteger _funWRITEBC1 ( uslinteger _param1C1) {
+   	print('_funWRITEBC1'),
+                _aC1 := 16_ul,
+            	uslinteger _xC1,
+            	_xC1 := 3_ul,
+    			_param1C1 := 4_ul,
+                return ( _xC1 * 2_ul)
+}
+ 
+uslinteger _funWRITEAC1 ( uslinteger _param2C1) {
+   	print('_funWRITEAC1'),
+            	_param2C1:= _funWRITEBC1(_param2C1; write),,
+                print(_aC1),
+            	_aC1 := 14_ul,
+          		_param2C1 := 9_ul,
+            	return (_param2C1 * 2_ul)
+}
+ 
+_var1C1 := _funWRITEAC1 (_aC1; write;pass ),,
+print(_var1C1),
+print(_aC1),
+
+print('Fin de codigo de correccion 1'),
+__2
+uslinteger _aC2;_var1C2;_cC2,
+single _bC2;_var2C2;_dC2,
+ 
+print('Hola soy la Correccion2'),
+ 
+_var1C2 := 20_ul,
+_aC2 := 2_ul,
+_cC2 := _var1C2 + _aC2,
+print(_cC2),
+ 
+_bC2 := 2.0,
+ 
+uslinteger _funWRITEBC2 ( uslinteger _param1C2) {
+   	print('_funWRITEBC2'),
+    	_param1C2 := 2_ul,
+    	return ( 2_ul * 3_ul)
+}
+ 
+uslinteger _funWRITEAC2 ( uslinteger _param2C2) {
+   	print('_funWRITEAC2'),
+    	_param2C2 := _funWRITEBC2(_param2C2; write),,
+    	return ( 2_ul * _param2C2)
+}
+ 
+_var1C2 := _funWRITEAC2 (_aC2; write;pass ),,
+print(_var1C2),
+print('Fin de la Correccion 2'),
+
+__3 (ifs consecutivos y anidados)
+uslinteger _correccion3,
+_correccion3:=222_ul,
+if(_correccion3 = 222_ul)
+	print('IF1 obviamente'),
+else
+	print('ELSE1'),
+endif
+if(_correccion3 = 222_ul)
+	print('IF2 obviamente'),
+else
+print('ELSE2'),
+endif
+if(_correccion3 = 222_ul)
+	if(_correccion3 != 222_ul)
+		print('IF3ANIDADO '),
+	else
+		print('ELSE3ANIDADO obviamente'),
+	endif
+else
+	print('ELSE4'),
+endif
+print('fin de la correccion 3'),
 __16.Expresiones con numeros negativos
 
 __Sin error
