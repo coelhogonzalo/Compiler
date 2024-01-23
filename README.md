@@ -1,4 +1,4 @@
-# [Your Language Name] Compiler
+# UNICENi Compiler
 
 ## Overview
 
